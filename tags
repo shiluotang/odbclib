@@ -1,0 +1,318 @@
+	.\odbclib.vim	/^nnoremap  gggHG$/;"	m
+	.\odbclib.vim	/^onoremap  gggHG$/;"	m
+	.\odbclib.vim	/^vnoremap  "+y$/;"	m
+	.\odbclib.vim	/^noremap  $/;"	m
+	.\odbclib.vim	/^nnoremap  :update$/;"	m
+	.\odbclib.vim	/^onoremap  :update$/;"	m
+	.\odbclib.vim	/^vnoremap  :update$/;"	m
+	.\odbclib.vim	/^nmap  "+gP$/;"	m
+	.\odbclib.vim	/^omap  "+gP$/;"	m
+	.\odbclib.vim	/^vnoremap  "+x$/;"	m
+	.\odbclib.vim	/^noremap  $/;"	m
+nnection.cpp	/^Connection::setCurrentCatalog(string const& catalogName)$/;"	f	class:Connection
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+<C-F4>	.\odbclib.vim	/^cnoremap <C-F4> c$/;"	m
+<C-F4>	.\odbclib.vim	/^inoremap <C-F4> c$/;"	m
+<C-Tab>	.\odbclib.vim	/^cnoremap <C-Tab> w$/;"	m
+<C-Tab>	.\odbclib.vim	/^inoremap <C-Tab> w$/;"	m
+<M-Space>	.\odbclib.vim	/^cnoremap <M-Space> :simalt ~$/;"	m
+<M-Space>	.\odbclib.vim	/^inoremap <M-Space> :simalt ~$/;"	m
+<S-Insert>	.\odbclib.vim	/^cmap <S-Insert> +$/;"	m
+<S-Insert>	.\odbclib.vim	/^imap <S-Insert> $/;"	m
+ColumnMetaData	.\include\columnmetadata.hpp	/^class ColumnMetaData$/;"	c
+Component	.\include\component.hpp	/^class Component:$/;"	c
+Connection	.\include\connection.hpp	/^class Connection$/;"	c
+Cursor	.\include\cursor.hpp	/^class Cursor:$/;"	c
+Cursor	.\src\cursor.cpp	/^Cursor::Cursor(Statement& stmt)$/;"	f	class:Cursor
+DEBUG	.\include\config.hpp	12;"	d
+DEBUG_INIT	.\include\debug.hpp	13;"	d
+DEBUG_INIT	.\include\debug.hpp	9;"	d
+DEBUG_MSG	.\include\debug.hpp	11;"	d
+DEBUG_MSG	.\include\debug.hpp	15;"	d
+DEBUG_RELEASE	.\include\debug.hpp	10;"	d
+DEBUG_RELEASE	.\include\debug.hpp	14;"	d
+Decimal	.\include\decimal.hpp	/^class Decimal$/;"	c
+DefaultDiagInfoListener	.\src\handle.cpp	/^	class DefaultDiagInfoListener:$/;"	c	namespace:__anon1	file:
+DiagInfo	.\include\diaginfo.hpp	/^class DiagInfo$/;"	c
+DiagInfo	.\src\diaginfo.cpp	/^DiagInfo::DiagInfo()$/;"	f	class:DiagInfo
+DiagInfo	.\src\diaginfo.cpp	/^DiagInfo::DiagInfo(SQLCHAR const* state,$/;"	f	class:DiagInfo
+DiagInfoEvent	.\include\diaginfo.hpp	/^		typedef odbclib::utils::event::Event<DiagInfoEventArgs> DiagInfoEvent;$/;"	t	class:DiagInfo
+DiagInfoEventArgs	.\include\diaginfoeventargs.hpp	/^class DiagInfoEventArgs$/;"	c
+DiagInfoEventArgs	.\src\diaginfoeventargs.cpp	/^DiagInfoEventArgs::DiagInfoEventArgs(Handle& handle,$/;"	f	class:DiagInfoEventArgs
+DiagInfoListener	.\include\diaginfo.hpp	/^		typedef odbclib::utils::event::EventListener<DiagInfoEventArgs> DiagInfoListener;$/;"	t	class:DiagInfo
+Disposable	.\include\disposable.hpp	/^class Disposable$/;"	c
+DisposeEvent	.\include\disposable.hpp	/^		typedef odbclib::utils::event::Event<DisposeEventArgs> DisposeEvent;$/;"	t	class:Disposable
+DisposeEventArgs	.\include\disposeeventargs.hpp	/^	DisposeEventArgs(Disposable& disposable)$/;"	f	class:DisposeEventArgs
+DisposeEventArgs	.\include\disposeeventargs.hpp	/^class DisposeEventArgs$/;"	c
+DisposeListener	.\include\disposable.hpp	/^		typedef odbclib::utils::event::EventListener<DisposeEventArgs> DisposeListener;$/;"	t	class:Disposable
+ENUM_BEGIN	.\include\macros.hpp	13;"	d
+ENUM_BEGIN	.\src\types.cpp	3;"	d	file:
+ENUM_BEGIN	.\src\types.cpp	8;"	d	file:
+ENUM_END	.\include\macros.hpp	16;"	d
+ENUM_END	.\src\types.cpp	4;"	d	file:
+ENUM_END	.\src\types.cpp	9;"	d	file:
+ENUM_ITEM	.\include\macros.hpp	15;"	d
+ENUM_ITEM	.\src\types.cpp	10;"	d	file:
+ENUM_ITEM	.\src\types.cpp	5;"	d	file:
+ENUM_ITEM_PAIR	.\include\macros.hpp	14;"	d
+ENUM_ITEM_PAIR	.\src\types.cpp	11;"	d	file:
+ENUM_ITEM_PAIR	.\src\types.cpp	6;"	d	file:
+ENUM_OUTPUT_BEGIN	.\include\macros.hpp	18;"	d
+ENUM_OUTPUT_DECL	.\include\macros.hpp	34;"	d
+ENUM_OUTPUT_DECL	.\src\types.cpp	12;"	d	file:
+ENUM_OUTPUT_DECL	.\src\types.cpp	7;"	d	file:
+ENUM_OUTPUT_END	.\include\macros.hpp	27;"	d
+ENUM_OUTPUT_ITEM	.\include\macros.hpp	23;"	d
+ENUM_OUTPUT_ITEM_PAIR	.\include\macros.hpp	25;"	d
+EVENTLISTENER_HPP_INCLUDED	.\include\utils\event\eventlistener.hpp	2;"	d
+EVENT_HPP_INCLUDED	.\include\utils\event\event.hpp	2;"	d
+Environment	.\include\environment.hpp	/^class Environment$/;"	c
+Environment	.\src\environment.cpp	/^Environment::Environment()$/;"	f	class:Environment
+Guid	.\include\guid.hpp	/^class Guid$/;"	c
+Handle	.\include\handle.hpp	/^class Handle$/;"	c
+Handle	.\src\handle.cpp	/^Handle::Handle(Handle *parentHandle,HandleType handleType)$/;"	f	class:Handle
+HandleInfo	.\include\handle.hpp	/^	struct HandleInfo$/;"	s	class:Handle
+HandleInfo	.\src\handle.cpp	/^Handle::HandleInfo::HandleInfo(SQLSMALLINT type)$/;"	f	class:Handle::HandleInfo
+NS_BEGIN_1	.\include\macros.hpp	4;"	d
+NS_BEGIN_2	.\include\macros.hpp	7;"	d
+NS_BEGIN_3	.\include\macros.hpp	10;"	d
+NS_END_1	.\include\macros.hpp	5;"	d
+NS_END_2	.\include\macros.hpp	8;"	d
+NS_END_3	.\include\macros.hpp	11;"	d
+Null	.\include\nullable.hpp	/^			static Nullable const& Null;$/;"	m	class:odbclib::Nullable
+Null	.\include\nullable.hpp	/^	Nullable<T> const& Nullable<T>::Null = Nullable<T>();$/;"	m	class:odbclib::Nullable
+Null	.\src\nullable.cpp	/^	Nullable<string> const& Nullable<string>::Null = Nullable<string>();$/;"	m	class:odbclib::Nullable	file:
+Nullable	.\include\nullable.hpp	/^				Nullable(char const (&a)[N])$/;"	f	class:odbclib::Nullable
+Nullable	.\include\nullable.hpp	/^			Nullable()$/;"	f	class:odbclib::Nullable
+Nullable	.\include\nullable.hpp	/^			Nullable(Nullable const& other)$/;"	f	class:odbclib::Nullable
+Nullable	.\include\nullable.hpp	/^			Nullable(T const& value)$/;"	f	class:odbclib::Nullable
+Nullable	.\include\nullable.hpp	/^			Nullable(char const* value)$/;"	f	class:odbclib::Nullable
+Nullable	.\include\nullable.hpp	/^			Nullable(std::string const& value)$/;"	f	class:odbclib::Nullable
+Nullable	.\include\nullable.hpp	/^	class Nullable$/;"	c	namespace:odbclib
+Nullable	.\include\nullable.hpp	/^	class Nullable<std::string>$/;"	c	namespace:odbclib
+ODBCLIB_COLUMNMETADATA_HPP_INCLUDED	.\include\columnmetadata.hpp	8;"	d
+ODBCLIB_COMPONENT_HPP_INCLUDED	.\include\component.hpp	2;"	d
+ODBCLIB_CONFIG_HPP_INCLUDED	.\include\config.hpp	2;"	d
+ODBCLIB_CONNECTION_HPP_INCLUDED	.\include\connection.hpp	2;"	d
+ODBCLIB_CURSOR_HPP_INCLUDED	.\include\cursor.hpp	2;"	d
+ODBCLIB_DEBUG_HPP_INCLUDED	.\include\debug.hpp	2;"	d
+ODBCLIB_DECIMAL_HPP_INCLUDED	.\include\decimal.hpp	2;"	d
+ODBCLIB_DIAGINFOEVENTARGS_HPP_INCLUDED	.\include\diaginfoeventargs.hpp	2;"	d
+ODBCLIB_DIAGINFO_HPP_INCLUDED	.\include\diaginfo.hpp	2;"	d
+ODBCLIB_DISPOSABLE_HPP_INCLUDED	.\include\disposable.hpp	2;"	d
+ODBCLIB_DISPOSEEVENTARGS_HPP_INCLUDED	.\include\disposeeventargs.hpp	2;"	d
+ODBCLIB_ENVIRONMENT_HPP_INCLUDED	.\include\environment.hpp	2;"	d
+ODBCLIB_GUID_HPP_INCLUDED	.\include\guid.hpp	2;"	d
+ODBCLIB_HANDLE_HPP_INCLUDED	.\include\handle.hpp	2;"	d
+ODBCLIB_MACROS_HPP_INCLUDED	.\include\macros.hpp	2;"	d
+ODBCLIB_NULLABLE_HPP_INCLUDED	.\include\nullable.hpp	2;"	d
+ODBCLIB_ODBCLIB_HPP_INCLUDED	.\include\odbclib.hpp	2;"	d
+ODBCLIB_RESULTSETMETADATA_HPP_INCLUDED	.\include\resultsetmetadata.hpp	2;"	d
+ODBCLIB_RESULTSET_HPP_INCLUDED	.\include\resultset.hpp	2;"	d
+ODBCLIB_SESSION_HPP_INCLUDED	.\include\session.hpp	2;"	d
+ODBCLIB_STATEMENT_HPP_INCLUDED	.\include\statement.hpp	2;"	d
+ODBCLIB_TRANSACTION_HPP_INCLUDED	.\include\transaction.hpp	2;"	d
+ODBCLIB_TYPES_H_INCLUDED	.\include\types.hpp	2;"	d
+ODBCLIB_UTILS_HPP_INCLUDED	.\include\utils\utils.hpp	2;"	d
+ResultSet	.\include\resultset.hpp	/^class ResultSet$/;"	c
+ResultSet	.\src\resultset.cpp	/^ResultSet::ResultSet(Cursor &cursor)$/;"	f	class:ResultSet
+ResultSetMetaData	.\include\resultsetmetadata.hpp	/^class ResultSetMetaData$/;"	c
+Session	.\include\session.hpp	/^class Session:$/;"	c
+Session	.\src\session.cpp	/^Session::Session(Connection & conn,$/;"	f	class:Session
+Session	.\src\session.cpp	/^Session::Session(Connection& conn,string const& serverName,$/;"	f	class:Session
+SessionLoad	.\odbclib.vim	/^let SessionLoad = 1$/;"	v
+Statement	.\include\statement.hpp	/^class Statement:$/;"	c
+Statement	.\src\statement.cpp	/^Statement::Statement(Session &session)$/;"	f	class:Statement
+Transaction	.\include\transaction.hpp	/^class Transaction$/;"	c
+Transaction	.\src\transaction.cpp	/^Transaction::Transaction(Session &session)$/;"	f	class:Transaction
+TransactionEvent	.\include\transaction.hpp	/^		typedef utils::event::Event<TransactionEventArgs> TransactionEvent;$/;"	t	class:Transaction
+TransactionEventArgs	.\include\transaction.hpp	/^		class TransactionEventArgs$/;"	c	class:Transaction
+TransactionEventArgs	.\src\transaction.cpp	/^TransactionEventArgs::TransactionEventArgs(Transaction& tran,$/;"	f	class:Transaction::TransactionEventArgs
+TransactionEventListener	.\include\transaction.hpp	/^		typedef utils::event::EventListener<TransactionEventArgs> TransactionEventListener;$/;"	t	class:Transaction
+addDisposedListener	.\include\component.hpp	/^		addDisposedListener(DisposeListener &l)$/;"	f	class:Component
+addDisposingListener	.\include\component.hpp	/^		addDisposingListener(DisposeListener &l)$/;"	f	class:Component
+cancel	.\src\statement.cpp	/^Statement::cancel()$/;"	f	class:Statement
+checkError	.\src\handle.cpp	/^Handle::checkError(SQLRETURN retcode) $/;"	f	class:Handle
+closeCursor	.\src\statement.cpp	/^Statement::closeCursor()$/;"	f	class:Statement
+commit	.\src\environment.cpp	/^Environment::commit()$/;"	f	class:Environment
+commit	.\src\session.cpp	/^Session::commit()$/;"	f	class:Session
+commit	.\src\transaction.cpp	/^Transaction::commit() $/;"	f	class:Transaction
+const_pointer	.\include\nullable.hpp	/^			typedef T const* const_pointer;$/;"	t	class:odbclib::Nullable
+const_reference	.\include\nullable.hpp	/^			typedef T const& const_reference;$/;"	t	class:odbclib::Nullable
+debug_init	.\src\debug.cpp	/^void debug_init(char const* type_name)$/;"	f
+debug_msg	.\src\debug.cpp	/^void debug_msg(char const* msg)$/;"	f
+debug_release	.\src\debug.cpp	/^void debug_release(char const* type_name)$/;"	f
+doDispose	.\src\cursor.cpp	/^Cursor::doDispose()$/;"	f	class:Cursor
+doDispose	.\src\environment.cpp	/^Environment::doDispose()$/;"	f	class:Environment
+doDispose	.\src\session.cpp	/^Session::doDispose()$/;"	f	class:Session
+doDispose	.\src\statement.cpp	/^Statement::doDispose()$/;"	f	class:Statement
+doDispose	.\src\transaction.cpp	/^Transaction::doDispose()$/;"	f	class:Transaction
+execute	.\src\statement.cpp	/^Statement::execute()$/;"	f	class:Statement
+execute	.\src\statement.cpp	/^Statement::execute(string const& sql)$/;"	f	class:Statement
+fetch	.\src\cursor.cpp	/^Cursor::fetch(FetchOrientation fetchType,$/;"	f	class:Cursor
+fetchAbsolute	.\src\cursor.cpp	/^bool Cursor::fetchAbsolute(fetchoffset_t offset){return fetch(Absolute,offset);}$/;"	f	class:Cursor
+fetchBookmark	.\src\cursor.cpp	/^bool Cursor::fetchBookmark(){return fetch(Bookmark,0);}$/;"	f	class:Cursor
+fetchFirst	.\src\cursor.cpp	/^bool Cursor::fetchFirst(){return fetch(First,0);}$/;"	f	class:Cursor
+fetchLast	.\src\cursor.cpp	/^bool Cursor::fetchLast(){return fetch(Last,0);}$/;"	f	class:Cursor
+fetchNext	.\src\cursor.cpp	/^bool Cursor::fetchNext(){return fetch(Next,0);}$/;"	f	class:Cursor
+fetchPrevious	.\src\cursor.cpp	/^bool Cursor::fetchPrevious(){return fetch(Previous,0);}$/;"	f	class:Cursor
+fetchRelative	.\src\cursor.cpp	/^bool Cursor::fetchRelative(fetchoffset_t offset){return fetch(Relative,offset);}$/;"	f	class:Cursor
+fetchoffset_t	.\include\types.hpp	/^typedef SQLLEN fetchoffset_t;$/;"	t
+fetchoffset_t	.\src\types.cpp	/^typedef SQLLEN fetchoffset_t;$/;"	t	file:
+getAffectedRowCount	.\src\statement.cpp	/^Statement::getAffectedRowCount()$/;"	f	class:Statement
+getAttribute	.\include\handle.hpp	/^		inline SQLRETURN getAttribute(SQLINTEGER attrb,SQLINTEGER& value)$/;"	f	class:Handle
+getAttribute	.\include\handle.hpp	/^		inline SQLRETURN getAttribute(SQLINTEGER attrb,SQLSMALLINT& value)$/;"	f	class:Handle
+getAttribute	.\include\handle.hpp	/^		inline SQLRETURN getAttribute(SQLINTEGER attrb,SQLUINTEGER& value)$/;"	f	class:Handle
+getAttribute	.\include\handle.hpp	/^		inline SQLRETURN getAttribute(SQLINTEGER attrb,SQLUSMALLINT& value)$/;"	f	class:Handle
+getAttribute	.\src\handle.cpp	/^Handle::getAttribute(SQLINTEGER attrb,SQLPOINTER array,SQLINTEGER len,SQLINTEGER* outLen)$/;"	f	class:Handle
+getColumnCount	.\include\resultsetmetadata.hpp	/^	size_t getColumnCount() const{return m_columns.size();}$/;"	f	class:ResultSetMetaData
+getColumnMetaData	.\include\resultsetmetadata.hpp	/^	getColumnMetaData(size_t index)const{return m_columns.at(index);}$/;"	f	class:ResultSetMetaData
+getColumnNo	.\include\columnmetadata.hpp	/^		size_t getColumnNo()const{return m_no;}$/;"	f	class:ColumnMetaData
+getConcurrency	.\src\cursor.cpp	/^cursor::CursorConcurrency Cursor::getConcurrency() { return m_stmt_ref.getCursorConcurrency(); }$/;"	f	class:Cursor
+getConnectTimeout	.\src\session.cpp	/^Session::getConnectTimeout()$/;"	f	class:Session
+getConnection	.\include\session.hpp	/^		inline Connection& getConnection()const{return m_conn_ref;}$/;"	f	class:Session
+getCurrentCatalog	.\src\session.cpp	/^Session::getCurrentCatalog()$/;"	f	class:Session
+getCursorBehavior	.\include\transaction.hpp	/^			getCursorBehavior()const{return m_cursorBehavior;}$/;"	f	class:Transaction::TransactionEventArgs
+getCursorBehavior	.\src\session.cpp	/^Session::getCursorBehavior(bool isCommit)$/;"	f	class:Session
+getCursorConcurrency	.\src\statement.cpp	/^Statement::getCursorConcurrency()$/;"	f	class:Statement
+getCursorName	.\src\statement.cpp	/^Statement::getCursorName()$/;"	f	class:Statement
+getCursorRowArraySize	.\src\statement.cpp	/^Statement::getCursorRowArraySize()$/;"	f	class:Statement
+getCursorScrollable	.\src\statement.cpp	/^Statement::getCursorScrollable()$/;"	f	class:Statement
+getCursorSensitivity	.\src\statement.cpp	/^Statement::getCursorSensitivity()$/;"	f	class:Statement
+getCursorType	.\src\statement.cpp	/^Statement::getCursorType()$/;"	f	class:Statement
+getDecimalDigits	.\include\columnmetadata.hpp	/^		int getDecimalDigits()const{return m_decimalDigits;}$/;"	f	class:ColumnMetaData
+getDiagInfo	.\include\diaginfoeventargs.hpp	/^	DiagInfo const& getDiagInfo()const{return m_diagInfo;}$/;"	f	class:DiagInfoEventArgs
+getDiagInfos	.\src\diaginfo.cpp	/^DiagInfo::getDiagInfos(SQLRETURN retcode,Handle const& handle)$/;"	f	class:DiagInfo
+getDisposable	.\include\disposeeventargs.hpp	/^	getDisposable() const$/;"	f	class:DisposeEventArgs
+getFetchedRowCount	.\src\cursor.cpp	/^Cursor::getFetchedRowCount() { return m_fetchedRowsCnt; }$/;"	f	class:Cursor
+getHandle	.\include\diaginfoeventargs.hpp	/^	Handle& getHandle()const{return m_handle;}$/;"	f	class:DiagInfoEventArgs
+getHandle	.\include\handle.hpp	/^		inline SQLHANDLE getHandle()const{return m_handleInfo.m_handle;}$/;"	f	class:Handle
+getLevel	.\include\diaginfo.hpp	/^		getLevel() const{return m_level;}$/;"	f	class:DiagInfo
+getMessage	.\include\diaginfo.hpp	/^		getMessage() const{return m_message;}$/;"	f	class:DiagInfo
+getName	.\include\columnmetadata.hpp	/^		getName()const{return m_name;}$/;"	f	class:ColumnMetaData::std
+getName	.\src\cursor.cpp	/^string Cursor::getName() { return m_stmt_ref.getCursorName(); }$/;"	f	class:Cursor
+getNativeErrorCode	.\include\diaginfo.hpp	/^		getNativeErrorCode()const{return m_nativeErrorCode;}$/;"	f	class:DiagInfo
+getNullable	.\include\columnmetadata.hpp	/^		int getNullable() const{return m_nullable;}$/;"	f	class:ColumnMetaData
+getOpenedConnectionString	.\include\session.hpp	/^		getOpenedConnectionString() const$/;"	f	class:Session::std
+getRowArraySize	.\src\cursor.cpp	/^size_t Cursor::getRowArraySize() { return m_stmt_ref.getCursorRowArraySize();}$/;"	f	class:Cursor
+getRowNumber	.\src\cursor.cpp	/^Cursor::getRowNumber()$/;"	f	class:Cursor
+getScrollable	.\src\cursor.cpp	/^cursor::CursorScrollable Cursor::getScrollable() { return m_stmt_ref.getCursorScrollable(); }$/;"	f	class:Cursor
+getSensitivity	.\src\cursor.cpp	/^cursor::CursorSensitivity Cursor::getSensitivity() { return m_stmt_ref.getCursorSensitivity(); }$/;"	f	class:Cursor
+getSession	.\include\statement.hpp	/^	inline Session& getSession(){return m_session_ref;}$/;"	f	class:Statement
+getSession	.\include\transaction.hpp	/^		inline Session& getSession(){return m_session_ref;}$/;"	f	class:Transaction
+getSize	.\include\columnmetadata.hpp	/^		size_t getSize()const{return m_size;}$/;"	f	class:ColumnMetaData
+getSqlType	.\include\columnmetadata.hpp	/^		getSqlType()const{return m_sqlType;}$/;"	f	class:ColumnMetaData
+getState	.\include\diaginfo.hpp	/^		getState() const{return m_state;}$/;"	f	class:DiagInfo
+getTransaction	.\include\transaction.hpp	/^			inline Transaction& getTransaction() const{return m_tran;}$/;"	f	class:Transaction::TransactionEventArgs
+getType	.\include\handle.hpp	/^		inline handletypes::HandleType getType()const$/;"	f	class:Handle
+getType	.\src\cursor.cpp	/^cursor::CursorType Cursor::getType() { return m_stmt_ref.getCursorType(); }$/;"	f	class:Cursor
+getVersion	.\include\environment.hpp	/^		getVersion()const{return m_version;}$/;"	f	class:Environment
+hasResultSet	.\src\statement.cpp	/^Statement::hasResultSet()$/;"	f	class:Statement
+isCommit	.\include\transaction.hpp	/^			inline bool isCommit()const{return m_isCommit;}$/;"	f	class:Transaction::TransactionEventArgs
+isNull	.\include\nullable.hpp	/^			bool isNull() const{return m_isNull;}$/;"	f	class:odbclib::Nullable
+m_OnTransactionEnd	.\include\transaction.hpp	/^		TransactionEvent m_OnTransactionEnd;$/;"	m	class:Transaction
+m_columns	.\include\resultsetmetadata.hpp	/^	std::vector<ColumnMetaData> m_columns;$/;"	m	class:ResultSetMetaData
+m_conn_ref	.\include\session.hpp	/^		Connection& m_conn_ref;$/;"	m	class:Session
+m_cursorBehavior	.\include\transaction.hpp	/^			cursor::CursorBehavior m_cursorBehavior;$/;"	m	class:Transaction::TransactionEventArgs
+m_cursor_ptr	.\include\statement.hpp	/^	Cursor *m_cursor_ptr;$/;"	m	class:Statement
+m_cursor_ref	.\include\resultset.hpp	/^		Cursor &m_cursor_ref;$/;"	m	class:ResultSet
+m_decimalDigits	.\include\columnmetadata.hpp	/^		SQLSMALLINT m_decimalDigits;$/;"	m	class:ColumnMetaData
+m_diagEvent	.\include\handle.hpp	/^		DiagInfo::DiagInfoEvent m_diagEvent;$/;"	m	class:Handle
+m_diagInfo	.\include\diaginfoeventargs.hpp	/^	DiagInfo const& m_diagInfo;$/;"	m	class:DiagInfoEventArgs
+m_disposable	.\include\disposeeventargs.hpp	/^	mutable Disposable &m_disposable;$/;"	m	class:DisposeEventArgs
+m_disposeByCommit	.\include\transaction.hpp	/^		bool m_disposeByCommit;$/;"	m	class:Transaction
+m_disposed	.\include\component.hpp	/^		bool m_disposed;$/;"	m	class:Component
+m_disposedEvent	.\include\component.hpp	/^		DisposeEvent m_disposedEvent;$/;"	m	class:Component
+m_disposingEvent	.\include\component.hpp	/^		DisposeEvent m_disposingEvent;$/;"	m	class:Component
+m_env_ref	.\include\connection.hpp	/^		Environment 	&m_env_ref;$/;"	m	class:Connection
+m_fetchedRowsCnt	.\include\cursor.hpp	/^		SQLULEN m_fetchedRowsCnt;$/;"	m	class:Cursor
+m_handle	.\include\connection.hpp	/^		Handle 		*m_handle;$/;"	m	class:Connection
+m_handle	.\include\diaginfoeventargs.hpp	/^	mutable Handle& m_handle;$/;"	m	class:DiagInfoEventArgs
+m_handle	.\include\environment.hpp	/^		Handle *m_handle;$/;"	m	class:Environment
+m_handle	.\include\handle.hpp	/^		SQLHANDLE m_handle;$/;"	m	struct:Handle::HandleInfo
+m_handle	.\include\statement.hpp	/^	Handle  *m_handle;$/;"	m	class:Statement
+m_handleInfo	.\include\handle.hpp	/^		HandleInfo m_handleInfo;$/;"	m	class:Handle
+m_has_tried_dispose	.\include\component.hpp	/^		bool m_has_tried_dispose;$/;"	m	class:Component
+m_isCommit	.\include\transaction.hpp	/^			bool m_isCommit;$/;"	m	class:Transaction::TransactionEventArgs
+m_isExternallyClosed	.\include\cursor.hpp	/^		bool m_isExternallyClosed;$/;"	m	class:Cursor
+m_isNull	.\include\nullable.hpp	/^			bool m_isNull;$/;"	m	class:odbclib::Nullable
+m_level	.\include\diaginfo.hpp	/^		odbclib::diags::DiagLevel m_level;$/;"	m	class:DiagInfo
+m_message	.\include\diaginfo.hpp	/^		SQLCHAR m_message[0x1 << 10];$/;"	m	class:DiagInfo
+m_name	.\include\columnmetadata.hpp	/^		std::string m_name;$/;"	m	class:ColumnMetaData
+m_nativeErrorCode	.\include\diaginfo.hpp	/^		SQLINTEGER m_nativeErrorCode;$/;"	m	class:DiagInfo
+m_no	.\include\columnmetadata.hpp	/^		SQLUSMALLINT m_no;$/;"	m	class:ColumnMetaData
+m_nullable	.\include\columnmetadata.hpp	/^		SQLSMALLINT m_nullable;$/;"	m	class:ColumnMetaData
+m_opened_connectionString	.\include\session.hpp	/^		std::string m_opened_connectionString;$/;"	m	class:Session
+m_prepared	.\include\statement.hpp	/^	bool m_prepared;$/;"	m	class:Statement
+m_preparedsql	.\include\statement.hpp	/^	std::string m_preparedsql;$/;"	m	class:Statement
+m_prev_autocommit_state	.\include\transaction.hpp	/^		bool m_prev_autocommit_state;$/;"	m	class:Transaction
+m_session_ptr	.\include\connection.hpp	/^		Session 	*m_session_ptr;$/;"	m	class:Connection
+m_session_ref	.\include\statement.hpp	/^	Session &m_session_ref;$/;"	m	class:Statement
+m_session_ref	.\include\transaction.hpp	/^		Session& m_session_ref;$/;"	m	class:Transaction
+m_size	.\include\columnmetadata.hpp	/^		SQLULEN m_size;$/;"	m	class:ColumnMetaData
+m_sqlType	.\include\columnmetadata.hpp	/^		m_sqlType;$/;"	m	class:ColumnMetaData
+m_state	.\include\diaginfo.hpp	/^		SQLCHAR m_state[7];$/;"	m	class:DiagInfo
+m_stmt_ref	.\include\cursor.hpp	/^		Statement &m_stmt_ref;	$/;"	m	class:Cursor
+m_tran	.\include\transaction.hpp	/^			mutable Transaction &m_tran;$/;"	m	class:Transaction::TransactionEventArgs
+m_tran_ptr	.\include\session.hpp	/^		Transaction *m_tran_ptr;$/;"	m	class:Session
+m_type	.\include\handle.hpp	/^		SQLSMALLINT m_type;$/;"	m	struct:Handle::HandleInfo
+m_value	.\include\nullable.hpp	/^			T m_value;$/;"	m	class:odbclib::Nullable
+m_value	.\include\nullable.hpp	/^			std::string m_value;$/;"	m	class:odbclib::Nullable
+m_version	.\include\environment.hpp	/^			m_version;$/;"	m	class:Environment
+main	.\src\main.cpp	/^int main(int argc,char* argv[])$/;"	f
+odbclib	.\include\nullable.hpp	/^namespace odbclib$/;"	n
+odbclib	.\src\nullable.cpp	/^namespace odbclib$/;"	n	file:
+onEvent	.\src\cursor.cpp	/^Cursor::onEvent(Transaction::TransactionEvent &e,$/;"	f	class:Cursor
+onEvent	.\src\handle.cpp	/^			onEvent(DiagInfo::DiagInfoEvent &e,DiagInfoEventArgs const& args)$/;"	f	class:__anon1::DefaultDiagInfoListener
+operator <<	.\include\nullable.hpp	/^	std::ostream& operator<<(std::ostream& os,Nullable<T> const& value) $/;"	f	namespace:odbclib
+operator <<	.\src\diaginfo.cpp	/^ostream& operator<<(ostream& os,DiagInfo const& diag)$/;"	f
+operator =	.\include\nullable.hpp	/^			Nullable& operator=(Nullable const& value)$/;"	f	class:odbclib::Nullable
+operator =	.\include\nullable.hpp	/^			Nullable& operator=(T const& value)$/;"	f	class:odbclib::Nullable
+operator =	.\include\nullable.hpp	/^			Nullable& operator=(char const* value)$/;"	f	class:odbclib::Nullable
+operator >>	.\include\nullable.hpp	/^	std::istream& operator>>(std::istream& is,Nullable<T> &value)$/;"	f	namespace:odbclib
+operator T	.\include\nullable.hpp	/^			operator T()$/;"	f	class:odbclib::Nullable
+operator T	.\include\nullable.hpp	/^			operator T()const$/;"	f	class:odbclib::Nullable
+operator std::string	.\include\nullable.hpp	/^			operator std::string()$/;"	f	class:odbclib::Nullable
+operator std::string	.\include\nullable.hpp	/^			operator std::string()const$/;"	f	class:odbclib::Nullable
+prepare	.\src\statement.cpp	/^Statement::prepare(string const& sql)$/;"	f	class:Statement
+print_error	.\src\main.cpp	/^print_error(SQLSMALLINT handleType,SQLHANDLE handle)$/;"	f	file:
+removeDisposedListener	.\include\component.hpp	/^		removeDisposedListener(DisposeListener &l)$/;"	f	class:Component
+removeDisposingListener	.\include\component.hpp	/^		removeDisposingListener(DisposeListener &l)$/;"	f	class:Component
+rollback	.\src\environment.cpp	/^Environment::rollback()$/;"	f	class:Environment
+rollback	.\src\session.cpp	/^Session::rollback()$/;"	f	class:Session
+rollback	.\src\transaction.cpp	/^Transaction::rollback() $/;"	f	class:Transaction
+s:cpo_save	.\odbclib.vim	/^let s:cpo_save=&cpo$/;"	v
+setAttribute	.\include\handle.hpp	/^		inline SQLRETURN setAttribute(SQLINTEGER attrb,SQLCHAR* array,SQLINTEGER len= SQL_NTS)$/;"	f	class:Handle
+setAttribute	.\include\handle.hpp	/^		inline SQLRETURN setAttribute(SQLINTEGER attrb,SQLINTEGER value)$/;"	f	class:Handle
+setAttribute	.\include\handle.hpp	/^		inline SQLRETURN setAttribute(SQLINTEGER attrb,SQLSMALLINT value)$/;"	f	class:Handle
+setAttribute	.\include\handle.hpp	/^		inline SQLRETURN setAttribute(SQLINTEGER attrb,SQLUINTEGER value)$/;"	f	class:Handle
+setAttribute	.\include\handle.hpp	/^		inline SQLRETURN setAttribute(SQLINTEGER attrb,SQLUSMALLINT value)$/;"	f	class:Handle
+setAttribute	.\src\handle.cpp	/^Handle::setAttribute(SQLINTEGER attrb,SQLPOINTER array,SQLINTEGER len)$/;"	f	class:Handle
+setCursorConcurrency	.\src\statement.cpp	/^Statement::setCursorConcurrency(cursor::CursorConcurrency cc)$/;"	f	class:Statement
+setCursorName	.\src\statement.cpp	/^Statement::setCursorName(string const& cursorName)$/;"	f	class:Statement
+setCursorRowArraySize	.\src\statement.cpp	/^Statement::setCursorRowArraySize(size_t sz)$/;"	f	class:Statement
+setCursorScrollable	.\src\statement.cpp	/^Statement::setCursorScrollable(cursor::CursorScrollable cs)$/;"	f	class:Statement
+setCursorSensitivity	.\src\statement.cpp	/^Statement::setCursorSensitivity(cursor::CursorSensitivity cs)$/;"	f	class:Statement
+setCursorType	.\src\statement.cpp	/^Statement::setCursorType(cursor::CursorType ct)$/;"	f	class:Statement
+setExternallyClosed	.\src\cursor.cpp	/^void Cursor::setExternallyClosed(){ m_isExternallyClosed = true; }$/;"	f	class:Cursor
+setRowArraySize	.\src\cursor.cpp	/^void Cursor::setRowArraySize(size_t sz){m_stmt_ref.setCursorRowArraySize(sz);}$/;"	f	class:Cursor
+setVersion	.\src\environment.cpp	/^Environment::setVersion(EnvironmentVersion version)$/;"	f	class:Environment
+test_mssql_native_client_10_sqlgetdata	.\src\main.cpp	/^void test_mssql_native_client_10_sqlgetdata()$/;"	f
+test_odbc	.\src\main.cpp	/^void test_odbc()$/;"	f
+toString	.\src\diaginfo.cpp	/^DiagInfo::toString()const$/;"	f	class:DiagInfo
+to_string	.\include\utils\utils.hpp	/^std::string to_string(T value)$/;"	f
+value	.\include\nullable.hpp	/^			T const& value()const$/;"	f	class:odbclib::Nullable
+value	.\include\nullable.hpp	/^			T& value()$/;"	f	class:odbclib::Nullable
+value	.\include\nullable.hpp	/^			std::string const& value()const$/;"	f	class:odbclib::Nullable::std
+value	.\include\nullable.hpp	/^			std::string& value()$/;"	f	class:odbclib::Nullable
+~Cursor	.\src\cursor.cpp	/^Cursor::~Cursor()$/;"	f	class:Cursor
+~Environment	.\src\environment.cpp	/^Environment::~Environment()$/;"	f	class:Environment
+~Handle	.\src\handle.cpp	/^Handle::~Handle()$/;"	f	class:Handle
+~Session	.\src\session.cpp	/^Session::~Session()$/;"	f	class:Session
+~Statement	.\src\statement.cpp	/^Statement::~Statement()$/;"	f	class:Statement
+~Transaction	.\src\transaction.cpp	/^Transaction::~Transaction()$/;"	f	class:Transaction
