@@ -150,6 +150,7 @@ main(int argc,char* argv[])
 	try
 	{
 		test_odbc();
+		cout << "yes" << endl;
 	}
 	catch(exception& e)
 	{
