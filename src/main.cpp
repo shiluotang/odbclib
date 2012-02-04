@@ -73,7 +73,7 @@ void
 test_mssql_native_client_10_sqlgetdata()
 {
 	string const CONNSTR = "DRIVER={SQL Server Native Client 10.0};SERVER=sgaqcomputer;"\
-				"DATABASE=大庆炼化工程造价系统数据库;UID=sa;PWD=123123";
+				"DATABASE=some_db;UID=sa;PWD=123123";
 	string const QUERY = "SELECT * FROM [在线造价_12_文件信息]";
 	SQLHANDLE env = SQL_NULL_HANDLE,
 		  dbc = SQL_NULL_HANDLE,
@@ -150,7 +150,6 @@ main(int argc,char* argv[])
 	try
 	{
 		test_odbc();
-		cout << "yes" << endl;
 	}
 	catch(exception& e)
 	{
