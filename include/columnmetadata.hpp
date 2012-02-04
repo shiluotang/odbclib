@@ -17,24 +17,27 @@ class ColumnMetaData
 {
 	public:
 		inline
-		size_t getColumnNo()const{return m_no;}
+		size_t 
+		getColumnNo()const{return m_no;}
 		inline
 		std::string const& 
 		getName()const{return m_name;}
 		inline
-		odbclib::sqltypes::OdbcSQLType
+		sqltypes::OdbcSQLType
 		getSqlType()const{return m_sqlType;}
 		inline
-		size_t getSize()const{return m_size;}
+		size_t 
+		getSize()const{return m_size;}
 		inline
-		int getDecimalDigits()const{return m_decimalDigits;}
+		int 
+		getDecimalDigits()const{return m_decimalDigits;}
 		inline
-		int getNullable() const{return m_nullable;}
+		int 
+		getNullable() const{return m_nullable;}
 	private:
 		SQLUSMALLINT m_no;
 		std::string m_name;
-		odbclib::sqltypes::OdbcSQLType
-		m_sqlType;
+		sqltypes::OdbcSQLType m_sqlType;
 		SQLULEN m_size;
 		SQLSMALLINT m_decimalDigits;
 		SQLSMALLINT m_nullable;

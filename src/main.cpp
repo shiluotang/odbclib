@@ -13,11 +13,8 @@ test_odbc()
 		"DRIVER={Microsoft Access Driver (*.mdb)};"\
 		"DBQ=..\\data.mdb;"\
 		"UID=Admin;PWD=;";
-	string const QUERY = "SELECT * FROM [在线造价_12_文件信息]";
-	string const QUERY2 = "SELECT * FROM [dbo].[01001_模板管理系统_工作流]";
-	string const QUERY3 = "SELECT * FROM [60用户权限]";
-	string const QUERY4 = "INSERT INTO [Students]([Name],[Age]) VALUES('sqg',27);";
-
+	string const QUERY = "INSERT INTO [Students]([Name],[Age])"\
+			     " VALUES('sqg',27);";
 	Environment env;
 	Connection conn(env);
 	Session s(conn,CONNSTR_MSACCESS);
@@ -28,17 +25,20 @@ test_odbc()
 		<< endl;
 	try
 	{
-	cout << "cursor type: " <<  stmt.getCursorType() << endl;
-	cout << "cursor scrollable: " << stmt.getCursorScrollable() << endl;
-	cout << "cursor sensitivity: " << stmt.getCursorSensitivity() << endl;
+		cout << "cursor type: " 
+		<< stmt.getCursorType() << endl
+		<< "cursor scrollable: " 
+		<< stmt.getCursorScrollable() << endl
+		<< "cursor sensitivity: " 
+		<< stmt.getCursorSensitivity() << endl;
 	}
 	catch(runtime_error &error)
 	{
 		cerr << error.what() << endl;
 	}
-	stmt.execute(QUERY4);
+	stmt.execute(QUERY);
 	cout << "has resultset: " << stmt.hasResultSet() << endl;
-	stmt.execute(QUERY4);
+	stmt.execute(QUERY);
 	tran.rollback();
 }
 
@@ -63,7 +63,12 @@ print_error(SQLSMALLINT handleType,SQLHANDLE handle)
 			sizeof(message),
 			&len)))
 	{
-		cout << state << ":" << error_code << ":" << message << endl;
+		cout << state 
+		<< ":" 
+		<< error_code 
+		<< ":" 
+		<< message 
+		<< endl;
 		memset(state,0,sizeof(state));
 		memset(message,0,sizeof(message));
 	}
@@ -72,7 +77,8 @@ print_error(SQLSMALLINT handleType,SQLHANDLE handle)
 void 
 test_mssql_native_client_10_sqlgetdata()
 {
-	string const CONNSTR = "DRIVER={SQL Server Native Client 10.0};SERVER=sgaqcomputer;"\
+	string const CONNSTR = "DRIVER={SQL Server Native Client 10.0};"\
+				"SERVER=sgaqcomputer;"\
 				"DATABASE=some_db;UID=sa;PWD=123123";
 	string const QUERY = "SELECT * FROM [在线造价_12_文件信息]";
 	SQLHANDLE env = SQL_NULL_HANDLE,
@@ -105,7 +111,10 @@ test_mssql_native_client_10_sqlgetdata()
 	SQLLEN id_indicator,filedata_indicator;
 	while(SQL_SUCCEEDED(ret = SQLFetch(stmt)))
 	{
-		ret = SQLGetData(stmt,6,SQL_C_BINARY,filedata,sizeof(filedata),&filedata_indicator);
+		ret = SQLGetData(stmt,6,SQL_C_BINARY,
+				filedata,
+				sizeof(filedata),
+				&filedata_indicator);
 		if(!SQL_SUCCEEDED(ret))
 			goto fetch_data_failed;
 		if(filedata_indicator == SQL_NULL_DATA)
@@ -113,7 +122,10 @@ test_mssql_native_client_10_sqlgetdata()
 		else
 			cout << "<BINARY DATA>";
 		cout<< "\t";
-		ret = SQLGetData(stmt,1,SQL_C_LONG,&id,sizeof(id),&id_indicator);
+		ret = SQLGetData(stmt,1,SQL_C_LONG,
+				&id,
+				sizeof(id),
+				&id_indicator);
 		if(!SQL_SUCCEEDED(ret))
 			goto fetch_data_failed;
 		if(id_indicator == SQL_NULL_DATA)
