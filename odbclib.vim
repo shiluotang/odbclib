@@ -216,24 +216,12 @@ setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
 silent! normal! zE
-11,62fold
-67,89fold
-93,163fold
-167,182fold
-11
-normal zc
-67
-normal zc
-93
-normal zc
-167
-normal zc
-let s:l = 167 - ((165 * winheight(0) + 12) / 24)
+let s:l = 98 - ((26 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-167
-normal! 0
+98
+normal! 016l
 tabnext 1
 if exists('s:wipebuf')
   silent exe 'bwipe ' . s:wipebuf
