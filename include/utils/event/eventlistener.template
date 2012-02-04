@@ -1,0 +1,33 @@
+#ifndef EVENTLISTENER_TEMPLATE_H
+#define EVENTLISTENER_TEMPLATE_H
+
+#include <vector>
+
+namespace odbclib
+{
+	namespace utils 
+	{
+		namespace event
+		{
+			template<typename T> class Event;
+			
+			template<typename EventArgType>
+			class EventListener
+			{
+			public:
+				typedef std::vector< Event<EventArgType>* > EventList;
+			
+				virtual ~EventListener();
+				virtual void onEvent(Event<EventArgType> &,EventArgType const&);
+			
+			private:
+				EventList m_events;
+			
+				friend class Event<EventArgType>;
+			};
+
+		}
+	}
+}
+
+#endif
