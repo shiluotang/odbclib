@@ -20,7 +20,7 @@ namespace
 			virtual void 
 			onEvent(DiagInfo::DiagInfoEvent &e,DiagInfoEventArgs const& args)
 			{
-				cout << "[DIAGINFO]: " << args.getDiagInfo() << endl;
+				clog << "[DIAGINFO]: " << args.getDiagInfo() << endl;
 			}
 	};
 }

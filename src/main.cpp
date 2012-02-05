@@ -15,6 +15,7 @@ test_odbc()
 		"UID=Admin;PWD=;";
 	string const QUERY = "INSERT INTO [Students]([Name],[Age])"\
 			     " VALUES('sqg',27);";
+	string const QUERY2 = "SELECT * FROM [Students];";
 	Environment env;
 	Connection conn(env);
 	Session s(conn,CONNSTR_MSACCESS);
@@ -23,22 +24,19 @@ test_odbc()
 	cout << "native sql statement is:" 
 		<< conn.nativeSQL("select {fn to_date(id)} from \"SQL\"") 
 		<< endl;
+	cout << "cursor type: " << stmt.getCursorType() << endl;
 	try
 	{
-		cout << "cursor type: " 
-		<< stmt.getCursorType() << endl
-		<< "cursor scrollable: " 
-		<< stmt.getCursorScrollable() << endl
-		<< "cursor sensitivity: " 
-		<< stmt.getCursorSensitivity() << endl;
+		cout << "cursor scrollable: " << stmt.getCursorScrollable() << endl;
+		cout << "cursor sensitivity: " << stmt.getCursorSensitivity() << endl;
 	}
 	catch(runtime_error &error)
 	{
 		cerr << error.what() << endl;
 	}
-	stmt.execute(QUERY);
+	stmt.execute(QUERY2);
 	cout << "has resultset: " << stmt.hasResultSet() << endl;
-	stmt.execute(QUERY);
+	stmt.execute(QUERY2);
 	tran.rollback();
 }
 
