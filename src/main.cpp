@@ -32,9 +32,9 @@ test_odbc()
 	cout << "cursor type: " << stmt.getCursorType() << endl;
 	try
 	{
-		cout << "cursor scrollable: " 
+		cout << "cursor scrollable: "
 			<< stmt.getCursorScrollable() << endl;
-		cout << "cursor sensitivity: " 
+		cout << "cursor sensitivity: "
 			<< stmt.getCursorSensitivity() << endl;
 	}
 	catch(runtime_error &error)
