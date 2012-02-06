@@ -6,14 +6,14 @@
 using namespace std;
 using namespace odbclib;
 
-void 
+void
 test_odbc()
 {
-	string const CONNSTR_MSACCESS = 
+	string const CONNSTR_MSACCESS =
 		"DRIVER={Microsoft Access Driver (*.mdb)};"\
 		"DBQ=..\\data.mdb;"\
 		"UID=Admin;PWD=;";
-	string const CONNSTR_MSSQL = 
+	string const CONNSTR_MSSQL =
 		"DRIVER={SQL SERVER};"\
 		"SERVER=(local);"\
 		"DATABASE=test;"\
@@ -47,7 +47,7 @@ test_odbc()
 	tran.rollback();
 }
 
-static 
+static
 void
 print_error(SQLSMALLINT handleType,SQLHANDLE handle)
 {
@@ -68,18 +68,18 @@ print_error(SQLSMALLINT handleType,SQLHANDLE handle)
 			sizeof(message),
 			&len)))
 	{
-		cout << state 
-		<< ":" 
-		<< error_code 
-		<< ":" 
-		<< message 
+		cout << state
+		<< ":"
+		<< error_code
+		<< ":"
+		<< message
 		<< endl;
 		memset(state,0,sizeof(state));
 		memset(message,0,sizeof(message));
 	}
 }
 
-void 
+void
 test_mssql_native_client_10_sqlgetdata()
 {
 	string const CONNSTR = "DRIVER={SQL Server Native Client 10.0};"\
@@ -123,7 +123,7 @@ test_mssql_native_client_10_sqlgetdata()
 		if(!SQL_SUCCEEDED(ret))
 			goto fetch_data_failed;
 		if(filedata_indicator == SQL_NULL_DATA)
-			cout << "<NULL>"; 
+			cout << "<NULL>";
 		else
 			cout << "<BINARY DATA>";
 		cout<< "\t";
@@ -160,7 +160,7 @@ test_mssql_native_client_10_sqlgetdata()
 	alloc_env_failed:;
 }
 
-int 
+int
 main(int argc,char* argv[])
 {
 	cout << boolalpha;
