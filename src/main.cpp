@@ -13,6 +13,12 @@ test_odbc()
 		"DRIVER={Microsoft Access Driver (*.mdb)};"\
 		"DBQ=..\\data.mdb;"\
 		"UID=Admin;PWD=;";
+	string const CONNSTR_MSSQL = 
+		"DRIVER={SQL SERVER};"\
+		"SERVER=(local);"\
+		"DATABASE=test;"\
+		"UID=sa;PWD=123;";
+	string const QUERY0 = "select {fn to_date(id)} from \"SQL\"";
 	string const QUERY = "INSERT INTO [Students]([Name],[Age])"\
 			     " VALUES('sqg',27);";
 	string const QUERY2 = "SELECT * FROM [Students];";
@@ -21,20 +27,21 @@ test_odbc()
 	Session s(conn,CONNSTR_MSACCESS);
 	Transaction tran(s);
 	Statement stmt(s);
-	cout << "native sql statement is:" 
-		<< conn.nativeSQL("select {fn to_date(id)} from \"SQL\"") 
-		<< endl;
+	cout << "native sql statement is:" << endl
+		<< conn.nativeSQL(QUERY0) << endl;
 	cout << "cursor type: " << stmt.getCursorType() << endl;
 	try
 	{
-		cout << "cursor scrollable: " << stmt.getCursorScrollable() << endl;
-		cout << "cursor sensitivity: " << stmt.getCursorSensitivity() << endl;
+		cout << "cursor scrollable: " 
+			<< stmt.getCursorScrollable() << endl;
+		cout << "cursor sensitivity: " 
+			<< stmt.getCursorSensitivity() << endl;
 	}
 	catch(runtime_error &error)
 	{
 		cerr << error.what() << endl;
 	}
-	stmt.execute(QUERY2);
+	stmt.execute(QUERY);
 	cout << "has resultset: " << stmt.hasResultSet() << endl;
 	stmt.execute(QUERY2);
 	tran.rollback();

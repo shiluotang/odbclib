@@ -26,9 +26,9 @@ noremap  
 noremap  u
 map Q gq
 nmap gx <Plug>NetrwBrowseX
-nnoremap <C-F4> c
-nnoremap <C-Tab> w
 nmap <S-Insert> "+gP
+nnoremap <C-Tab> w
+nnoremap <C-F4> c
 nnoremap <silent> <Plug>NetrwBrowseX :call netrw#NetrwBrowseX(expand("<cWORD>"),0)
 onoremap <C-F4> c
 vnoremap <C-F4> c
@@ -76,12 +76,12 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +167 src\main.cpp
+badd +32 src\main.cpp
 badd +344 uml.txt
-badd +109 src\cursor.cpp
-badd +44 include\statement.hpp
-badd +51 include\cursor.hpp
-badd +16 src\statement.cpp
+badd +126 src\cursor.cpp
+badd +22 include\statement.hpp
+badd +37 include\cursor.hpp
+badd +151 src\statement.cpp
 badd +34 include\environment.hpp
 badd +26 include\connection.hpp
 badd +29 src\connection.cpp
@@ -90,8 +90,8 @@ badd +27 include\session.hpp
 badd +131 src\session.cpp
 badd +99 include\types.hpp
 badd +27 include\handle.hpp
-badd +113 src\handle.cpp
-badd +7 include\diaginfo.hpp
+badd +23 src\handle.cpp
+badd +52 include\diaginfo.hpp
 badd +13 include\disposable.hpp
 badd +51 include\transaction.hpp
 badd +24 src\transaction.cpp
@@ -105,7 +105,8 @@ badd +11 include\resultsetmetadata.hpp
 badd +26 .\include\columnmetadata.hpp
 badd +44 include\component.hpp
 badd +1 src\component.cpp
-badd +9 Makefile
+badd +33 Makefile
+badd +77 src\diaginfo.cpp
 silent! argdel *
 edit src\main.cpp
 set splitbelow splitright
@@ -216,12 +217,12 @@ setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
 silent! normal! zE
-let s:l = 98 - ((26 * winheight(0) + 18) / 37)
+let s:l = 36 - ((8 * winheight(0) + 12) / 24)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-98
-normal! 016l
+36
+normal! 02l
 tabnext 1
 if exists('s:wipebuf')
   silent exe 'bwipe ' . s:wipebuf
