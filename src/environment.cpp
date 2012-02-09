@@ -28,9 +28,10 @@ Environment::~Environment()
 void
 Environment::setVersion(EnvironmentVersion version)
 {
-	SQLUINTEGER ver = static_cast<SQLUINTEGER>(version);
-	if(!SQL_SUCCEEDED(m_handle->setAttribute(SQL_ATTR_ODBC_VERSION,ver)))
-		throw runtime_error("environment version setting failed!");
+	SQLUINTEGER ver = static_cast<SQLUINTEGER>(4UL);
+		//static_cast<SQLUINTEGER>(version);
+	SQLRETURN ret = m_handle->setAttribute(SQL_ATTR_ODBC_VERSION,ver);
+	m_handle->checkError(ret);
 	m_version = version;
 }
 

@@ -27,6 +27,7 @@ void
 Connection::doDispose()
 {
 	delete m_handle;
+	m_handle = 0;
 }
 
 void 

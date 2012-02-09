@@ -21,7 +21,7 @@ class Handle
 	public:
 		explicit Handle(Handle*,
 			handletypes::HandleType);
-		virtual ~Handle();		
+		virtual ~Handle();
 
 		inline SQLHANDLE getHandle()const{return m_handleInfo.m_handle;}
 		inline handletypes::HandleType getType()const
