@@ -26,9 +26,9 @@ noremap  
 noremap  u
 map Q gq
 nmap gx <Plug>NetrwBrowseX
-nmap <S-Insert> "+gP
-nnoremap <C-Tab> w
 nnoremap <C-F4> c
+nnoremap <C-Tab> w
+nmap <S-Insert> "+gP
 nnoremap <silent> <Plug>NetrwBrowseX :call netrw#NetrwBrowseX(expand("<cWORD>"),0)
 onoremap <C-F4> c
 vnoremap <C-F4> c
@@ -55,7 +55,7 @@ set backspace=indent,eol,start
 set backup
 set diffexpr=MyDiff()
 set errorformat=%*[^\"]\"%f\"%*\\D%l:%c:\ %m,%*[^\"]\"%f\"%*\\D%l:\ %m,\"%f\"%*\\D%l:%c:\ %m,\"%f\"%*\\D%l:\ %m,%-G%f:%l:\ %trror:\ (Each\ undeclared\ identifier\ is\ reported\ only\ once,%-G%f:%l:\ %trror:\ for\ each\ function\ it\ appears\ in.),%f:%l:%c:\ %trror:\ %m,%f:%l:%c:\ %tarning:\ %m,%f:%l:%c:\ %m,%f:%l:\ %trror:\ %m,%f:%l:\ %tarning:\ %m,%f:%l:\ %m,\"%f\"\\,\ line\ %l%*\\D%c%*[^\ ]\ %m,%D%*\\a[%*\\d]:\ Entering\ directory\ `%f',%X%*\\a[%*\\d]:\ Leaving\ directory\ `%f',%D%*\\a:\ Entering\ directory\ `%f',%X%*\\a:\ Leaving\ directory\ `%f',%DMaking\ %*\\a\ in\ %f
-set guifont=Courier_New:h10
+set guifont=Courier_New:h9
 set helplang=Ch
 set history=50
 set hlsearch
@@ -71,23 +71,23 @@ set window=23
 let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
 let v:this_session=expand("<sfile>:p")
 silent only
-cd C:\MyProjects\cpp\odbclib.v2
+cd C:\MyProjects\cpp\odbclib
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +32 src\main.cpp
-badd +344 uml.txt
-badd +126 src\cursor.cpp
+badd +29 src\main.cpp
+badd +304 uml.txt
+badd +74 src\cursor.cpp
 badd +22 include\statement.hpp
 badd +37 include\cursor.hpp
-badd +151 src\statement.cpp
+badd +21 src\statement.cpp
 badd +34 include\environment.hpp
 badd +26 include\connection.hpp
-badd +29 src\connection.cpp
-badd +53 src\environment.cpp
+badd +20 src\connection.cpp
+badd +41 src\environment.cpp
 badd +27 include\session.hpp
-badd +131 src\session.cpp
+badd +20 src\session.cpp
 badd +99 include\types.hpp
 badd +27 include\handle.hpp
 badd +23 src\handle.cpp
@@ -96,7 +96,7 @@ badd +13 include\disposable.hpp
 badd +51 include\transaction.hpp
 badd +24 src\transaction.cpp
 badd +5 include\odbclib.hpp
-badd +10 include\config.hpp
+badd +12 include\config.hpp
 badd +9 include\macros.hpp
 badd +18 include\debug.hpp
 badd +141 src\types.cpp
@@ -217,12 +217,12 @@ setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
 silent! normal! zE
-let s:l = 36 - ((8 * winheight(0) + 12) / 24)
+let s:l = 29 - ((28 * winheight(0) + 28) / 57)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-36
-normal! 02l
+29
+normal! 018l
 tabnext 1
 if exists('s:wipebuf')
   silent exe 'bwipe ' . s:wipebuf

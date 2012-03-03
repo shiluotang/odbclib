@@ -25,7 +25,8 @@ class Transaction
 			inline cursor::CursorBehavior
 			getCursorBehavior()const{return m_cursorBehavior;}
 		private:
-			mutable Transaction &m_tran;
+			/*mutable*/ 
+			Transaction &m_tran;
 			bool m_isCommit;
 			cursor::CursorBehavior m_cursorBehavior;
 		};

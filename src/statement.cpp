@@ -18,6 +18,7 @@ try
 }
 catch(...)
 {
+	doDispose();
 	throw;
 }
 

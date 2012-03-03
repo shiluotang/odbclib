@@ -15,7 +15,11 @@ try	:m_env_ref(env),
 	DEBUG_INIT("Connection");
 	env.addDisposingListener(*this);
 }
-catch(...){throw;}
+catch(...)
+{
+	doDispose();
+	throw;
+}
 
 Connection::~Connection()
 {

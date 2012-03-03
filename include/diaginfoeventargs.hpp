@@ -17,7 +17,8 @@ public:
 	Handle& getHandle()const{return m_handle;}
 private:
 	DiagInfo const& m_diagInfo;
-	mutable Handle& m_handle;
+	/*mutable*/ 
+	Handle& m_handle;
 };
 
 NS_END_1

@@ -17,7 +17,8 @@ public:
 	getDisposable() const
 	{return m_disposable;}
 private:
-	mutable Disposable &m_disposable;
+	/*mutable*/ 
+	Disposable &m_disposable;
 };
 
 NS_END_1

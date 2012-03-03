@@ -42,13 +42,13 @@ class Handle
 		inline SQLRETURN setAttribute(SQLINTEGER attrb,SQLCHAR* array,SQLINTEGER len= SQL_NTS)
 		{return setAttribute(attrb,(SQLPOINTER)array,len);}
 		inline SQLRETURN setAttribute(SQLINTEGER attrb,SQLSMALLINT value)
-		{return setAttribute(attrb,(SQLPOINTER)value,SQL_IS_SMALLINT);}
+		{return setAttribute(attrb,reinterpret_cast<SQLPOINTER>(value),SQL_IS_SMALLINT);}
 		inline SQLRETURN setAttribute(SQLINTEGER attrb,SQLUSMALLINT value)
-		{return setAttribute(attrb,(SQLPOINTER)value,SQL_IS_USMALLINT);}
+		{return setAttribute(attrb,reinterpret_cast<SQLPOINTER>(value),SQL_IS_USMALLINT);}
 		inline SQLRETURN setAttribute(SQLINTEGER attrb,SQLINTEGER value)
-		{return setAttribute(attrb,(SQLPOINTER)value,SQL_IS_INTEGER);}
+		{return setAttribute(attrb,reinterpret_cast<SQLPOINTER>(value),SQL_IS_INTEGER);}
 		inline SQLRETURN setAttribute(SQLINTEGER attrb,SQLUINTEGER value)
-		{return setAttribute(attrb,(SQLPOINTER)value,SQL_IS_UINTEGER);}
+		{return setAttribute(attrb,reinterpret_cast<SQLPOINTER>(value),SQL_IS_UINTEGER);}
 
 		void checkError(SQLRETURN);
 
