@@ -55,7 +55,7 @@ set backspace=indent,eol,start
 set backup
 set diffexpr=MyDiff()
 set errorformat=%*[^\"]\"%f\"%*\\D%l:%c:\ %m,%*[^\"]\"%f\"%*\\D%l:\ %m,\"%f\"%*\\D%l:%c:\ %m,\"%f\"%*\\D%l:\ %m,%-G%f:%l:\ %trror:\ (Each\ undeclared\ identifier\ is\ reported\ only\ once,%-G%f:%l:\ %trror:\ for\ each\ function\ it\ appears\ in.),%f:%l:%c:\ %trror:\ %m,%f:%l:%c:\ %tarning:\ %m,%f:%l:%c:\ %m,%f:%l:\ %trror:\ %m,%f:%l:\ %tarning:\ %m,%f:%l:\ %m,\"%f\"\\,\ line\ %l%*\\D%c%*[^\ ]\ %m,%D%*\\a[%*\\d]:\ Entering\ directory\ `%f',%X%*\\a[%*\\d]:\ Leaving\ directory\ `%f',%D%*\\a:\ Entering\ directory\ `%f',%X%*\\a:\ Leaving\ directory\ `%f',%DMaking\ %*\\a\ in\ %f
-set guifont=Courier_New:h9
+set guifont=Courier_New:h10
 set helplang=Ch
 set history=50
 set hlsearch
@@ -71,12 +71,12 @@ set window=23
 let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
 let v:this_session=expand("<sfile>:p")
 silent only
-cd C:\MyProjects\cpp\odbclib
+cd d:\MyProjects\cpp\odbclib
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +29 src\main.cpp
+badd +21 src\main.cpp
 badd +304 uml.txt
 badd +74 src\cursor.cpp
 badd +22 include\statement.hpp
@@ -107,6 +107,10 @@ badd +44 include\component.hpp
 badd +1 src\component.cpp
 badd +33 Makefile
 badd +77 src\diaginfo.cpp
+badd +1 include\utils\utils.hpp
+badd +50 include\utils\event\event.implement
+badd +23 include\utils\event\event.template
+badd +1 include\utils\event\event.hpp
 silent! argdel *
 edit src\main.cpp
 set splitbelow splitright
@@ -217,12 +221,18 @@ setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
 silent! normal! zE
-let s:l = 29 - ((28 * winheight(0) + 28) / 57)
+53,80fold
+84,161fold
+53
+normal zc
+84
+normal zc
+let s:l = 21 - ((11 * winheight(0) + 12) / 24)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-29
-normal! 018l
+21
+normal! 01l
 tabnext 1
 if exists('s:wipebuf')
   silent exe 'bwipe ' . s:wipebuf

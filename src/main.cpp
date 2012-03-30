@@ -11,7 +11,7 @@ test_odbc()
 {
 	string const CONNSTR_MSACCESS =
 		"DRIVER={Driver do Microsoft Access (*.mdb)};"\
-		"DBQ=..\\data.mdb;"\
+		"DBQ=data.mdb;"\
 		"UID=admin;";
 	string const CONNSTR_MSSQL =
 		"DRIVER={SQL SERVER};"\

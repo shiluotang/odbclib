@@ -8,7 +8,7 @@
 #include <stdexcept>
 
 #define DEBUG
-#include "debug.hpp"
 #undef DEBUG
+#include "debug.hpp"
 
 #endif
