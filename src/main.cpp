@@ -18,6 +18,7 @@ test_odbc()
 		"SERVER=(local);"\
 		"DATABASE=test;"\
 		"UID=sa;PWD=123;";
+
 	string const QUERY0 = "select {fn to_date(id)} from \"SQL\"";
 	string const QUERY = "INSERT INTO [Students]([Name],[Age])"\
 			     " VALUES('sqg',27);";
