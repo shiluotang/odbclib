@@ -23,6 +23,7 @@ test_odbc()
 			     " VALUES('sqg',27);";
 	string const QUERY2 = "SELECT * FROM [Students];";
 	Environment env;
+
 	Connection conn(env);
 	Session s(conn,CONNSTR_MSACCESS);
 	Transaction tran(s);
