@@ -22,6 +22,7 @@ test_odbc()
 	string const QUERY = "INSERT INTO [Students]([Name],[Age])"\
 			     " VALUES('sqg',27);";
 	string const QUERY2 = "SELECT * FROM [Students];";
+
 	Environment env;
 	Connection conn(env);
 	Session s(conn,CONNSTR_MSACCESS);
