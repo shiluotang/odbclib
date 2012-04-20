@@ -4,7 +4,7 @@
 #include <sstream>
 
 using namespace std;
-using namespace odbclib::diags;
+using namespace odbclib::diagnostics;
 
 NS_BEGIN_1(odbclib)
 

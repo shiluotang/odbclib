@@ -7,7 +7,7 @@
 #include <iostream>
 using namespace std;
 using namespace odbclib;
-using namespace odbclib::handletypes;
+using namespace odbclib::handle;
 
 namespace
 {
@@ -68,13 +68,13 @@ Handle::getAttribute(SQLINTEGER attrb,SQLPOINTER array,SQLINTEGER len,SQLINTEGER
 	SQLRETURN (SQL_API *fp)(SQLHANDLE,SQLINTEGER,SQLPOINTER,SQLINTEGER,SQLINTEGER*) = 0;
 	switch(m_handleInfo.m_type)
 	{
-		case handletypes::Environment:
+		case handle::Environment:
 			fp = &SQLGetEnvAttr;
 			break;
-		case handletypes::Connection:
+		case handle::Connection:
 			fp = &SQLGetConnectAttr;
 			break;
-		case handletypes::Statement:
+		case handle::Statement:
 			fp = &SQLGetStmtAttr;
 			break;
 		default:
@@ -96,13 +96,13 @@ Handle::setAttribute(SQLINTEGER attrb,SQLPOINTER array,SQLINTEGER len)
 	SQLRETURN (SQL_API *fp)(SQLHANDLE,SQLINTEGER,SQLPOINTER,SQLINTEGER) = 0;
 	switch(m_handleInfo.m_type)
 	{
-		case handletypes::Environment:
+		case handle::Environment:
 			fp = &SQLSetEnvAttr;
 			break;
-		case handletypes::Connection:
+		case handle::Connection:
 			fp = &SQLSetConnectAttr;
 			break;
-		case handletypes::Statement:
+		case handle::Statement:
 			fp = &SQLSetStmtAttr;
 			break;
 		default:

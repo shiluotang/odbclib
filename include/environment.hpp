@@ -19,15 +19,13 @@ class Environment
 		void commit();
 		void rollback();
 		inline 
-		odbclib::environmentversions::EnvironmentVersion
+		environment::EnvironmentVersion
 		getVersion()const{return m_version;}
 	protected:
 		virtual void doDispose();
-		void setVersion(
-			odbclib::environmentversions::EnvironmentVersion);
+		void setVersion(environment::EnvironmentVersion);
 	private:
-		odbclib::environmentversions::EnvironmentVersion
-			m_version;
+		environment::EnvironmentVersion m_version;
 		Handle *m_handle;
 
 		friend class Connection;
