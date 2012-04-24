@@ -16,16 +16,16 @@ class Handle
 		HandleInfo(SQLSMALLINT type);
 		SQLHANDLE m_handle;
 		SQLSMALLINT m_type;
-	}; 
+	};
 
 	public:
 		explicit Handle(Handle*,
-			handletypes::HandleType);
+			handle::HandleType);
 		virtual ~Handle();
 
 		inline SQLHANDLE getHandle()const{return m_handleInfo.m_handle;}
-		inline handletypes::HandleType getType()const
-		{return static_cast<handletypes::HandleType>(m_handleInfo.m_type);}
+		inline handle::HandleType getType()const
+		{return static_cast<handle::HandleType>(m_handleInfo.m_type);}
 
 		SQLRETURN getAttribute(SQLINTEGER ,SQLPOINTER ,SQLINTEGER ,SQLINTEGER*);
 

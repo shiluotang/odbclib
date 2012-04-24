@@ -10,7 +10,7 @@ NS_BEGIN_1(odbclib)
 Statement::Statement(Session &session)
 try
 	:m_session_ref(session),
-	m_handle(new Handle(session.m_conn_ref.m_handle,handletypes::Statement)),
+	m_handle(new Handle(session.m_conn_ref.m_handle,handle::Statement)),
 	m_prepared(false),
 	m_cursor_ptr(0)
 {

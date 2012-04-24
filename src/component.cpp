@@ -3,7 +3,7 @@
 #include <iostream>
 
 using namespace std;
-using namespace odbclib::handletypes;
+using namespace odbclib::handle;
 
 NS_BEGIN_1(odbclib)
 

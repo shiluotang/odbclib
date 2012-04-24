@@ -11,7 +11,7 @@
 #define ENUM_ITEM_PAIR ENUM_OUTPUT_ITEM_PAIR
 #define ENUM_OUTPUT_DECL(E) 
 
-NS_BEGIN_2(odbclib,handletypes)
+NS_BEGIN_2(odbclib,handle)
 
 ENUM_BEGIN(HandleType)
 	ENUM_ITEM_PAIR(Null,0)
@@ -24,7 +24,7 @@ ENUM_OUTPUT_DECL(HandleType)
 
 NS_END_2
 
-NS_BEGIN_2(odbclib,diags)
+NS_BEGIN_2(odbclib,diagnostics)
 
 ENUM_BEGIN(DiagLevel)
 	ENUM_ITEM(Information)
@@ -35,7 +35,7 @@ ENUM_OUTPUT_DECL(DiagLevel)
 
 NS_END_2
 
-NS_BEGIN_2(odbclib,environmentversions)
+NS_BEGIN_2(odbclib,environment)
 
 ENUM_BEGIN(EnvironmentVersion)
 	ENUM_ITEM_PAIR(ODBC3,SQL_OV_ODBC3)
@@ -45,7 +45,7 @@ ENUM_OUTPUT_DECL(EnvironmentVersion)
 
 NS_END_2
 
-NS_BEGIN_2(odbclib,sqltypes)
+NS_BEGIN_2(odbclib,datatypes)
 //according to http://msdn.microsoft.com/en-us/library/ms710150(v=VS.85).aspx
 
 ENUM_BEGIN(OdbcSQLType)

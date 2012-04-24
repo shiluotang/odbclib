@@ -23,7 +23,7 @@ class ColumnMetaData
 		std::string const& 
 		getName()const{return m_name;}
 		inline
-		sqltypes::OdbcSQLType
+		datatypes::OdbcSQLType
 		getSqlType()const{return m_sqlType;}
 		inline
 		size_t 
@@ -37,7 +37,7 @@ class ColumnMetaData
 	private:
 		SQLUSMALLINT m_no;
 		std::string m_name;
-		sqltypes::OdbcSQLType m_sqlType;
+		datatypes::OdbcSQLType m_sqlType;
 		SQLULEN m_size;
 		SQLSMALLINT m_decimalDigits;
 		SQLSMALLINT m_nullable;

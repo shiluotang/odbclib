@@ -9,7 +9,7 @@ NS_BEGIN_1(odbclib)
 Connection::Connection(Environment &env)
 try	:m_env_ref(env),
 	m_handle(new Handle(env.m_handle,
-			odbclib::handletypes::Connection)),
+			odbclib::handle::Connection)),
 	m_session_ptr(0)
 {
 	DEBUG_INIT("Connection");

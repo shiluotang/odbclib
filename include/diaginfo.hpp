@@ -25,7 +25,7 @@ class DiagInfo
 		DiagInfo(SQLCHAR const*,
 			SQLINTEGER,
 			SQLCHAR const*,
-			odbclib::diags::DiagLevel);
+			diagnostics::DiagLevel);
 		inline 
 		SQLCHAR const* 
 		getState() const{return m_state;}
@@ -36,7 +36,7 @@ class DiagInfo
 		SQLINTEGER 
 		getNativeErrorCode()const{return m_nativeErrorCode;}
 		inline
-		odbclib::diags::DiagLevel
+		diagnostics::DiagLevel
 		getLevel() const{return m_level;}
 		std::string toString() const;
 
@@ -46,7 +46,7 @@ class DiagInfo
 		SQLCHAR m_state[7];
 		SQLINTEGER m_nativeErrorCode;
 		SQLCHAR m_message[0x1 << 10];
-		odbclib::diags::DiagLevel m_level;
+		diagnostics::DiagLevel m_level;
 
 	friend std::ostream& operator<<(std::ostream&,
 			DiagInfo const&);

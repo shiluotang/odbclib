@@ -3,13 +3,13 @@
 #include <iostream>
 using namespace std;
 using namespace odbclib;
-using namespace odbclib::environmentversions;
+using namespace odbclib::environment;
 
 NS_BEGIN_1(odbclib)
 
 Environment::Environment()
 try
-	:m_handle(new Handle(0,odbclib::handletypes::Environment))
+	:m_handle(new Handle(0,odbclib::handle::Environment))
 {
 	DEBUG_INIT("Environment");
 	setVersion(ODBC3);
