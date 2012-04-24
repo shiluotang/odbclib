@@ -29,9 +29,7 @@ test_odbc()
 	Transaction tran(s);
 	Statement stmt(s);
 	cout << "native sql statement is:" << endl
-		<< conn.nativeSQL(QUERY0) << endl
-		<< conn.nativeSQL(QUERY) << endl
-		<< conn.nativeSQL(QUERY2) << endl;
+		<< conn.nativeSQL(QUERY0) << endl;
 	cout << "cursor type: " << stmt.getCursorType() << endl;
 	try
 	{
