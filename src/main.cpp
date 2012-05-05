@@ -28,7 +28,8 @@ test_odbc()
 	Session s(conn,CONNSTR_MSACCESS);
 	Transaction tran(s);
 	Statement stmt(s);
-	cout << "native sql statement is:" << endl
+	cout << "current catalog is: " << s.getCurrentCatalog() << endl;
+	cout << "native sql statement is: " << endl
 		<< conn.nativeSQL(QUERY0) << endl;
 	cout << "cursor type: " << stmt.getCursorType() << endl;
 	try
@@ -42,9 +43,9 @@ test_odbc()
 	{
 		cerr << error.what() << endl;
 	}
-	stmt.execute(QUERY);
+	//stmt.execute(QUERY);
 	cout << "has resultset: " << stmt.hasResultSet() << endl;
-	stmt.execute(QUERY2);
+	//stmt.execute(QUERY2);
 	tran.rollback();
 }
 
