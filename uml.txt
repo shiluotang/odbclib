@@ -504,4 +504,3 @@ struct memory_t
 - m_cursor : Cursor&
 -------------------------------
 
-
