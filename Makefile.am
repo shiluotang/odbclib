@@ -4,6 +4,7 @@ lib_LTLIBRARIES = libodbclib.la
 libodbclib_la_SOURCES = ./src/columnmetadata.cpp ./src/component.cpp ./src/connection.cpp ./src/cursor.cpp ./src/debug.cpp ./src/decimal.cpp ./src/diaginfo.cpp ./src/diaginfoeventargs.cpp ./src/environment.cpp ./src/guid.cpp ./src/handle.cpp ./src/nullable.cpp ./src/resultset.cpp ./src/resultsetmetadata.cpp ./src/session.cpp ./src/statement.cpp ./src/transaction.cpp ./src/types.cpp
 libodbclib_la_LDFLAGS = -lodbc32 -no-undefined
 
-noinst_PROGRAMS = odbclib
-odbclib_SOURCES = ./src/main.cpp
-odbclib_LDADD = libodbclib.la
+noinst_PROGRAMS = test1
+test1_SOURCES = ./test/test1.cpp
+test1_LDFLAGS	= -all-static
+test1_LDADD = libodbclib.la
