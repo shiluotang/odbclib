@@ -11,4 +11,16 @@ ResultSet::ResultSet(Cursor &cursor)
 
 }
 
+bool
+ResultSet::next(){return true;}
+
+bool
+ResultSet::previous(){return true;}
+
+bool
+ResultSet::first(){return true;}
+
+bool
+ResultSet::last(){return true;}
+
 NS_END_1

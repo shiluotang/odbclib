@@ -34,7 +34,8 @@ catch(...)
 	throw;
 }
 
-Session::Session(Connection& conn,string const& serverName,
+Session::Session(Connection& conn,
+		string const& serverName,
 		string const& userName,
 		string const& authentication)
 try
