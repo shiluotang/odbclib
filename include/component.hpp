@@ -19,17 +19,17 @@ class Component:
 		virtual void doDispose() = 0;
 
 		inline void 
-		addDisposingListener(DisposeListener &l)
-		{m_disposingEvent.addListener(l);}
+		addDisposingListener(DisposeListener &listener)
+		{m_disposingEvent.addListener(listener);}
 		inline void
-		addDisposedListener(DisposeListener &l)
-		{m_disposingEvent.addListener(l);}
+		addDisposedListener(DisposeListener &listener)
+		{m_disposingEvent.addListener(listener);}
 		inline void
-		removeDisposingListener(DisposeListener &l)
-		{m_disposingEvent.removeListener(l);}
+		removeDisposingListener(DisposeListener &listener)
+		{m_disposingEvent.removeListener(listener);}
 		inline void
-		removeDisposedListener(DisposeListener &l)
-		{m_disposedEvent.removeListener(l);}
+		removeDisposedListener(DisposeListener &listener)
+		{m_disposedEvent.removeListener(listener);}
 
 		virtual void
 		onEvent(DisposeEvent &,DisposeEventArgs const&);
