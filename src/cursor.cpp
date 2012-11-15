@@ -94,7 +94,7 @@ bool Cursor::fetchBookmark(){return fetch(Bookmark,0);}
 SQLLEN
 Cursor::getRowNumber()
 {
-	SQLLEN rowno = 0;
+	SQLUINTEGER rowno = 0;
 	SQLRETURN ret = m_stmt_ref.m_handle->getAttribute(
 			SQL_ATTR_ROW_NUMBER,
 			rowno);

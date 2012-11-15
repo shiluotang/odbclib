@@ -1,6 +1,7 @@
 #include "../include/handle.hpp"
 #include "../include/diaginfo.hpp"
 
+#include <cstring>
 #include <sstream>
 
 using namespace std;

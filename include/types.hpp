@@ -4,7 +4,9 @@
 #include "config.hpp"
 #include "macros.hpp"
 
+#if defined (_WIN32)
 #include <windows.h>
+#endif
 #include <odbcinst.h>
 #include <sql.h>
 #include <sqlext.h>
