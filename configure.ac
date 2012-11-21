@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.68])
+AC_PREREQ([2.67])
 AC_INIT([odbclib],[1.0],[http://sourceforge.net/p/odbclib])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 LT_INIT
