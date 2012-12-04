@@ -2,6 +2,7 @@
 
 #include <cstdlib>
 #include <iostream>
+#include <cstring>
 
 using namespace std;
 using namespace odbclib;
