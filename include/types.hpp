@@ -1,5 +1,5 @@
-#ifndef ODBCLIB_TYPES_H_INCLUDED
-#define ODBCLIB_TYPES_H_INCLUDED
+#ifndef ODBCLIB_TYPES_HPP_INCLUDED
+#define ODBCLIB_TYPES_HPP_INCLUDED
 
 #include "config.hpp"
 #include "macros.hpp"
