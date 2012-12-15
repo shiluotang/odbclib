@@ -33,4 +33,15 @@
 
 #define ENUM_OUTPUT_DECL(ENUM_TYPE) extern std::ostream& operator<<(std::ostream&,ENUM_TYPE);
 
+#define OS_UNIX 0
+#define OS_LINUX 1
+#define OS_WINDOWS 2
+#define OS_MAC 2
+
+#if defined(_MSVER_) || defined(_MINGW32_) || defined(_MINGW64_) || defined(_WIN32)
+#define OS_TYPE OS_WINDOWS
+#else
+#define OS_TYPE OS_LINUX
+#endif
+
 #endif
