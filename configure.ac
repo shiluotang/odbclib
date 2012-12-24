@@ -3,7 +3,7 @@
 
 AC_PREREQ([2.67])
 AC_INIT([odbclib],[1.0],[http://sourceforge.net/p/odbclib])
-AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 LT_INIT
 
 AC_CONFIG_SRCDIR([include/odbclib.hpp])

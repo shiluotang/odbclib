@@ -25,10 +25,10 @@ noinst_HEADERS = \
 ./include/nullable.hpp \
 ./include/resultset.hpp \
 ./include/config.hpp \
-./include/utils/event/eventlistener.template \
-./include/utils/event/event.template \
-./include/utils/event/event.implement \
-./include/utils/event/eventlistener.implement
+./include/utils/event/eventlistener.hdr.tcc \
+./include/utils/event/event.hdr.tcc \
+./include/utils/event/event.src.tcc \
+./include/utils/event/eventlistener.src.tcc
 
 lib_LTLIBRARIES = libodbclib.la
 libodbclib_la_SOURCES = \
