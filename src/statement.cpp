@@ -1,7 +1,7 @@
-#include "../include/connection.hpp"
-#include "../include/session.hpp"
-#include "../include/statement.hpp"
-#include "../include/cursor.hpp"
+#include "connection.hpp"
+#include "session.hpp"
+#include "statement.hpp"
+#include "cursor.hpp"
 
 using namespace std;
 

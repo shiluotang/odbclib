@@ -1,5 +1,5 @@
-#include "../include/cursor.hpp"
-#include "../include/resultset.hpp"
+#include "cursor.hpp"
+#include "resultset.hpp"
 
 using namespace std;
 

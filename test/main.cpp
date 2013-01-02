@@ -1,4 +1,4 @@
-#include "../include/odbclib.hpp"
+#include "../src/odbclib.hpp"
 
 #include <cstdlib>
 #include <iostream>

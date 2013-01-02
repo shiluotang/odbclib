@@ -1,6 +1,6 @@
-#include "../include/connection.hpp"
-#include "../include/session.hpp"
-#include "../include/transaction.hpp"
+#include "connection.hpp"
+#include "session.hpp"
+#include "transaction.hpp"
 
 using namespace odbclib;
 

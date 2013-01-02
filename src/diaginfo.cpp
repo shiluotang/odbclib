@@ -1,5 +1,5 @@
-#include "../include/handle.hpp"
-#include "../include/diaginfo.hpp"
+#include "handle.hpp"
+#include "diaginfo.hpp"
 
 #include <cstring>
 #include <sstream>

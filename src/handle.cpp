@@ -1,9 +1,9 @@
-#include "../include/diaginfoeventargs.hpp"
-#include "../include/diaginfo.hpp"
-#include "../include/handle.hpp"
+#include "diaginfoeventargs.hpp"
+#include "diaginfo.hpp"
+#include "handle.hpp"
 
 
-#include "../include/utils/utils.hpp"
+#include "utils/utils.hpp"
 #include <iostream>
 using namespace std;
 using namespace odbclib;

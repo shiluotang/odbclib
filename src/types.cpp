@@ -1,4 +1,4 @@
-#include "../include/types.hpp"
+#include "types.hpp"
 
 #undef ENUM_BEGIN
 #undef ENUM_END

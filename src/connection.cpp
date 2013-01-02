@@ -1,5 +1,5 @@
-#include "../include/environment.hpp"
-#include "../include/connection.hpp"
+#include "environment.hpp"
+#include "connection.hpp"
 
 #include <iostream>
 using namespace std;

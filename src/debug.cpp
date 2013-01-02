@@ -1,4 +1,4 @@
-#include "../include/debug.hpp"
+#include "debug.hpp"
 #include <iostream>
 
 using namespace std;

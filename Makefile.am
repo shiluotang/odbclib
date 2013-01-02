@@ -1,34 +1,34 @@
 noinst_HEADERS = \
-./include/disposeeventargs.hpp \
-./include/macros.hpp \
-./include/debug.hpp \
-./include/resultsetmetadata.hpp \
-./include/odbclib.hpp \
-./include/decimal.hpp \
-./include/cursor.hpp \
-./include/columnmetadata.hpp \
-./include/component.hpp \
-./include/transaction.hpp \
-./include/disposable.hpp \
-./include/statement.hpp \
-./include/handle.hpp \
-./include/types.hpp \
-./include/environment.hpp \
-./include/utils/utils.hpp \
-./include/utils/event/eventlistener.hpp \
-./include/utils/event/event.hpp \
-./include/guid.hpp \
-./include/diaginfo.hpp \
-./include/connection.hpp \
-./include/diaginfoeventargs.hpp \
-./include/session.hpp \
-./include/nullable.hpp \
-./include/resultset.hpp \
-./include/config.hpp \
-./include/utils/event/eventlistener.hdr.tcc \
-./include/utils/event/event.hdr.tcc \
-./include/utils/event/event.src.tcc \
-./include/utils/event/eventlistener.src.tcc
+./src/debug.hpp \
+./src/connection.hpp \
+./src/session.hpp \
+./src/statement.hpp \
+./src/disposable.hpp \
+./src/cursor.hpp \
+./src/types.hpp \
+./src/guid.hpp \
+./src/columnmetadata.hpp \
+./src/disposeeventargs.hpp \
+./src/handle.hpp \
+./src/diaginfo.hpp \
+./src/config.hpp \
+./src/resultsetmetadata.hpp \
+./src/utils/utils.hpp \
+./src/utils/event/eventlistener.hpp \
+./src/utils/event/event.hpp \
+./src/transaction.hpp \
+./src/nullable.hpp \
+./src/diaginfoeventargs.hpp \
+./src/decimal.hpp \
+./src/odbclib.hpp \
+./src/macros.hpp \
+./src/component.hpp \
+./src/environment.hpp \
+./src/resultset.hpp \
+./src/utils/event/event.src.tcc \
+./src/utils/event/event.hdr.tcc \
+./src/utils/event/eventlistener.hdr.tcc \
+./src/utils/event/eventlistener.src.tcc
 
 lib_LTLIBRARIES = libodbclib.la
 libodbclib_la_SOURCES = \

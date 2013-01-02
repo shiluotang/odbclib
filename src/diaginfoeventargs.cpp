@@ -1,4 +1,4 @@
-#include "../include/diaginfoeventargs.hpp"
+#include "diaginfoeventargs.hpp"
 
 NS_BEGIN_1(odbclib)
 

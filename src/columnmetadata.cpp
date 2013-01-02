@@ -1,4 +1,4 @@
-#include "../include/columnmetadata.hpp"
+#include "columnmetadata.hpp"
 
 NS_BEGIN_1(odbclib)
 
