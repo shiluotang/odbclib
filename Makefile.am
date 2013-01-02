@@ -54,6 +54,6 @@ libodbclib_la_SOURCES = \
 libodbclib_la_LDFLAGS = -lodbc32 -no-undefined
 
 noinst_PROGRAMS = test1
-test1_SOURCES = ./test/test1.cpp
+test1_SOURCES = ./test/main.cpp
 test1_LDFLAGS	= -all-static
 test1_LDADD = libodbclib.la
