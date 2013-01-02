@@ -1,6 +1,8 @@
 #ifndef ODBCLIB_CONFIG_HPP_INCLUDED
 #define ODBCLIB_CONFIG_HPP_INCLUDED
 
+#include "macros.hpp"
+
 #if OS_TYPE == OS_WINDOWS
 #include <windows.h>
 #include <odbcinst.h>
