@@ -1,47 +1,43 @@
-#ifndef ODBCLIB_CONNECTION_HPP_INCLUDED
-#define ODBCLIB_CONNECTION_HPP_INCLUDED
+#ifndef ODBCXX_CONNECTION_HPP_INCLUDED
+#define ODBCXX_CONNECTION_HPP_INCLUDED
 
-#include "config.hpp"
-#include "macros.hpp"
-#include "types.hpp"
+#include "handle_object.hpp"
 
-#include "component.hpp"
-#include <string>
+namespace odbcxx {
 
-NS_BEGIN_1(odbclib)
+	class environment;
+	class session;
+	class connection : public handle_object {
+		public:
+			connection();
+			session& connect(session &s,
+					char const*, 
+					char const*, 
+					char const*);
+			/**
+			 * output connection string is eliminated.
+			 */
+			session& driver_connect(session& s,
+					char const*, 
+					SQLUSMALLINT = SQL_DRIVER_NOPROMPT,
+					SQLHWND = 0);
+			/**
+			 * output connection string is eliminated.
+			 */
+			session& browse_connect(session&, char const*);
+		protected:
+			inline SQLRETURN disconnect()
+			{ 
+				if(*this)
+					return m_handle.check_error(SQLDisconnect(m_handle.raw())); 
+				return SQL_SUCCESS;
+			}
 
-class Environment;
-class Session;
-class Connection
-	:public Component
-{
-	public:
-		explicit Connection(Environment &);
-		virtual ~Connection();
+			friend class environment;
+			friend class session;
+			friend class statement;
+	};
 
-		bool getAutocommit();
-		void setAutocommit(bool);
-		size_t getLoginTimeout();
-		void setLoginTimeout(size_t);
-		void setConnectTimeout(size_t);		
-		void setCurrentCatalog(std::string const&);
-		std::string nativeSQL(std::string const&);
-	protected:
-		SQLRETURN getInfo(SQLUSMALLINT,SQLPOINTER,SQLSMALLINT,SQLSMALLINT*);
-		SQLRETURN getInfo(SQLUSMALLINT,SQLUSMALLINT&);
-		SQLRETURN getInfo(SQLUSMALLINT,SQLUINTEGER&);
-	protected:
-		virtual void doDispose();
-	private:
-		Environment 	&m_env_ref;
-		Handle 		*m_handle;
-		Session 	*m_session_ptr;
+}
 
-		friend class Session;
-		friend class Transaction;
-		friend class Statement;
-};
-
-NS_END_1
-
-#endif
+#endif //ODBCXX_CONNECTION_HPP_INCLUDED

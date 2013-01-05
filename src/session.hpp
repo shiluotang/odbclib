@@ -1,50 +1,31 @@
-#ifndef ODBCLIB_SESSION_HPP_INCLUDED
-#define ODBCLIB_SESSION_HPP_INCLUDED
+#ifndef ODBCXX_SESSION_HPP_INCLUDED
+#define ODBCXX_SESSION_HPP_INCLUDED
 
 #include "config.hpp"
-#include "macros.hpp"
-#include "component.hpp"
 
-NS_BEGIN_1(odbclib)
+namespace odbcxx {
 
-class Connection;
-class Transaction;
-class Session:
-	protected Component
-{
-	public:
-		Session(Connection &,std::string const&);
-		Session(Connection& ,
-			std::string const&,
-			std::string const&,
-			std::string const&);
-		virtual ~Session();
-		inline Connection& getConnection()const{return m_conn_ref;}
-		cursor::CursorBehavior getCursorBehavior(bool);
-		size_t getConnectTimeout();
-		std::string getCurrentCatalog();
-		void commit();
-		void rollback();
-		
-		inline
-		std::string const&
-		getOpenedConnectionString() const
-		{return m_opened_connectionString;}
+	class connection;
+	class statement;
+	class session {
+		public:
+			explicit session();
+			~session();
+			inline operator bool() const
+			{ return m_conn_ptr != 0; }
+			session& close();
+			inline SQLCHAR const* connstr() const
+			{ return &m_buf[0]; }
 
-	protected:
-		virtual void doDispose();
+			statement& alloc(statement&);
+		private:
+			connection *m_conn_ptr;
+			SQLCHAR m_buf[0x1 << 10];
 
-	private:
-		Connection& m_conn_ref;
-		std::string m_opened_connectionString;
-		Transaction *m_tran_ptr;
+			friend class connection;
+			friend class statement;
+	};
 
-		friend class Connection;
-		friend class Transaction;
-		friend class Statement;		
-		friend class Cursor;
-};	
+}
 
-NS_END_1
-
-#endif //SESSION_HPP_INCLUDED
+#endif //ODBCXX_SESSION_HPP_INCLUDED

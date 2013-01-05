@@ -1,128 +1,63 @@
-#include "environment.hpp"
 #include "connection.hpp"
+#include "environment.hpp"
+#include "session.hpp"
 
-#include <iostream>
 using namespace std;
 
-NS_BEGIN_1(odbclib)
+namespace odbcxx {
 
-Connection::Connection(Environment &env)
-try	:m_env_ref(env),
-	m_handle(new Handle(env.m_handle,
-			odbclib::handle::Connection)),
-	m_session_ptr(0)
-{
-	DEBUG_INIT("Connection");
-	env.addDisposingListener(*this);
-}
-catch(...)
-{
-	doDispose();
-	throw;
-}
+	connection::connection() {}
 
-Connection::~Connection()
-{
-	DEBUG_RELEASE("Connection");
-	dispose();
-}
+	session& connection::connect(session& s,
+			char const* server_name, 
+			char const *user_name,
+			char const *authentication) {
+		SQLRETURN ret = m_handle.check_error(SQLConnect(m_handle.raw(),
+			reinterpret_cast<SQLCHAR*>(const_cast<char*>(server_name)),
+			SQL_NTS,
+			reinterpret_cast<SQLCHAR*>(const_cast<char*>(server_name)),
+			SQL_NTS,
+			reinterpret_cast<SQLCHAR*>(const_cast<char*>(server_name)),
+			SQL_NTS));
+		if(SQL_SUCCEEDED(ret))
+			s.m_conn_ptr = this;
+		return s;
+	}
 
-void
-Connection::doDispose()
-{
-	delete m_handle;
-	m_handle = 0;
-}
+	session& connection::driver_connect(session &s,
+			char const * in_connstr,
+			SQLUSMALLINT driver_completion,
+			SQLHWND hwnd) {
+		SQLSMALLINT len;
+		SQLRETURN ret = m_handle.check_error(SQLDriverConnect(
+			m_handle.raw(),
+			hwnd,
+			reinterpret_cast<SQLCHAR*>(const_cast<char*>(in_connstr)),
+			SQL_NTS,
+			&s.m_buf[0],
+			countof(s.m_buf),
+			&len,
+			driver_completion));
+		s.m_buf[countof(s.m_buf) - 1] = 0;
+		if(SQL_SUCCEEDED(ret))
+			s.m_conn_ptr = this;
+		return s;
+	}
 
-void 
-Connection::setAutocommit(bool autocommit)
-{
-	SQLRETURN ret = m_handle->setAttribute(
-		SQL_ATTR_AUTOCOMMIT,
-		static_cast<SQLSMALLINT>(autocommit ? 
-			SQL_AUTOCOMMIT_ON : SQL_AUTOCOMMIT_OFF));
-	m_handle->checkError(ret);
+	session& connection::browse_connect(session &s,
+			char const* in_connstr) 
+	{
+		SQLSMALLINT len;
+		SQLRETURN ret = m_handle.check_error(SQLBrowseConnect(
+			m_handle.raw(),
+			reinterpret_cast<SQLCHAR*>(const_cast<char*>(in_connstr)),
+			SQL_NTS,
+			&s.m_buf[0],
+			countof(s.m_buf),
+			&len));
+		s.m_buf[countof(s.m_buf) - 1] = 0;
+		if(SQL_SUCCEEDED(ret))
+			s.m_conn_ptr = this;
+		return s;
+	}
 }
-
-bool
-Connection::getAutocommit()
-{
-	SQLUINTEGER ac = 0;
-	SQLRETURN ret = m_handle->getAttribute(
-		SQL_ATTR_AUTOCOMMIT,
-		ac);
-	m_handle->checkError(ret);
-	return ac == SQL_AUTOCOMMIT_ON;
-}
-
-size_t 
-Connection::getLoginTimeout()
-{
-	SQLUINTEGER timeout = 0u;
-	SQLRETURN ret = m_handle->getAttribute(
-			SQL_ATTR_LOGIN_TIMEOUT,
-			timeout);
-	m_handle->checkError(ret);
-	return timeout;
-}
-void 
-Connection::setLoginTimeout(size_t timeout)
-{
-	SQLRETURN ret = m_handle->setAttribute(
-			SQL_ATTR_LOGIN_TIMEOUT,
-			static_cast<SQLUINTEGER>(timeout));
-	m_handle->checkError(ret);
-}
-
-void 
-Connection::setConnectTimeout(size_t timeout)
-{
-	SQLRETURN ret = m_handle->setAttribute(
-			SQL_ATTR_CONNECTION_TIMEOUT,
-			static_cast<SQLUINTEGER>(timeout));
-	m_handle->checkError(ret);
-}
-		
-SQLRETURN
-Connection::getInfo(SQLUSMALLINT infoType,
-		SQLPOINTER infoValuePtr,
-		SQLSMALLINT bufferLen,
-		SQLSMALLINT* strLenPtr)
-{
-	SQLRETURN ret = SQLGetInfo(m_handle->getHandle(),
-			infoType,
-			infoValuePtr,bufferLen,
-			strLenPtr);
-	return ret;
-}
-
-SQLRETURN
-Connection::getInfo(SQLUSMALLINT infoType,SQLUSMALLINT& value)
-{return getInfo(infoType,(SQLPOINTER)&value,sizeof(SQLUSMALLINT),0);}
-
-SQLRETURN 
-Connection::getInfo(SQLUSMALLINT infoType,SQLUINTEGER& value)
-{return getInfo(infoType,(SQLPOINTER)&value,sizeof(SQLUINTEGER),0);}
-
-string
-Connection::nativeSQL(string const& sql)
-{
-	SQLCHAR outSQL[0x1 << 10] = {0};
-	SQLINTEGER len = 0;
-	SQLRETURN ret = SQLNativeSql(m_handle->getHandle(),
-		reinterpret_cast<SQLCHAR*>(const_cast<char*>(sql.c_str())),SQL_NTS,
-		outSQL,sizeof(outSQL),&len);
-	m_handle->checkError(ret);
-	return string(reinterpret_cast<char*>(outSQL));
-}
-
-void
-Connection::setCurrentCatalog(string const& catalogName)
-{
-	SQLRETURN ret = m_handle->setAttribute(
-			SQL_ATTR_CURRENT_CATALOG,
-			reinterpret_cast<SQLCHAR*>(const_cast<char*>(catalogName.c_str())));
-	m_handle->checkError(ret);
-}
-
-NS_END_1

@@ -1,25 +1,29 @@
-#ifndef ODBCLIB_CONFIG_HPP_INCLUDED
-#define ODBCLIB_CONFIG_HPP_INCLUDED
+#ifndef ODBCXX_MACROS_HPP_INCLUDED
+#define ODBCXX_MACROS_HPP_INCLUDED
 
-#include "macros.hpp"
+#define OS_UNIX 0
+#define OS_LINUX 1
+#define OS_WINDOWS 2
+
+#undef OS_TYPE
+
+#if defined (_WIN32) && defined(_MINGW32_) || defined(_WIN32) && defined(_MINGW64_) || defined(_WIN32) && defined(_MSC_VER)
+#define OS_TYPE OS_WINDOWS
+#else
+#define OS_TYPE OS_LINUX
+#endif
 
 #if OS_TYPE == OS_WINDOWS
 #include <windows.h>
 #include <odbcinst.h>
-#elif OS_TYPE == OS_LINUX || OS_TYPE == OS_UNIX
+#else
 #include <odbcinst.h>
-#elif OS_TYPE == OS_MAC
-#error mac is not supported yet!
 #endif
 
-//disable cl.exe warning about throw
-#ifdef _MSC_VER
-#pragma warning( disable : 4290 )
-#endif
-#include <stdexcept>
+#include <sql.h>
+#include <sqlucode.h>
+#include <sqlext.h>
 
-#define DEBUG
-#undef DEBUG
-#include "debug.hpp"
+#include "utils.hpp"
 
-#endif
+#endif //ODBCXX_MACROS_HPP_INCLUDED

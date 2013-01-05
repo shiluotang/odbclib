@@ -1,36 +1,27 @@
-#ifndef ODBCLIB_ENVIRONMENT_HPP_INCLUDED
-#define ODBCLIB_ENVIRONMENT_HPP_INCLUDED
+#ifndef ODBCXX_ENVIRONMENT_HPP_INCLUDED
+#define ODBCXX_ENVIRONMENT_HPP_INCLUDED
 
-#include "config.hpp"
-#include "macros.hpp"
-#include "types.hpp"
+#include "handle_object.hpp"
 
-#include "component.hpp"
+namespace odbcxx {
 
-NS_BEGIN_1(odbclib)
+	class connection;
+	class environment : public handle_object {
+		public:
+			enum version { 
+				OV2 = SQL_OV_ODBC2, 
+				OV3 = SQL_OV_ODBC2 
+			};
+		public:
+			environment(version = OV3);
+			void set_version(version) const;
+			virtual ~environment() {}
 
-class Environment
-	:protected Component
-{
-	public:
-		Environment();
-		virtual ~Environment();
+			connection& alloc(connection&);
 
-		void commit();
-		void rollback();
-		inline 
-		environment::EnvironmentVersion
-		getVersion()const{return m_version;}
-	protected:
-		virtual void doDispose();
-		void setVersion(environment::EnvironmentVersion);
-	private:
-		environment::EnvironmentVersion m_version;
-		Handle *m_handle;
+			friend class connection;
+	};
 
-		friend class Connection;
-};
+}
 
-NS_END_1
-
-#endif
+#endif //ODBCXX_ENVIRONMENT_HPP_INCLUDED

@@ -1,9 +1,6 @@
-#include "resultset.hpp"
+#include "descriptor.hpp"
 
 using namespace std;
 
 namespace odbcxx {
-
-	
-
 }

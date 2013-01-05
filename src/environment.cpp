@@ -1,63 +1,23 @@
 #include "environment.hpp"
+#include "connection.hpp"
 
-#include <iostream>
 using namespace std;
-using namespace odbclib;
-using namespace odbclib::environment;
 
-NS_BEGIN_1(odbclib)
+namespace odbcxx {
 
-Environment::Environment()
-try
-	:m_handle(new Handle(0,odbclib::handle::Environment))
-{
-	DEBUG_INIT("Environment");
-	setVersion(ODBC3);
+	environment::environment(environment::version ver) {
+		this->m_handle = handle::null.alloc(handle::ENV);
+		set_version(ver);
+	}
+
+	void environment::set_version(environment::version ver) const {
+		SQLINTEGER v = static_cast<SQLINTEGER>(ver);
+		this->m_handle.set_attrb(SQL_ATTR_ODBC_VERSION, v);
+	}
+
+	connection& environment::alloc(connection& conn) {
+		if(*this)
+			conn.m_handle = this->m_handle.alloc(handle::DBC);
+		return conn;
+	}
 }
-catch(...)
-{
-	doDispose();
-	throw;
-}
-
-Environment::~Environment()
-{
-	DEBUG_RELEASE("Environment");
-	dispose();
-}
-
-void
-Environment::setVersion(EnvironmentVersion version)
-{
-	SQLUINTEGER ver = //static_cast<SQLUINTEGER>(4UL);
-		static_cast<SQLUINTEGER>(version);
-	SQLRETURN ret = m_handle->setAttribute(SQL_ATTR_ODBC_VERSION,ver);
-	m_handle->checkError(ret);
-	m_version = version;
-}
-
-void
-Environment::doDispose()
-{
-	delete m_handle;
-	m_handle = 0;
-}
-
-void
-Environment::commit()
-{
-	SQLRETURN ret = SQLEndTran(m_handle->getType(),
-		m_handle->getHandle(),SQL_COMMIT);
-	m_handle->checkError(ret);
-}
-
-void
-Environment::rollback()
-{
-	SQLRETURN ret = SQLEndTran(m_handle->getType(),
-		m_handle->getHandle(),SQL_ROLLBACK);
-	m_handle->checkError(ret);
-}
-
-NS_END_1
-
