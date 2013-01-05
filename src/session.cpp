@@ -22,9 +22,9 @@ namespace odbcxx {
 		return *this;
 	}
 
-	statement& session::alloc(statement& s) {
+	statement& session::alloc(statement& stmt) {
 		if(*this)
-			s.m_handle = m_conn_ptr->m_handle.alloc(handle::STMT);
-		return s;
+			stmt.m_handle = m_conn_ptr->m_handle.alloc(handle::STMT);
+		return stmt;
 	}
 }

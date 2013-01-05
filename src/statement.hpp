@@ -8,9 +8,9 @@ namespace odbcxx {
 	class resultset;
 	class statement : public handle_object {
 		public:
-			statement& prepare(char const*);
-			resultset& execute(resultset&, char const*);
-			resultset& execute(resultset&);
+			void prepare(char const*);
+			void execute(char const*);
+			void execute();
 		private:
 			friend class session;
 	};

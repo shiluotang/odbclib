@@ -10,7 +10,7 @@ namespace odbcxx {
 		set_version(ver);
 	}
 
-	void environment::set_version(environment::version ver) const {
+	void environment::set_version(environment::version ver) {
 		SQLINTEGER v = static_cast<SQLINTEGER>(ver);
 		this->m_handle.set_attrb(SQL_ATTR_ODBC_VERSION, v);
 	}

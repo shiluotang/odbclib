@@ -26,12 +26,7 @@ namespace odbcxx {
 			 */
 			session& browse_connect(session&, char const*);
 		protected:
-			inline SQLRETURN disconnect()
-			{ 
-				if(*this)
-					return m_handle.check_error(SQLDisconnect(m_handle.raw())); 
-				return SQL_SUCCESS;
-			}
+			SQLRETURN disconnect();
 
 			friend class environment;
 			friend class session;

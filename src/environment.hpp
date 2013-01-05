@@ -10,11 +10,11 @@ namespace odbcxx {
 		public:
 			enum version { 
 				OV2 = SQL_OV_ODBC2, 
-				OV3 = SQL_OV_ODBC2 
+				OV3 = SQL_OV_ODBC3
 			};
 		public:
 			environment(version = OV3);
-			void set_version(version) const;
+			void set_version(version);
 			virtual ~environment() {}
 
 			connection& alloc(connection&);

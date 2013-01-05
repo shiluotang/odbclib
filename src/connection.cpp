@@ -60,4 +60,10 @@ namespace odbcxx {
 			s.m_conn_ptr = this;
 		return s;
 	}
+
+	SQLRETURN connection::disconnect() {
+		if(*this)
+			return m_handle.check_error(SQLDisconnect(m_handle.raw())); 
+		return SQL_SUCCESS;
+	}
 }

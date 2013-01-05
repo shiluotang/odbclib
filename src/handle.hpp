@@ -31,42 +31,42 @@ namespace odbcxx {
 			inline bool operator != (handle const& other) const
 			{ return !(*this == other); }
 
-			SQLRETURN get_attribute(SQLINTEGER, SQLPOINTER, SQLINTEGER, SQLINTEGER*) const;
-			SQLRETURN set_attribute(SQLINTEGER, SQLPOINTER, SQLINTEGER) const;
+			SQLRETURN get_attribute(SQLINTEGER, SQLPOINTER, SQLINTEGER, SQLINTEGER*);
+			SQLRETURN set_attribute(SQLINTEGER, SQLPOINTER, SQLINTEGER);
 
 			inline SQLHANDLE const raw() const { return m_handle; }
 			inline SQLSMALLINT const type() const { return m_type; }
 
-			handle alloc(handle_type) const;
-			SQLRETURN close() const;
+			handle alloc(handle_type);
+			SQLRETURN close();
 
-			inline SQLRETURN get_attrb(SQLINTEGER a, SQLSMALLINT &v) const
+			inline SQLRETURN get_attrb(SQLINTEGER a, SQLSMALLINT &v)
 			{ return get_attribute(a, reinterpret_cast<SQLPOINTER>(&v), SQL_IS_SMALLINT, 0); }
-			inline SQLRETURN get_attrb(SQLINTEGER a, SQLUSMALLINT &v) const
+			inline SQLRETURN get_attrb(SQLINTEGER a, SQLUSMALLINT &v)
 			{ return get_attribute(a, reinterpret_cast<SQLPOINTER>(&v), SQL_IS_USMALLINT, 0); }
-			inline SQLRETURN get_attrb(SQLINTEGER a, SQLINTEGER &v) const
+			inline SQLRETURN get_attrb(SQLINTEGER a, SQLINTEGER &v)
 			{ return get_attribute(a, reinterpret_cast<SQLPOINTER>(&v), SQL_IS_INTEGER, 0); }
-			inline SQLRETURN get_attrb(SQLINTEGER a, SQLUINTEGER &v) const
+			inline SQLRETURN get_attrb(SQLINTEGER a, SQLUINTEGER &v)
 			{ return get_attribute(a, reinterpret_cast<SQLPOINTER>(&v), SQL_IS_UINTEGER, 0); }
 
-			inline SQLRETURN set_attrb(SQLINTEGER a, SQLSMALLINT v) const
+			inline SQLRETURN set_attrb(SQLINTEGER a, SQLSMALLINT v)
 			{ return set_attribute(a, reinterpret_cast<SQLPOINTER>(v), SQL_IS_SMALLINT); }
-			inline SQLRETURN set_attrb(SQLINTEGER a, SQLUSMALLINT v) const
+			inline SQLRETURN set_attrb(SQLINTEGER a, SQLUSMALLINT v)
 			{ return set_attribute(a, reinterpret_cast<SQLPOINTER>(v), SQL_IS_USMALLINT); }
-			inline SQLRETURN set_attrb(SQLINTEGER a, SQLINTEGER v) const
+			inline SQLRETURN set_attrb(SQLINTEGER a, SQLINTEGER v)
 			{ return set_attribute(a, reinterpret_cast<SQLPOINTER>(v), SQL_IS_INTEGER); }
-			inline SQLRETURN set_attrb(SQLINTEGER a, SQLUINTEGER v) const
+			inline SQLRETURN set_attrb(SQLINTEGER a, SQLUINTEGER v)
 			{ return set_attribute(a, reinterpret_cast<SQLPOINTER>(v), SQL_IS_UINTEGER); }
-			inline SQLRETURN set_attrb(SQLINTEGER a, char const* v, SQLINTEGER len = SQL_NTS) const
+			inline SQLRETURN set_attrb(SQLINTEGER a, char const* v, SQLINTEGER len = SQL_NTS)
 			{ return set_attribute(a, reinterpret_cast<SQLPOINTER>(const_cast<char*>(v)), len); }
-			inline SQLRETURN set_attrb(SQLINTEGER a, std::string const& v) const
+			inline SQLRETURN set_attrb(SQLINTEGER a, std::string const& v)
 			{ return set_attrb(a, v.c_str()); }
 
-			SQLRETURN diag(SQLSMALLINT, diaginfo&) const;
+			SQLRETURN diag(SQLSMALLINT, diaginfo&);
 
-			SQLRETURN check_error(SQLRETURN) const;
+			SQLRETURN check_error(SQLRETURN);
 
-			static const handle& null;
+			static handle null;
 		private:
 			SQLHANDLE m_handle;
 			SQLSMALLINT m_type;
