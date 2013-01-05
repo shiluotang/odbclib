@@ -86,9 +86,9 @@ void
 test_mssql_native_client_10_sqlgetdata()
 {
 	string const CONNSTR = "DRIVER={SQL Server Native Client 10.0};"\
-				"SERVER=sgaqcomputer;"\
+				"SERVER=some_server;"\
 				"DATABASE=some_db;UID=sa;PWD=123123";
-	string const QUERY = "SELECT * FROM [在线造价_12_文件信息]";
+	string const QUERY = "SELECT * FROM [some_table]";
 	SQLHANDLE env = SQL_NULL_HANDLE,
 		  dbc = SQL_NULL_HANDLE,
 		  stmt = SQL_NULL_HANDLE;
