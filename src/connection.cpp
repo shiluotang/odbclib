@@ -15,9 +15,9 @@ namespace odbcxx {
 		SQLRETURN ret = m_handle.check_error(SQLConnect(m_handle.raw(),
 			reinterpret_cast<SQLCHAR*>(const_cast<char*>(server_name)),
 			SQL_NTS,
-			reinterpret_cast<SQLCHAR*>(const_cast<char*>(server_name)),
+			reinterpret_cast<SQLCHAR*>(const_cast<char*>(user_name)),
 			SQL_NTS,
-			reinterpret_cast<SQLCHAR*>(const_cast<char*>(server_name)),
+			reinterpret_cast<SQLCHAR*>(const_cast<char*>(authentication)),
 			SQL_NTS));
 		if(SQL_SUCCEEDED(ret))
 			s.m_conn_ptr = this;
