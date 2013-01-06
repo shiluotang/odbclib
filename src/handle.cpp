@@ -38,12 +38,20 @@ namespace odbcxx {
 			SQLPOINTER value_ptr, 
 			SQLINTEGER buf_len, 
 			SQLINTEGER *out_len)
-	{  return check_error((*m_getter)(m_handle, attribute, value_ptr, buf_len, out_len)); }
+	{  
+		if(*this)
+			return check_error((*m_getter)(m_handle, attribute, value_ptr, buf_len, out_len)); 
+		return SQL_SUCCESS;
+	}
 	
 	SQLRETURN handle::set_attribute(SQLINTEGER attribute,
 			SQLPOINTER value_ptr,
 			SQLINTEGER buf_len)
-	{ return check_error((*m_setter)(m_handle, attribute, value_ptr, buf_len)); }
+	{
+		if(*this)
+			return check_error((*m_setter)(m_handle, attribute, value_ptr, buf_len));
+		return SQL_SUCCESS;
+	}
 
 	handle handle::alloc(handle::handle_type type) {
 		SQLSMALLINT t = static_cast<SQLSMALLINT>(type);
