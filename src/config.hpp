@@ -7,7 +7,7 @@
 
 #undef OS_TYPE
 
-#if defined (_WIN32) && defined(_MINGW32_) || defined(_WIN32) && defined(_MINGW64_) || defined(_WIN32) && defined(_MSC_VER)
+#if defined (_WIN32) && defined(__MINGW32__) || defined(_WIN32) && defined(__MINGW64__) || defined(_WIN32) && defined(_MSC_VER)
 #define OS_TYPE OS_WINDOWS
 #else
 #define OS_TYPE OS_LINUX
