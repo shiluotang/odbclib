@@ -5,12 +5,12 @@
 
 namespace odbcxx {
 
-	class resultset;
+	class cursor;
 	class statement : public handle_object {
 		public:
 			void prepare(char const*);
-			void execute(char const*);
-			void execute();
+			cursor& execute(cursor&, char const*);
+			cursor& execute(cursor&);
 		private:
 			friend class session;
 	};

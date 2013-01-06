@@ -21,13 +21,5 @@ int main(int argc, char* argv[]) {
 	env.alloc(conn)
 		.driver_connect(ss, connstr)
 		.alloc(stmt);
-	stmt.prepare(sql);
-	stmt.execute();	
-
-	ss.close();
-
-	stmt.execute(sql2);
-	stmt.execute();
-
 	return EXIT_SUCCESS;
 }

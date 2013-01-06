@@ -5,9 +5,17 @@
 
 namespace odbcxx {
 
+	class statement;
 	class cursor {
 		public:
 			cursor();
+			~cursor();
+
+			operator bool() const;
+		private:
+			statement *m_stmt_ptr;
+
+			friend class statement;
 	};
 
 }

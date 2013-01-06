@@ -14,6 +14,9 @@ namespace odbcxx {
 
 	session::~session() { close(); }
 
+	session::operator bool() const 
+	{ return m_conn_ptr != 0 && static_cast<bool>(*m_conn_ptr); }
+
 	session& session::close() {
 		if(m_conn_ptr) {
 			if(SQL_SUCCEEDED(m_conn_ptr->disconnect()));

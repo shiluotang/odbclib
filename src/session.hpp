@@ -11,9 +11,9 @@ namespace odbcxx {
 		public:
 			explicit session();
 			~session();
-			inline operator bool() const
-			{ return m_conn_ptr != 0; }
+			operator bool() const;
 			session& close();
+
 			inline SQLCHAR const* connstr() const
 			{ return &m_buf[0]; }
 
