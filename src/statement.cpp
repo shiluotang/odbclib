@@ -23,6 +23,7 @@ namespace odbcxx {
 			c.m_stmt_ptr = this;
 		return c;
 	}
+
 	cursor& statement::execute(cursor& c) {
 		if(!(*this))
 			return c;
