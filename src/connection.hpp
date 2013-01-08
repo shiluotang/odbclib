@@ -28,6 +28,9 @@ namespace odbcxx {
 		protected:
 			SQLRETURN disconnect();
 
+			SQLRETURN commit();
+			SQLRETURN rollback();
+
 			friend class environment;
 			friend class session;
 			friend class statement;

@@ -19,6 +19,10 @@ namespace odbcxx {
 
 			connection& alloc(connection&);
 
+		protected:
+			SQLRETURN commit();
+			SQLRETURN rollback();
+
 			friend class connection;
 	};
 

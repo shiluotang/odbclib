@@ -66,4 +66,21 @@ namespace odbcxx {
 			return m_handle.check_error(SQLDisconnect(m_handle.raw())); 
 		return SQL_SUCCESS;
 	}
+
+	SQLRETURN connection::commit() {
+		if(*this)
+			return m_handle.check_error(::SQLEndTran(
+					m_handle.type(),
+					m_handle.raw(),
+					SQL_COMMIT));
+		return SQL_SUCCESS;
+	}
+	SQLRETURN connection::rollback() {
+		if(*this)
+			return m_handle.check_error(::SQLEndTran(
+					m_handle.type(),
+					m_handle.raw(),
+					SQL_ROLLBACK));
+		return SQL_SUCCESS;
+	}
 }

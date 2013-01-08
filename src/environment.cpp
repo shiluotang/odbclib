@@ -20,4 +20,22 @@ namespace odbcxx {
 			conn.m_handle = this->m_handle.alloc(handle::DBC);
 		return conn;
 	}
+
+	SQLRETURN environment::commit() {
+		if(*this)
+			return m_handle.check_error(::SQLEndTran(
+					m_handle.type(),
+					m_handle.raw(),
+					SQL_COMMIT));
+		return SQL_SUCCESS;
+	}
+
+	SQLRETURN environment::rollback() {
+		if(*this)
+			return m_handle.check_error(::SQLEndTran(
+					m_handle.type(),
+					m_handle.raw(),
+					SQL_ROLLBACK));
+		return SQL_SUCCESS;
+	}
 }
