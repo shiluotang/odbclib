@@ -1,12 +1,12 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.67])
+AC_PREREQ([2.63])
 AC_INIT([odbclib],[1.0],[http://sourceforge.net/p/odbclib])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 LT_INIT
 
-AC_CONFIG_SRCDIR([include/odbclib.hpp])
+AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
 
 # Checks for programs.

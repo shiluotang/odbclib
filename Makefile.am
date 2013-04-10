@@ -51,7 +51,7 @@ libodbclib_la_SOURCES = \
 ./src/environment.cpp \
 ./src/debug.cpp
 
-libodbclib_la_LDFLAGS = -lodbc -no-undefined
+libodbclib_la_LDFLAGS = -lodbc32 -no-undefined
 
 noinst_PROGRAMS = test1
 test1_SOURCES = ./test/main.cpp
