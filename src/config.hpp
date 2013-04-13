@@ -15,11 +15,10 @@
 
 #if OS_TYPE == OS_WINDOWS
 #include <windows.h>
-#include <odbcinst.h>
 #else
-#include <odbcinst.h>
 #endif
 
+#include <odbcinst.h>
 #include <sql.h>
 #include <sqlucode.h>
 #include <sqlext.h>
