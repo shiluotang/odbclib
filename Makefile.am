@@ -13,7 +13,7 @@ src/connection.cpp \
 src/diaginfo.cpp \
 src/resultset.cpp
 
-libodbcxx_la_LDFLAGS = -lodbc
+libodbcxx_la_LDFLAGS = -lodbc32 -no-undefined
 
 pkginclude_HEADERS = \
 src/utils.hpp \
@@ -35,3 +35,4 @@ src/handle_object.hpp
 noinst_PROGRAMS = test1
 test1_SOURCES = test/main.cpp
 test1_LDADD = libodbcxx.la
+test1_LDFLAGS = -all-static
