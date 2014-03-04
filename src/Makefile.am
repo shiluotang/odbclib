@@ -1,4 +1,4 @@
-nobase_include_HEADERS = 
+nobase_pkginclude_HEADERS = \
 ./config.hpp \
 ./connection.hpp \
 ./cursor.hpp \

@@ -15,24 +15,9 @@ src/resultset.cpp
 
 libodbcxx_la_LDFLAGS = -lodbc32 -no-undefined
 
-pkginclude_HEADERS = \
-src/utils.hpp \
-src/environment.hpp \
-src/handle.hpp \
-src/descriptor.hpp \
-src/config.hpp \
-src/diaginfo.hpp \
-src/cursor.hpp \
-src/session.hpp \
-src/odbcxx.hpp \
-src/statement.hpp \
-src/rowset.hpp \
-src/resultset.hpp \
-src/transaction.hpp \
-src/connection.hpp \
-src/handle_object.hpp
-
 noinst_PROGRAMS = test1
 test1_SOURCES = test/main.cpp
 test1_LDADD = libodbcxx.la
 test1_LDFLAGS = -all-static
+
+SUBDIRS = src
