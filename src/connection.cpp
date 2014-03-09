@@ -9,15 +9,15 @@ namespace odbcxx {
 	connection::connection() {}
 
 	session& connection::connect(session& s,
-			char const* server_name, 
-			char const *user_name,
-			char const *authentication) {
+			string const& server_name, 
+			string const &user_name,
+			string const &authentication) {
 		SQLRETURN ret = m_handle.check_error(SQLConnect(m_handle.raw(),
-			reinterpret_cast<SQLCHAR*>(const_cast<char*>(server_name)),
+			reinterpret_cast<SQLCHAR*>(const_cast<char*>(server_name.c_str())),
 			SQL_NTS,
-			reinterpret_cast<SQLCHAR*>(const_cast<char*>(user_name)),
+			reinterpret_cast<SQLCHAR*>(const_cast<char*>(user_name.c_str())),
 			SQL_NTS,
-			reinterpret_cast<SQLCHAR*>(const_cast<char*>(authentication)),
+			reinterpret_cast<SQLCHAR*>(const_cast<char*>(authentication.c_str())),
 			SQL_NTS));
 		if(SQL_SUCCEEDED(ret))
 			s.m_conn_ptr = this;
@@ -25,14 +25,14 @@ namespace odbcxx {
 	}
 
 	session& connection::driver_connect(session &s,
-			char const * in_connstr,
+			string const & in_connstr,
 			SQLUSMALLINT driver_completion,
 			SQLHWND hwnd) {
 		SQLSMALLINT len;
 		SQLRETURN ret = m_handle.check_error(SQLDriverConnect(
 			m_handle.raw(),
 			hwnd,
-			reinterpret_cast<SQLCHAR*>(const_cast<char*>(in_connstr)),
+			reinterpret_cast<SQLCHAR*>(const_cast<char*>(in_connstr.c_str())),
 			SQL_NTS,
 			&s.m_buf[0],
 			countof(s.m_buf),
@@ -45,12 +45,12 @@ namespace odbcxx {
 	}
 
 	session& connection::browse_connect(session &s,
-			char const* in_connstr) 
+			string const& in_connstr) 
 	{
 		SQLSMALLINT len;
 		SQLRETURN ret = m_handle.check_error(SQLBrowseConnect(
 			m_handle.raw(),
-			reinterpret_cast<SQLCHAR*>(const_cast<char*>(in_connstr)),
+			reinterpret_cast<SQLCHAR*>(const_cast<char*>(in_connstr.c_str())),
 			SQL_NTS,
 			&s.m_buf[0],
 			countof(s.m_buf),

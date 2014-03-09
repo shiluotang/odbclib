@@ -8,8 +8,8 @@ namespace odbcxx {
 	class cursor;
 	class statement : public handle_object {
 		public:
-			void prepare(char const*);
-			cursor& execute(cursor&, char const*);
+			void prepare(std::string const&);
+			cursor& execute(cursor&, std::string const&);
 			cursor& execute(cursor&);
 		private:
 			friend class session;

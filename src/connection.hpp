@@ -11,20 +11,20 @@ namespace odbcxx {
 		public:
 			connection();
 			session& connect(session &s,
-					char const*, 
-					char const*, 
-					char const*);
+					std::string const&, 
+					std::string const&, 
+					std::string const&);
 			/**
 			 * output connection string is eliminated.
 			 */
 			session& driver_connect(session& s,
-					char const*, 
+					std::string const&,
 					SQLUSMALLINT = SQL_DRIVER_NOPROMPT,
 					SQLHWND = 0);
 			/**
 			 * output connection string is eliminated.
 			 */
-			session& browse_connect(session&, char const*);
+			session& browse_connect(session&, std::string const&);
 		protected:
 			SQLRETURN disconnect();
 
