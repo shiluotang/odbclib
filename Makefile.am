@@ -1,3 +1,5 @@
+ACLOCAL_AMFLAGS = -I m4
+
 lib_LTLIBRARIES = libodbcxx.la
 libodbcxx_la_SOURCES = \
 src/cursor.cpp \
