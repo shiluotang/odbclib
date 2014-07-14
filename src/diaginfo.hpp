@@ -6,12 +6,21 @@
 
 namespace odbcxx {
 
+    /**
+     * Diagnostic information.
+     */
 	struct diaginfo {
+        /**
+         * odbc state code.
+         */
 		SQLCHAR m_state[7];
 		/**
-		 * native error code
+		 * native error code.
 		 */
 		SQLINTEGER m_nec;
+        /**
+         * odbc error message.
+         */
 		SQLCHAR m_msg[0x1 << 10];
 	};
 

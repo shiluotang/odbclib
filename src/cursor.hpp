@@ -6,11 +6,18 @@
 namespace odbcxx {
 
 	class statement;
+    /**
+     * The Cursor object associated with an opened result set.
+     */
 	class cursor {
 		public:
 			cursor();
 			~cursor();
 
+            /**
+             * Check whether this cursor is valid.
+             * @return true if it's valid, vice versa. 
+             */
 			operator bool() const;
 		private:
 			statement *m_stmt_ptr;
