@@ -25,7 +25,7 @@ namespace odbcxx {
 	}
 
 	session& connection::driver_connect(session &s,
-			string const & in_connstr,
+			string const &in_connstr,
 			SQLUSMALLINT driver_completion,
 			SQLHWND hwnd) {
 		SQLSMALLINT len;
