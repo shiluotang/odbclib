@@ -23,3 +23,6 @@ test1_LDADD = libodbcxx.la
 test1_LDFLAGS = -all-static
 
 SUBDIRS = src
+
+include $(top_srcdir)/doxygen-automake.am
+EXTRA_DIST = Doxyfile
