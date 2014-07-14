@@ -10,16 +10,15 @@ AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([src/descriptor.cpp])
 AC_CONFIG_HEADERS([config.h])
 
-AM_INIT_AUTOMAKE([-Wall -Werror 1.11.2 foreign subdir-objects])
+AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 
 # Checks for programs.
 AC_PROG_CXX
-AM_PROG_AR
 LT_INIT
 
 # Checks for libraries.
 # FIXME: Replace `main' with a function in `-lodbc32':
-AC_CHECK_LIB([odbc32], [main])
+AC_CHECK_LIB([odbc32], [SQLFreeHandle])
 
 # Checks for header files.
 
