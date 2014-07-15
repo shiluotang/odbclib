@@ -73,7 +73,7 @@ DX_PS_GOAL = doxygen-ps
 doxygen-ps: @DX_DOCDIR@/@PACKAGE@.ps
 
 @DX_DOCDIR@/@PACKAGE@.ps: @DX_DOCDIR@/@PACKAGE@.tag
-    cd @DX_DOCDIR@/latex; \
+	cd @DX_DOCDIR@/latex; \
     rm -f *.aux *.toc *.idx *.ind *.ilg *.log *.out; \
     $(DX_LATEX) refman.tex; \
     $(MAKEINDEX_PATH) refman.idx; \
@@ -102,12 +102,12 @@ DX_PDF_GOAL = doxygen-pdf
 doxygen-pdf: @DX_DOCDIR@/@PACKAGE@.pdf
 
 @DX_DOCDIR@/@PACKAGE@.pdf: @DX_DOCDIR@/@PACKAGE@.tag
-    cd @DX_DOCDIR@/latex; \
-    rm -f *.aux *.toc *.idx *.ind *.ilg *.log *.out; \
-    $(DX_PDFLATEX) refman.tex; \
-    $(DX_MAKEINDEX) refman.idx; \
-    $(DX_PDFLATEX) refman.tex; \
-    countdown=5; \
+	cd @DX_DOCDIR@/latex; \
+	rm -f *.aux *.toc *.idx *.ind *.ilg *.log *.out; \
+	$(DX_PDFLATEX) refman.tex; \
+	$(DX_MAKEINDEX) refman.idx; \
+	$(DX_PDFLATEX) refman.tex; \
+	countdown=5; \
     while $(DX_EGREP) 'Rerun (LaTeX|to get cross-references right)' \
                       refman.log > /dev/null 2>&1 \
        && test $$countdown -gt 0; do \
