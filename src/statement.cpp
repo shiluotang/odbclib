@@ -14,7 +14,7 @@ namespace odbcxx {
 				SQL_NTS));
 	}
 
-	cursor& statement::execute(cursor &c, string const &cmd) {
+	cursor& statement::execute(cursor &c, std::string const &cmd) {
 		if(!(*this))
 			return c;
 		SQLRETURN ret = this->m_handle.check_error(::SQLExecDirect(this->m_handle.raw(), 
