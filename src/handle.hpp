@@ -137,6 +137,14 @@ namespace odbcxx {
              */
 			inline SQLRETURN get_attrb(SQLINTEGER a, SQLUINTEGER &v)
 			{ return get_attribute(a, reinterpret_cast<SQLPOINTER>(&v), SQL_IS_UINTEGER, 0); }
+            /**
+             * The overload version of get_attrb which assumes the attribute
+             * value type is of std::string.
+             * @param a attribute indicator.
+             * @param v the variable for retrieve attribute value.
+             * @return SQL_SUCCESS if succeed.
+             */
+			SQLRETURN get_attrb(SQLINTEGER a, std::string &v);
 
             /**
              * The overload version of set_attrb which assumes the attribute

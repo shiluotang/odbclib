@@ -46,6 +46,8 @@ namespace odbcxx {
 			 */
 			session& browse_connect(session &s,
                     std::string const &in_connstr);
+
+			std::string const get_something();
 		protected:
             /**
              * Disconnect current connection.
@@ -63,6 +65,18 @@ namespace odbcxx {
              * This is for internal use only.
              */
 			SQLRETURN rollback();
+
+			SQLRETURN get_info(SQLUSMALLINT info_type, SQLPOINTER buf, SQLSMALLINT buf_len, SQLSMALLINT *required_len);
+
+			inline SQLRETURN get_info(SQLUSMALLINT info_type, SQLSMALLINT &v)
+			{ return get_info(info_type, reinterpret_cast<SQLPOINTER>(&v), SQL_IS_SMALLINT, 0); }
+			inline SQLRETURN get_info(SQLUSMALLINT info_type, SQLUSMALLINT &v)
+			{ return get_info(info_type, reinterpret_cast<SQLPOINTER>(&v), SQL_IS_USMALLINT, 0); }
+			inline SQLRETURN get_info(SQLUSMALLINT info_type, SQLINTEGER &v)
+			{ return get_info(info_type, reinterpret_cast<SQLPOINTER>(&v), SQL_IS_INTEGER, 0); }
+			inline SQLRETURN get_info(SQLUSMALLINT info_type, SQLUINTEGER &v)
+			{ return get_info(info_type, reinterpret_cast<SQLPOINTER>(&v), SQL_IS_UINTEGER, 0); }
+			SQLRETURN get_info(SQLUSMALLINT info_type, std::string &v);
 
 			friend class environment;
 			friend class session;

@@ -83,4 +83,37 @@ namespace odbcxx {
 					SQL_ROLLBACK));
 		return SQL_SUCCESS;
 	}
+
+	string const connection::get_something() {
+	}
+
+	SQLRETURN connection::get_info(SQLUSMALLINT info_type,
+			SQLPOINTER buf,
+			SQLSMALLINT buf_len,
+			SQLSMALLINT *required_len) {
+		return m_handle.check_error(::SQLGetInfo(
+					m_handle.raw(),
+					info_type,
+					buf,
+					buf_len,
+					required_len));
+	}
+
+	SQLRETURN connection::get_info(SQLUSMALLINT info_type, string &v) {
+		SQLSMALLINT required_len;
+		SQLSMALLINT buf_len;
+		SQLRETURN retcode = get_info(info_type, NULL, 0, &required_len);
+		if (!SQL_SUCCEEDED(retcode))
+			return m_handle.check_error(retcode);
+		buf_len = required_len + 1;
+		char *buf = new char[buf_len];
+		retcode = get_info(info_type, reinterpret_cast<SQLPOINTER>(buf), buf_len, &required_len);
+		if (!SQL_SUCCEEDED(retcode)) {
+			delete[] buf;
+			return m_handle.check_error(retcode);
+		}
+		v.assign(buf);
+		delete[] buf;
+		return retcode;
+	}
 }
