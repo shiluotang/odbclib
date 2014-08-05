@@ -4,7 +4,7 @@
 #include "handle.hpp"
 
 namespace odbcxx {
-	
+
     /**
      * This class contains a odbc handle in it.
      */
@@ -14,7 +14,7 @@ namespace odbcxx {
              * Check whether the odbc handle of this object is valid.
              * @return true if handle is valid, vice versa.
              */
-			inline operator bool() const 
+			inline operator bool() const
 			{ return static_cast<bool>(m_handle); }
             /**
              * Close the odbc handle of this object.

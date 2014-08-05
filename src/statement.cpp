@@ -9,7 +9,7 @@ namespace odbcxx {
 
 	void statement::prepare(string const &cmd) {
 		if(*this)
-			this->m_handle.check_error(::SQLPrepare(this->m_handle.raw(), 
+			this->m_handle.check_error(::SQLPrepare(this->m_handle.raw(),
 				reinterpret_cast<SQLCHAR*>(const_cast<char*>(cmd.c_str())),
 				SQL_NTS));
 	}
@@ -17,7 +17,7 @@ namespace odbcxx {
 	cursor& statement::execute(cursor &c, std::string const &cmd) {
 		if(!(*this))
 			return c;
-		SQLRETURN ret = this->m_handle.check_error(::SQLExecDirect(this->m_handle.raw(), 
+		SQLRETURN ret = this->m_handle.check_error(::SQLExecDirect(this->m_handle.raw(),
 				reinterpret_cast<SQLCHAR*>(const_cast<char*>(cmd.c_str())),
 				SQL_NTS));
 		if(SQL_SUCCEEDED(ret))

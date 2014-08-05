@@ -8,9 +8,9 @@ namespace odbcxx {
 
 	handle handle::null;
 
-	handle::handle() 
+	handle::handle()
 		:m_handle(SQL_NULL_HANDLE), m_type(0),
-		m_getter(0), m_setter(0) 
+		m_getter(0), m_setter(0)
 	{ }
 
 	handle::handle(SQLHANDLE const h, SQLSMALLINT const t)
@@ -34,16 +34,16 @@ namespace odbcxx {
 		}
 	}
 
-	SQLRETURN handle::get_attribute(SQLINTEGER attribute, 
-			SQLPOINTER value_ptr, 
-			SQLINTEGER buf_len, 
+	SQLRETURN handle::get_attribute(SQLINTEGER attribute,
+			SQLPOINTER value_ptr,
+			SQLINTEGER buf_len,
 			SQLINTEGER *out_len)
-	{  
+	{
 		if(*this)
-			return check_error((*m_getter)(m_handle, attribute, value_ptr, buf_len, out_len)); 
+			return check_error((*m_getter)(m_handle, attribute, value_ptr, buf_len, out_len));
 		return SQL_SUCCESS;
 	}
-	
+
 	SQLRETURN handle::set_attribute(SQLINTEGER attribute,
 			SQLPOINTER value_ptr,
 			SQLINTEGER buf_len)
@@ -62,9 +62,9 @@ namespace odbcxx {
 		return handle::null;
 	}
 
-	SQLRETURN handle::close() { 
+	SQLRETURN handle::close() {
 		if(*this)
-			return check_error(::SQLFreeHandle(m_type, m_handle)); 
+			return check_error(::SQLFreeHandle(m_type, m_handle));
 		return SQL_SUCCESS;
 	}
 
@@ -105,9 +105,9 @@ namespace odbcxx {
 	}
 
 	ostream& operator << (ostream& os, handle const& h) {
-		return os << "handle@" << &h 
+		return os << "handle@" << &h
 			<< "{m_handle = " << h.m_handle
-			<< ", m_type = " << h.m_type 
+			<< ", m_type = " << h.m_type
 			<< "(" << static_cast<handle::handle_type>(h.m_type) << ")"
 			<< "}";
 	}

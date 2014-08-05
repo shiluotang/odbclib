@@ -45,7 +45,7 @@ namespace odbcxx {
              * Check whether this handle is valid.
              * @return true if it's not a null handle.
              */
-			inline operator bool() const 
+			inline operator bool() const
 			{ return m_handle != SQL_NULL_HANDLE; }
 
             /**
@@ -207,7 +207,7 @@ namespace odbcxx {
              * If it's SQL_INVALID_HANDLE, set current handle object to
              * handle::null.
              * If it's any other values, flush the diagnostic informations on
-             * this handle. 
+             * this handle.
              * @return the same as the input argument.
              */
 			SQLRETURN check_error(SQLRETURN retcode);

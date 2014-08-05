@@ -16,7 +16,7 @@ namespace odbcxx {
 
             /**
              * Check whether this cursor is valid.
-             * @return true if it's valid, vice versa. 
+             * @return true if it's valid, vice versa.
              */
 			operator bool() const;
 		private:

@@ -9,7 +9,7 @@ namespace odbcxx {
 	connection::connection() {}
 
 	session& connection::connect(session& s,
-			string const& server_name, 
+			string const& server_name,
 			string const &user_name,
 			string const &authentication) {
 		SQLRETURN ret = m_handle.check_error(SQLConnect(m_handle.raw(),
@@ -45,7 +45,7 @@ namespace odbcxx {
 	}
 
 	session& connection::browse_connect(session &s,
-			string const& in_connstr) 
+			string const& in_connstr)
 	{
 		SQLSMALLINT len;
 		SQLRETURN ret = m_handle.check_error(SQLBrowseConnect(
@@ -63,7 +63,7 @@ namespace odbcxx {
 
 	SQLRETURN connection::disconnect() {
 		if(*this)
-			return m_handle.check_error(SQLDisconnect(m_handle.raw())); 
+			return m_handle.check_error(SQLDisconnect(m_handle.raw()));
 		return SQL_SUCCESS;
 	}
 

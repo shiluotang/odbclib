@@ -4,7 +4,7 @@
 #include "handle_object.hpp"
 
 namespace odbcxx {
-	
+
 	class descriptor : public handle_object { };
 
 }

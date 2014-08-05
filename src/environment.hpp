@@ -14,8 +14,8 @@ namespace odbcxx {
             /**
              * The odbc versions.
              */
-			enum version { 
-				OV2 = SQL_OV_ODBC2, 
+			enum version {
+				OV2 = SQL_OV_ODBC2,
 				OV3 = SQL_OV_ODBC3
 			};
 		public:
