@@ -2,6 +2,8 @@
 #include "environment.hpp"
 #include "session.hpp"
 
+#include <utility>
+
 using namespace std;
 
 namespace odbcxx {
@@ -84,9 +86,6 @@ namespace odbcxx {
 		return SQL_SUCCESS;
 	}
 
-	string const connection::get_something() {
-	}
-
 	SQLRETURN connection::get_info(SQLUSMALLINT info_type,
 			SQLPOINTER buf,
 			SQLSMALLINT buf_len,
@@ -100,13 +99,16 @@ namespace odbcxx {
 	}
 
 	SQLRETURN connection::get_info(SQLUSMALLINT info_type, string &v) {
-		SQLSMALLINT required_len;
-		SQLSMALLINT buf_len;
-		SQLRETURN retcode = get_info(info_type, NULL, 0, &required_len);
+		SQLRETURN retcode;
+		char *buf = 0;
+		SQLSMALLINT buf_len = 0;
+		SQLSMALLINT required_len = 0;
+
+		retcode = get_info(info_type, buf, buf_len, &required_len);
 		if (!SQL_SUCCEEDED(retcode))
 			return m_handle.check_error(retcode);
-		buf_len = required_len + 1;
-		char *buf = new char[buf_len];
+		buf_len = required_len + (required_len % 2) ? 1 : 2;
+		buf = new char[buf_len];
 		retcode = get_info(info_type, reinterpret_cast<SQLPOINTER>(buf), buf_len, &required_len);
 		if (!SQL_SUCCEEDED(retcode)) {
 			delete[] buf;
