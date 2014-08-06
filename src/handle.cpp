@@ -47,14 +47,15 @@ namespace odbcxx {
 	SQLRETURN handle::get_attrb(SQLINTEGER attribute,
 			std::string &v) {
 		SQLRETURN retcode;
-		SQLINTEGER required_len;
-		SQLINTEGER buf_len;
+		char* buf = 0;
+		SQLINTEGER buf_len = 0;
+		SQLINTEGER required_len = 0;
 
-		retcode = get_attribute(attribute, NULL, 0, &required_len);
+		retcode = get_attribute(attribute, buf, buf_len, &required_len);
 		if (!SQL_SUCCEEDED(retcode))
 			return check_error(retcode);
-		buf_len = required_len + 1;
-		char* buf = new char[buf_len];
+		buf_len = required_len + (required_len % 2) ? 1 : 2;
+		buf = new char[buf_len];
 		retcode = check_error(get_attribute(attribute,
 					reinterpret_cast<SQLPOINTER>(buf), buf_len, &required_len));
 		if (!SQL_SUCCEEDED(retcode)) {
