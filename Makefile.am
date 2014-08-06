@@ -1,5 +1,8 @@
 ACLOCAL_AMFLAGS = -I m4
 
+#AM_CPPFLAGS = 
+AM_CXXFLAGS = -std=c++11
+
 lib_LTLIBRARIES = libodbcxx.la
 libodbcxx_la_SOURCES = \
 src/cursor.cpp \
