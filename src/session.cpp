@@ -8,9 +8,7 @@ using namespace std;
 
 namespace odbcxx {
 
-	session::session()
-		:m_conn_ptr(0)
-       	{ memset(m_buf, 0, sizeof(m_buf)); }
+	session::session() :m_conn_ptr(0) { memset(m_buf, 0, sizeof(m_buf)); }
 
 	session::~session() { close(); }
 

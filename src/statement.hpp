@@ -14,8 +14,9 @@ namespace odbcxx {
             /**
              * Prepare sql command.
              * @param cmd sql command.
+			 * @return current statement object.
              */
-			void prepare(std::string const &cmd);
+			statement& prepare(std::string const &cmd);
             /**
              * Execute sql command.
              * @param c cursor object.
@@ -29,8 +30,23 @@ namespace odbcxx {
              * @return cursor object of the opened resultset.
              */
 			cursor& execute(cursor &c);
+		protected:
+			/**
+			 * If there's any cursor open, close it.
+			 * @return this statement object.
+			 */
+			statement& close_cursor();
+			/**
+			 * Retrieve column numbers of resultset.
+			 * @return number of columns in current open resultset. If it's zero
+			 * means no resultset.
+			 */
+			int const num_of_rs_cols();
+			std::string const cursor_name();
+			statement& cursor_name(std::string const&);
 		private:
 			friend class session;
+			friend class cursor;
 	};
 
 }

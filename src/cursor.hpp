@@ -19,6 +19,7 @@ namespace odbcxx {
              * @return true if it's valid, vice versa.
              */
 			operator bool() const;
+			cursor& close();
 		private:
 			statement *m_stmt_ptr;
 

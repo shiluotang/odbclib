@@ -77,6 +77,7 @@ namespace odbcxx {
 					SQL_COMMIT));
 		return SQL_SUCCESS;
 	}
+
 	SQLRETURN connection::rollback() {
 		if(*this)
 			return m_handle.check_error(::SQLEndTran(
@@ -84,6 +85,46 @@ namespace odbcxx {
 					m_handle.raw(),
 					SQL_ROLLBACK));
 		return SQL_SUCCESS;
+	}
+
+	connection& connection::current_catalog(string const &catalog) {
+		if(*this)
+			m_handle.set_attrb(SQL_ATTR_CURRENT_CATALOG, catalog);
+		return *this;
+	}
+	string const connection::current_catalog() {
+		string catalog;
+		m_handle.get_attrb(SQL_ATTR_CURRENT_CATALOG, catalog);
+		return catalog;
+	}
+
+	string const connection::native_sql(string const &sql) {
+		string native;
+
+		SQLRETURN retcode;
+		char *buf = 0;
+		SQLINTEGER buf_len = 0;
+		SQLINTEGER out_len = 0;
+
+		retcode = ::SQLNativeSql(m_handle.raw(),
+				reinterpret_cast<SQLCHAR*>(const_cast<char*>(sql.c_str())), SQL_NTS,
+				reinterpret_cast<SQLCHAR*>(buf), buf_len,
+				&out_len);
+		if (!SQL_SUCCEEDED(retcode)) {
+			m_handle.check_error(retcode);
+			return std::move(native);
+		}
+		buf_len = out_len + (out_len % 2 ? 1 : 2);
+		buf = new char[buf_len];
+		retcode = SQLNativeSql(m_handle.raw(),
+				reinterpret_cast<SQLCHAR*>(const_cast<char*>(sql.c_str())), SQL_NTS,
+				reinterpret_cast<SQLCHAR*>(buf), buf_len,
+				&out_len);
+		m_handle.check_error(retcode);
+		if (SQL_SUCCEEDED(retcode))
+			native.assign(buf);
+		delete[] buf;
+		return native;
 	}
 
 	SQLRETURN connection::get_info(SQLUSMALLINT info_type,
@@ -104,17 +145,18 @@ namespace odbcxx {
 		SQLSMALLINT buf_len = 0;
 		SQLSMALLINT required_len = 0;
 
-		retcode = get_info(info_type, buf, buf_len, &required_len);
+		retcode = ::SQLGetInfo(m_handle.raw(), info_type,
+				reinterpret_cast<SQLPOINTER>(buf), buf_len,
+				&required_len);
 		if (!SQL_SUCCEEDED(retcode))
 			return m_handle.check_error(retcode);
-		buf_len = required_len + (required_len % 2) ? 1 : 2;
+		buf_len = required_len + (required_len % 2 ? 1 : 2);
 		buf = new char[buf_len];
-		retcode = get_info(info_type, reinterpret_cast<SQLPOINTER>(buf), buf_len, &required_len);
-		if (!SQL_SUCCEEDED(retcode)) {
-			delete[] buf;
-			return m_handle.check_error(retcode);
-		}
-		v.assign(buf);
+		retcode = m_handle.check_error(::SQLGetInfo(m_handle.raw(), info_type,
+					reinterpret_cast<SQLPOINTER>(buf), buf_len,
+					&required_len));
+		if (SQL_SUCCEEDED(retcode))
+			v.assign(buf);
 		delete[] buf;
 		return retcode;
 	}

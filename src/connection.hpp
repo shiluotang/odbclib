@@ -47,7 +47,9 @@ namespace odbcxx {
 			session& browse_connect(session &s,
                     std::string const &in_connstr);
 
-			std::string const get_something();
+			connection& current_catalog(std::string const&);
+			std::string const current_catalog();
+			std::string const native_sql(std::string const&);
 		protected:
             /**
              * Disconnect current connection.

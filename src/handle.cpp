@@ -51,18 +51,14 @@ namespace odbcxx {
 		SQLINTEGER buf_len = 0;
 		SQLINTEGER required_len = 0;
 
-		retcode = get_attribute(attribute, buf, buf_len, &required_len);
+		retcode = (*m_getter)(m_handle, attribute, reinterpret_cast<SQLPOINTER>(buf), buf_len, &required_len);
 		if (!SQL_SUCCEEDED(retcode))
 			return check_error(retcode);
-		buf_len = required_len + (required_len % 2) ? 1 : 2;
+		buf_len = required_len + (required_len % 2 ? 1 : 2);
 		buf = new char[buf_len];
-		retcode = check_error(get_attribute(attribute,
-					reinterpret_cast<SQLPOINTER>(buf), buf_len, &required_len));
-		if (!SQL_SUCCEEDED(retcode)) {
-			delete[] buf;
-			return retcode;
-		}
-		v.assign(buf);
+		retcode = check_error((*m_getter)(m_handle, attribute, reinterpret_cast<SQLPOINTER>(buf), buf_len, &required_len));
+		if (SQL_SUCCEEDED(retcode))
+			v.assign(buf);
 		delete[] buf;
 		return retcode;
 	}
