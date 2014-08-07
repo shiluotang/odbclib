@@ -1,11 +1,24 @@
 #include "cursor.hpp"
 #include "statement.hpp"
 
+#include <utility>
+
 using namespace std;
 
 namespace odbcxx {
 
 	cursor::cursor() :m_stmt_ptr(0) {}
+	cursor::cursor(cursor &&other)
+		:m_stmt_ptr(0) {
+		std::swap(m_stmt_ptr, other.m_stmt_ptr);
+	}
+	cursor& cursor::operator = (cursor &&other) {
+		if (this == &other)
+			return *this;
+		m_stmt_ptr = other.m_stmt_ptr;
+		other.m_stmt_ptr = 0;
+		return *this;
+	}
 	cursor::~cursor() { close(); }
 
 	cursor::operator bool() const
