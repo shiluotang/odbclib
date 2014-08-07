@@ -12,6 +12,10 @@ namespace odbcxx {
 	class cursor {
 		public:
 			cursor();
+			cursor(cursor const&) = delete;
+			cursor(cursor &&);
+			cursor& operator = (cursor const&) = delete;
+			cursor& operator = (cursor &&);
 			~cursor();
 
             /**
