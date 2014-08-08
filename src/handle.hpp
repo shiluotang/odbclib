@@ -46,14 +46,14 @@ namespace odbcxx {
              * @return true if it's not a null handle.
              */
 			inline operator bool() const
-			{ return m_handle != SQL_NULL_HANDLE; }
+			{ return _M_handle != SQL_NULL_HANDLE; }
 
             /**
              * Check equality with other handle object.
              * @return true if it equals to the other one.
              */
 			inline bool operator == (handle const& other) const
-			{ return m_handle == other.m_handle && m_type == other.m_type; }
+			{ return _M_handle == other._M_handle && _M_type == other._M_type; }
             /**
              * Check inequality with other handle object.
              * @return true if it DOES NOT equal to the other one.
@@ -82,12 +82,12 @@ namespace odbcxx {
              * Retreive the underlying SQLHANDLE value.
              * @return SQLHANDLE value of this object.
              */
-			inline SQLHANDLE const raw() const { return m_handle; }
+			inline SQLHANDLE const raw() const { return _M_handle; }
             /**
              * Retreive the underlying SQLHANDLE type.
              * @return SQLHANDLE type of this object.
              */
-			inline SQLSMALLINT const type() const { return m_type; }
+			inline SQLSMALLINT const type() const { return _M_type; }
 
             /**
              * The same as SQLAllocHandle.
@@ -225,11 +225,11 @@ namespace odbcxx {
              */
 			static handle null;
 		private:
-			SQLHANDLE m_handle;
-			SQLSMALLINT m_type;
+			SQLHANDLE _M_handle;
+			SQLSMALLINT _M_type;
 
-			SQLATTRB_GETTER m_getter;
-			SQLATTRB_SETTER m_setter;
+			SQLATTRB_GETTER _M_getter;
+			SQLATTRB_SETTER _M_setter;
 
 			friend std::ostream& operator << (std::ostream&, handle const&);
 	};

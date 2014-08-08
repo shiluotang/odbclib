@@ -30,9 +30,13 @@ int main(int argc, char* argv[]) {
 	ss.alloc(stmt);
 
 	clog << conn.current_catalog("test") << endl;
-	clog << stmt.execute(c, "select * from students") << endl;
-	clog << stmt.execute(c, "select * from students") << endl;
-	clog << stmt.execute(c, sql2) << endl;
+	
+	if (stmt.execute(c, "SELECT * FROM STUDENTS")) {
+		size_t rows = 0U;
+		while (c.next() && !c.eof())
+			++rows;
+		clog << "There're " << rows << " rows." << endl;
+	}
 
 	return EXIT_SUCCESS;
 }

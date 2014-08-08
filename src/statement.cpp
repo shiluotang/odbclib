@@ -8,43 +8,66 @@ using namespace std;
 namespace odbcxx {
 
 	statement& statement::prepare(string const &cmd) {
-		if(*this)
-			this->m_handle.check_error(::SQLPrepare(this->m_handle.raw(),
+		if (*this)
+			this->_M_handle.check_error(::SQLPrepare(this->_M_handle.raw(),
 				reinterpret_cast<SQLCHAR*>(const_cast<char*>(cmd.c_str())),
 				SQL_NTS));
 		return *this;
 	}
 
 	cursor& statement::execute(cursor &c, std::string const &cmd) {
-		if(!(*this))
+		if (!(*this))
 			return c;
-		SQLRETURN ret = this->m_handle.check_error(::SQLExecDirect(this->m_handle.raw(),
+		SQLRETURN ret = this->_M_handle.check_error(::SQLExecDirect(this->_M_handle.raw(),
 				reinterpret_cast<SQLCHAR*>(const_cast<char*>(cmd.c_str())),
 				SQL_NTS));
-		if(SQL_SUCCEEDED(ret))
-			c.m_stmt_ptr = this;
+		if (!SQL_SUCCEEDED(ret))
+			return c;
+		//check whether statement has opened cursor.
+		int resultset_columns;
+		int resultset_rows;
+		if ((resultset_columns = num_of_rs_cols()) > 0) {
+			c._M_rowset.capacity(std::max(rowset_size(), 0));
+			if (SQL_SUCCEEDED(_M_handle.set_attribute(SQL_ATTR_ROWS_FETCHED_PTR,
+					&c._M_rowset._M_actual_size, SQL_IS_UINTEGER))) {
+				c.m_stmt_ptr = this;
+				c._M_rowset.capacity(std::max(rowset_size(), 0));
+				c._M_rowset.columns_count(resultset_columns);
+			}
+		}
 		return c;
 	}
 
 	cursor& statement::execute(cursor &c) {
-		if(!(*this))
+		if (!(*this))
 			return c;
-		SQLRETURN ret = m_handle.check_error(::SQLExecute(this->m_handle.raw()));
-		if(SQL_SUCCEEDED(ret))
-			c.m_stmt_ptr = this;
+		SQLRETURN ret = _M_handle.check_error(::SQLExecute(this->_M_handle.raw()));
+		if (!SQL_SUCCEEDED(ret))
+			return c;
+		//check whether statement has opened cursor.
+		int resultset_columns;
+		int resultset_rows;
+		if ((resultset_columns = num_of_rs_cols()) > 0) {
+			if (SQL_SUCCEEDED(_M_handle.set_attribute(SQL_ATTR_ROWS_FETCHED_PTR,
+					&c._M_rowset._M_actual_size, SQL_IS_UINTEGER))) {
+				c.m_stmt_ptr = this;
+				c._M_rowset.capacity(std::max(rowset_size(), 0));
+				c._M_rowset.columns_count(resultset_columns);
+			}
+		}
 		return c;
 	}
 
 	statement& statement::close_cursor() {
 		//WARN: DO NOT throw any exception!!!
-		m_handle.check_error(::SQLCloseCursor(m_handle.raw()));
+		_M_handle.check_error(::SQLCloseCursor(_M_handle.raw()));
 		return *this;
 	}
 
 	int const statement::num_of_rs_cols() {
 		SQLSMALLINT cols = -1;
 		if (*this)
-			m_handle.check_error(::SQLNumResultCols(m_handle.raw(), &cols));
+			_M_handle.check_error(::SQLNumResultCols(_M_handle.raw(), &cols));
 		return cols;
 	}
 
@@ -55,17 +78,17 @@ namespace odbcxx {
 		char *buf = 0;
 		SQLSMALLINT buf_len = 0;
 		SQLSMALLINT out_len = 0;
-		retcode = ::SQLGetCursorName(m_handle.raw(),
+		retcode = ::SQLGetCursorName(_M_handle.raw(),
 				reinterpret_cast<SQLCHAR*>(buf),
 				buf_len,
 				&out_len);
 		if (!SQL_SUCCEEDED(retcode)) {
-			m_handle.check_error(retcode);
+			_M_handle.check_error(retcode);
 			return std::move(name);
 		}
 		buf_len = out_len + (out_len % 2 ? 1 : 2);
 		buf = new char[buf_len];
-		retcode = m_handle.check_error(::SQLGetCursorName(m_handle.raw(),
+		retcode = _M_handle.check_error(::SQLGetCursorName(_M_handle.raw(),
 				reinterpret_cast<SQLCHAR*>(buf),
 				buf_len,
 				&out_len));
@@ -77,9 +100,33 @@ namespace odbcxx {
 
 	statement& statement::cursor_name(string const &name) {
 		if (*this)
-			m_handle.check_error(::SQLSetCursorName(m_handle.raw(),
+			_M_handle.check_error(::SQLSetCursorName(_M_handle.raw(),
 						reinterpret_cast<SQLCHAR*>(const_cast<char*>(name.c_str())),
 						SQL_NTS));
 		return *this;
+	}
+
+	int const statement::rowset_size() {
+		SQLUINTEGER sz = -1;
+		_M_handle.get_attrb(SQL_ATTR_ROW_ARRAY_SIZE, sz);
+		return sz == static_cast<SQLUINTEGER>(-1) ? -1 : sz;
+	}
+
+	statement& statement::rowset_size(int size) {
+		SQLUINTEGER sz = size;
+		_M_handle.set_attrb(SQL_ATTR_ROW_ARRAY_SIZE, sz);
+		return *this;
+	}
+
+	SQLRETURN statement::scroll(SQLSMALLINT orientation, SQLINTEGER offset) {
+		return _M_handle.check_error(::SQLFetchScroll(_M_handle.raw(),
+					orientation, offset));
+	}
+
+	SQLRETURN statement::set_pos_in_rowset(SQLSETPOSIROW row,
+			SQLUSMALLINT op,
+			SQLUSMALLINT lock_type) {
+		return _M_handle.check_error(::SQLSetPos(_M_handle.raw(),
+					row, op, lock_type));
 	}
 }

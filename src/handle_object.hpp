@@ -15,7 +15,7 @@ namespace odbcxx {
              * @return true if handle is valid, vice versa.
              */
 			inline operator bool() const
-			{ return static_cast<bool>(m_handle); }
+			{ return static_cast<bool>(_M_handle); }
             /**
              * Close the odbc handle of this object.
              * @return true if handle before close is valid, vice versa.
@@ -32,7 +32,7 @@ namespace odbcxx {
             /**
              * The handle object inside this object.
              */
-			handle m_handle;
+			handle _M_handle;
 	};
 }
 

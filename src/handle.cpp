@@ -9,26 +9,26 @@ namespace odbcxx {
 	handle handle::null;
 
 	handle::handle()
-		:m_handle(SQL_NULL_HANDLE), m_type(0),
-		m_getter(0), m_setter(0)
+		:_M_handle(SQL_NULL_HANDLE), _M_type(0),
+		_M_getter(0), _M_setter(0)
 	{ }
 
 	handle::handle(SQLHANDLE const h, SQLSMALLINT const t)
-		:m_handle(h), m_type(t),
-		m_getter(0), m_setter(0)
+		:_M_handle(h), _M_type(t),
+		_M_getter(0), _M_setter(0)
 	{
 		switch(t) {
 			case SQL_HANDLE_ENV:
-				m_getter = &SQLGetEnvAttr;
-				m_setter = &SQLSetEnvAttr;
+				_M_getter = &SQLGetEnvAttr;
+				_M_setter = &SQLSetEnvAttr;
 				break;
 			case SQL_HANDLE_DBC:
-				m_getter = &SQLGetConnectAttr;
-				m_setter = &SQLSetConnectAttr;
+				_M_getter = &SQLGetConnectAttr;
+				_M_setter = &SQLSetConnectAttr;
 				break;
 			case SQL_HANDLE_STMT:
-				m_getter = &SQLGetStmtAttr;
-				m_setter = &SQLSetStmtAttr;
+				_M_getter = &SQLGetStmtAttr;
+				_M_setter = &SQLSetStmtAttr;
 				break;
 			default:break;
 		}
@@ -39,9 +39,7 @@ namespace odbcxx {
 			SQLINTEGER buf_len,
 			SQLINTEGER *out_len)
 	{
-		if(*this)
-			return check_error((*m_getter)(m_handle, attribute, value_ptr, buf_len, out_len));
-		return SQL_SUCCESS;
+		return check_error((*_M_getter)(_M_handle, attribute, value_ptr, buf_len, out_len));
 	}
 
 	SQLRETURN handle::get_attrb(SQLINTEGER attribute,
@@ -51,12 +49,12 @@ namespace odbcxx {
 		SQLINTEGER buf_len = 0;
 		SQLINTEGER required_len = 0;
 
-		retcode = (*m_getter)(m_handle, attribute, reinterpret_cast<SQLPOINTER>(buf), buf_len, &required_len);
+		retcode = (*_M_getter)(_M_handle, attribute, reinterpret_cast<SQLPOINTER>(buf), buf_len, &required_len);
 		if (!SQL_SUCCEEDED(retcode))
 			return check_error(retcode);
 		buf_len = required_len + (required_len % 2 ? 1 : 2);
 		buf = new char[buf_len];
-		retcode = check_error((*m_getter)(m_handle, attribute, reinterpret_cast<SQLPOINTER>(buf), buf_len, &required_len));
+		retcode = check_error((*_M_getter)(_M_handle, attribute, reinterpret_cast<SQLPOINTER>(buf), buf_len, &required_len));
 		if (SQL_SUCCEEDED(retcode))
 			v.assign(buf);
 		delete[] buf;
@@ -67,15 +65,13 @@ namespace odbcxx {
 			SQLPOINTER value_ptr,
 			SQLINTEGER buf_len)
 	{
-		if(*this)
-			return check_error((*m_setter)(m_handle, attribute, value_ptr, buf_len));
-		return SQL_SUCCESS;
+		return check_error((*_M_setter)(_M_handle, attribute, value_ptr, buf_len));
 	}
 
 	handle handle::alloc(handle::handle_type type) {
 		SQLSMALLINT t = static_cast<SQLSMALLINT>(type);
 		SQLHANDLE h;
-		SQLRETURN ret = check_error(::SQLAllocHandle(t, m_handle, &h));
+		SQLRETURN ret = check_error(::SQLAllocHandle(t, _M_handle, &h));
 		if(SQL_SUCCEEDED(ret))
 			return handle(h, t);
 		return handle::null;
@@ -83,13 +79,13 @@ namespace odbcxx {
 
 	SQLRETURN handle::close() {
 		if(*this)
-			return check_error(::SQLFreeHandle(m_type, m_handle));
+			return check_error(::SQLFreeHandle(_M_type, _M_handle));
 		return SQL_SUCCESS;
 	}
 
 	SQLRETURN handle::diag(SQLSMALLINT rec_index, diaginfo &di) {
-		return ::SQLGetDiagRec(m_type,
-				m_handle,
+		return ::SQLGetDiagRec(_M_type,
+				_M_handle,
 				rec_index,
 				&di.m_state[0],
 				&di.m_nec,
@@ -125,9 +121,9 @@ namespace odbcxx {
 
 	ostream& operator << (ostream& os, handle const& h) {
 		return os << "handle@" << &h
-			<< "{m_handle = " << h.m_handle
-			<< ", m_type = " << h.m_type
-			<< "(" << static_cast<handle::handle_type>(h.m_type) << ")"
+			<< "{_M_handle = " << h._M_handle
+			<< ", _M_type = " << h._M_type
+			<< "(" << static_cast<handle::handle_type>(h._M_type) << ")"
 			<< "}";
 	}
 
