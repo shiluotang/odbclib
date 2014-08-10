@@ -129,4 +129,17 @@ namespace odbcxx {
 		return _M_handle.check_error(::SQLSetPos(_M_handle.raw(),
 					row, op, lock_type));
 	}
+
+	SQLRETURN statement::bind_col(SQLUSMALLINT column_no,
+			SQLSMALLINT target_type,
+			SQLPOINTER target_value_ptr,
+			SQLINTEGER buf_len,
+			SQLINTEGER *len_or_indicator) {
+		return _M_handle.check_error(::SQLBindCol(_M_handle.raw(),
+					column_no,
+					target_type,
+					target_value_ptr,
+					buf_len,
+					len_or_indicator));
+	}
 }
