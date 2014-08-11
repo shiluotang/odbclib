@@ -142,4 +142,89 @@ namespace odbcxx {
 					buf_len,
 					len_or_indicator));
 	}
+
+	SQLRETURN statement::get_data(SQLUSMALLINT no,
+			SQLSMALLINT target_type,
+			SQLPOINTER target_value_ptr,
+			SQLLEN buf_len,
+			SQLLEN *len_or_indicator) {
+		return _M_handle.check_error(::SQLGetData(_M_handle.raw(),
+					no,
+					target_type,
+					target_value_ptr,
+					buf_len,
+					len_or_indicator));
+	}
+
+	SQLRETURN statement::get_data(SQLUSMALLINT no,
+			SQLSMALLINT target_type,
+			SQLPOINTER target_value_ptr,
+			SQLLEN buf_len,
+			bool &is_null) {
+		SQLLEN indicator;
+		SQLRETURN retcode = get_data(no,
+				target_type,
+				target_value_ptr,
+				buf_len,
+				&indicator);
+		if (!SQL_SUCCEEDED(retcode))
+			return retcode;
+		is_null = (indicator == SQL_NULL_DATA);
+		return retcode;
+	}
+
+	SQLRETURN statement::get_data(SQLUSMALLINT no, string &v, bool &is_null) {
+		SQLRETURN retcode;
+		char buf[1024];
+		SQLLEN buf_len = ::countof(buf) * sizeof(char);
+		SQLLEN indicator = 0;
+
+		string vv;
+
+		while (true) {
+			memset(buf, 0, sizeof(buf));
+			retcode = ::SQLGetData(_M_handle.raw(), no, SQL_C_CHAR, &buf[0], buf_len, &indicator);
+			// check null.
+			if (is_null = (indicator == SQL_NULL_DATA))
+				return retcode;
+			// check no more data.
+			if (retcode == SQL_NO_DATA)
+				break;
+			// check error.
+			if (!SQL_SUCCEEDED(retcode))
+				return _M_handle.check_error(retcode);
+			//concate data.
+			vv.append(buf);
+		}
+		v = std::move(vv);
+		return retcode;
+	}
+	SQLRETURN statement::get_data(SQLUSMALLINT no, wstring &v, bool &is_null) {
+		SQLRETURN retcode;
+		wchar_t buf[1024];
+		SQLLEN buf_len = ::countof(buf) * sizeof(wchar_t);
+		SQLLEN indicator = 0;
+
+		wstring vv;
+		//int bytes = 0;
+		while (true) {
+			memset(buf, 0, sizeof(buf));
+			retcode = ::SQLGetData(_M_handle.raw(), no, SQL_C_WCHAR, &buf[0], buf_len, &indicator);
+			// check null.
+			if (is_null = (indicator == SQL_NULL_DATA))
+				return retcode;
+			// check no more data.
+			if (retcode == SQL_NO_DATA)
+				break;
+			// check error.
+			if (!SQL_SUCCEEDED(retcode))
+				return _M_handle.check_error(retcode);
+			//bytes = ((indicator > buf_len) || (indicator == SQL_NO_TOTAL)) ? buf_len : indicator;
+			
+			//concate data.
+			vv.append(buf);
+		}
+		v = std::move(vv);
+		return retcode;
+	}
 }
