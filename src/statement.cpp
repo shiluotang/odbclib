@@ -28,9 +28,9 @@ namespace odbcxx {
 		int resultset_rows;
 		if ((resultset_columns = num_of_rs_cols()) > 0) {
 			c._M_rowset.capacity(std::max(rowset_size(), 0));
-			if (SQL_SUCCEEDED(_M_handle.set_attribute(SQL_ATTR_ROWS_FETCHED_PTR,
-					&c._M_rowset._M_actual_size, SQL_IS_UINTEGER))) {
-				c.m_stmt_ptr = this;
+			if (SQL_SUCCEEDED(_M_handle.set_attrb(SQL_ATTR_ROWS_FETCHED_PTR,
+					reinterpret_cast<SQLPOINTER>(&c._M_rowset._M_size)))) {
+				c._M_stmt_ptr = this;
 				c._M_rowset.capacity(std::max(rowset_size(), 0));
 				c._M_rowset.columns_count(resultset_columns);
 			}
@@ -48,9 +48,9 @@ namespace odbcxx {
 		int resultset_columns;
 		int resultset_rows;
 		if ((resultset_columns = num_of_rs_cols()) > 0) {
-			if (SQL_SUCCEEDED(_M_handle.set_attribute(SQL_ATTR_ROWS_FETCHED_PTR,
-					&c._M_rowset._M_actual_size, SQL_IS_UINTEGER))) {
-				c.m_stmt_ptr = this;
+			if (SQL_SUCCEEDED(_M_handle.set_attrb(SQL_ATTR_ROWS_FETCHED_PTR,
+					&c._M_rowset._M_size))) {
+				c._M_stmt_ptr = this;
 				c._M_rowset.capacity(std::max(rowset_size(), 0));
 				c._M_rowset.columns_count(resultset_columns);
 			}

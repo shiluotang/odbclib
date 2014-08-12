@@ -4,14 +4,22 @@
 
 using namespace std;
 
+#define DEFINE_SIMPLE_GETTER(TYPE) \
+	SQLRETURN handle::get_attrb(SQLINTEGER attribute, SQL##TYPE &value) { \
+		return check_error((*_M_getter)(_M_handle, attribute, reinterpret_cast<SQLPOINTER>(&value),SQL_IS_##TYPE, 0)); \
+	}
+
+#define DEFINE_SIMPLE_SETTER(TYPE) \
+	SQLRETURN handle::set_attrb(SQLINTEGER attribute, SQL##TYPE const &value) { \
+		return check_error((*_M_setter)(_M_handle, attribute, reinterpret_cast<SQLPOINTER>(value), SQL_IS_##TYPE)); \
+	}
+
+namespace {
+}
+
 namespace odbcxx {
 
 	handle handle::null;
-
-	handle::handle()
-		:_M_handle(SQL_NULL_HANDLE), _M_type(0),
-		_M_getter(0), _M_setter(0)
-	{ }
 
 	handle::handle(SQLHANDLE const h, SQLSMALLINT const t)
 		:_M_handle(h), _M_type(t),
@@ -34,40 +42,6 @@ namespace odbcxx {
 		}
 	}
 
-	SQLRETURN handle::get_attribute(SQLINTEGER attribute,
-			SQLPOINTER value_ptr,
-			SQLINTEGER buf_len,
-			SQLINTEGER *out_len)
-	{
-		return check_error((*_M_getter)(_M_handle, attribute, value_ptr, buf_len, out_len));
-	}
-
-	SQLRETURN handle::get_attrb(SQLINTEGER attribute,
-			std::string &v) {
-		SQLRETURN retcode;
-		char* buf = 0;
-		SQLINTEGER buf_len = 0;
-		SQLINTEGER required_len = 0;
-
-		retcode = (*_M_getter)(_M_handle, attribute, reinterpret_cast<SQLPOINTER>(buf), buf_len, &required_len);
-		if (!SQL_SUCCEEDED(retcode))
-			return check_error(retcode);
-		buf_len = required_len + (required_len % 2 ? 1 : 2);
-		buf = new char[buf_len];
-		retcode = check_error((*_M_getter)(_M_handle, attribute, reinterpret_cast<SQLPOINTER>(buf), buf_len, &required_len));
-		if (SQL_SUCCEEDED(retcode))
-			v.assign(buf);
-		delete[] buf;
-		return retcode;
-	}
-
-	SQLRETURN handle::set_attribute(SQLINTEGER attribute,
-			SQLPOINTER value_ptr,
-			SQLINTEGER buf_len)
-	{
-		return check_error((*_M_setter)(_M_handle, attribute, value_ptr, buf_len));
-	}
-
 	handle handle::alloc(handle::handle_type type) {
 		SQLSMALLINT t = static_cast<SQLSMALLINT>(type);
 		SQLHANDLE h;
@@ -83,15 +57,96 @@ namespace odbcxx {
 		return SQL_SUCCESS;
 	}
 
+	DEFINE_SIMPLE_GETTER(SMALLINT)
+	DEFINE_SIMPLE_GETTER(USMALLINT)
+	DEFINE_SIMPLE_GETTER(INTEGER)
+	DEFINE_SIMPLE_GETTER(UINTEGER)
+
+	SQLRETURN handle::get_attrb(SQLINTEGER attribute, string &value) {
+		SQLRETURN retcode;
+		char *buf = 0;
+		SQLINTEGER chars;
+
+		retcode = (*_M_getter)(_M_handle,
+				attribute,
+				NULL, 0,
+				&chars);
+		if (!SQL_SUCCEEDED(retcode))
+			return check_error(retcode);
+		buf = new char[chars + 1];
+		retcode = (*_M_getter)(_M_handle,
+				attribute,
+				reinterpret_cast<SQLPOINTER>(buf), chars + 1,
+				&chars);
+		return check_error(retcode);
+	}
+	SQLRETURN handle::get_attrb(SQLINTEGER attribute, wstring &value) {
+		SQLRETURN retcode;
+		wchar_t *buf = 0;
+		SQLINTEGER chars;
+
+		retcode = (*_M_getter)(_M_handle,
+				attribute,
+				NULL, 0,
+				&chars);
+		if (!SQL_SUCCEEDED(retcode))
+			return check_error(retcode);
+		buf = new wchar_t[(chars >> 1) + 1];
+		retcode = (*_M_getter)(_M_handle,
+				attribute,
+				reinterpret_cast<SQLPOINTER>(buf), (chars >> 1) + 1,
+				&chars);
+		return check_error(retcode);
+	}
+
+	DEFINE_SIMPLE_SETTER(SMALLINT)
+	DEFINE_SIMPLE_SETTER(USMALLINT)
+	DEFINE_SIMPLE_SETTER(INTEGER)
+	DEFINE_SIMPLE_SETTER(UINTEGER)
+
+	SQLRETURN handle::set_attrb(SQLINTEGER attribute, SQLPOINTER value) {
+		return check_error((*_M_setter)(_M_handle, attribute, value, SQL_IS_POINTER));
+	}
+	SQLRETURN handle::set_attrb(SQLINTEGER attribute, string const &value) {
+		return check_error((*_M_setter)(_M_handle,
+					attribute,
+					reinterpret_cast<SQLPOINTER>(const_cast<char*>(value.c_str())),
+					SQL_NTS));
+	}
+	SQLRETURN handle::set_attrb(SQLINTEGER attribute, wstring const &value) {
+		return check_error((*_M_setter)(_M_handle,
+					attribute,
+					reinterpret_cast<SQLPOINTER>(const_cast<wchar_t*>(value.c_str())),
+					SQL_NTS));
+	}
+
 	SQLRETURN handle::diag(SQLSMALLINT rec_index, diaginfo &di) {
-		return ::SQLGetDiagRec(_M_type,
+		SQLRETURN retcode;
+		char *buf = 0;
+		SQLSMALLINT chars = 0;
+
+		retcode = ::SQLGetDiagRec(_M_type,
 				_M_handle,
 				rec_index,
-				&di.m_state[0],
-				&di.m_nec,
-				&di.m_msg[0],
-				sizeof(di.m_msg) / sizeof(di.m_msg[0]),
-				0);
+				&di._M_state[0],
+				&di._M_native_error_code,
+				NULL, 0,
+				&chars);
+		if (!SQL_SUCCEEDED(retcode))
+			return retcode;
+
+		buf = new char[chars + 1];
+		retcode = ::SQLGetDiagRec(_M_type,
+				_M_handle,
+				rec_index,
+				&di._M_state[0],
+				&di._M_native_error_code,
+				reinterpret_cast<SQLCHAR*>(buf), chars + 1,
+				&chars);
+		if (SQL_SUCCEEDED(retcode))
+			di._M_message.assign(buf);
+		delete[] buf;
+		return retcode;
 	}
 
 	SQLRETURN handle::check_error(SQLRETURN retcode) {
@@ -101,10 +156,15 @@ namespace odbcxx {
 			*this = handle::null;
 			return retcode;
 		}
+		SQLRETURN ret;
 		SQLSMALLINT index = 0;
 		diaginfo info;
-		while(diag(++index, info) == SQL_SUCCESS)
+		do {
+			ret = diag(++index, info);
+			if (!SQL_SUCCEEDED(ret))
+				break;
 			clog << "[diagnostics]" << info << endl;
+		} while(true);
 		return retcode;
 	}
 

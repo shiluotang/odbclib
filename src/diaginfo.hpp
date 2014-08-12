@@ -2,7 +2,7 @@
 #define ODBCXX_DIAGINFO_HPP_INCLUDED
 
 #include "config.hpp"
-#include <iosfwd>
+#include <string>
 
 namespace odbcxx {
 
@@ -13,15 +13,15 @@ namespace odbcxx {
         /**
          * odbc state code.
          */
-		SQLCHAR m_state[7];
+		SQLCHAR _M_state[7];
 		/**
 		 * native error code.
 		 */
-		SQLINTEGER m_nec;
+		SQLINTEGER _M_native_error_code;
         /**
          * odbc error message.
          */
-		SQLCHAR m_msg[0x1 << 10];
+		std::string _M_message;
 	};
 
 	std::ostream& operator << (std::ostream&, diaginfo const&);

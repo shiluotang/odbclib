@@ -7,6 +7,7 @@
 namespace odbcxx {
 
 	class statement;
+	class resultset;
     /**
      * The Cursor object associated with an opened result set.
      */
@@ -38,12 +39,13 @@ namespace odbcxx {
 			bool const bof() const { return _M_bof; }
 			bool const eof() const { return _M_eof; }
 		private:
-			statement *m_stmt_ptr;
+			statement *_M_stmt_ptr;
 			rowset _M_rowset;
 			bool _M_bof;
 			bool _M_eof;
 
 			friend class statement;
+			friend class resultset;
 	};
 
 }

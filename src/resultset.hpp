@@ -2,10 +2,20 @@
 #define ODBCXX_RESULTSET_HPP_INCLUDED
 
 #include "config.hpp"
+#include "cursor.hpp"
 
 namespace odbcxx {
 
-	class resultset {};
+	class cursor;
+	class resultset {
+		public:
+			resultset& next();
+		private:
+			cursor _M_cursor;
+
+			friend class cursor;
+			friend class rowset;
+	};
 
 }
 

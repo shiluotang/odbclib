@@ -44,7 +44,8 @@ namespace odbcxx {
 			 */
 			statement& cursor_name(std::string const& name);
 
-		protected:
+		//protected:
+		public:
 			/**
 			 * If there's any cursor open, close it.
 			 * @return this statement object.

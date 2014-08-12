@@ -28,13 +28,30 @@ int main(int argc, char* argv[]) {
 	env.alloc(conn);
 	conn.driver_connect(ss, connstr);
 	ss.alloc(stmt);
+	stmt.rowset_size(2);
 
 	clog << conn.current_catalog("test") << endl;
+
+	long no;
+	string name;
+	long age;
+	bool is_null;
 	
 	if (stmt.execute(c, "SELECT * FROM STUDENTS")) {
 		size_t rows = 0U;
-		while (c.next() && !c.eof())
+		while (c.next() && !c.eof()) {
+			for (int i = 0; i < 2; ++i) {
+				stmt.set_pos_in_rowset(i + 1, SQL_POSITION, SQL_LOCK_NO_CHANGE);
+				stmt.get_data(1, no, is_null);
+				stmt.get_data(2, name, is_null);
+				stmt.get_data(3, age, is_null);
+				clog << "no = " << no
+					<< ", name = " << name
+					<< ", age = " << age
+					<< endl;
+			}
 			++rows;
+		}
 		clog << "There're " << rows << " rows." << endl;
 	}
 
