@@ -21,11 +21,11 @@ namespace odbcxx {
 
 	handle handle::null;
 
-	handle::handle(SQLHANDLE const h, SQLSMALLINT const t)
-		:_M_handle(h), _M_type(t),
+	handle::handle(SQLHANDLE const h, SQLSMALLINT const type)
+		:_M_handle(h), _M_type(type),
 		_M_getter(0), _M_setter(0)
 	{
-		switch(t) {
+		switch(type) {
 			case SQL_HANDLE_ENV:
 				_M_getter = &SQLGetEnvAttr;
 				_M_setter = &SQLSetEnvAttr;
@@ -42,7 +42,7 @@ namespace odbcxx {
 		}
 	}
 
-	handle handle::alloc(handle::handle_type type) {
+	handle handle::alloc(SQLSMALLINT type) {
 		SQLSMALLINT t = static_cast<SQLSMALLINT>(type);
 		SQLHANDLE h;
 		SQLRETURN ret = check_error(::SQLAllocHandle(t, _M_handle, &h));

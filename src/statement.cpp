@@ -2,6 +2,7 @@
 #include "session.hpp"
 #include "cursor.hpp"
 #include <string>
+#include <cstring>
 
 using namespace std;
 

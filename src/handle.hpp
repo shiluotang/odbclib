@@ -30,7 +30,7 @@ namespace odbcxx {
 			SQLHANDLE const raw() const { return _M_handle; }
 			SQLSMALLINT const type() const { return _M_type; }
 
-			handle alloc(handle_type type);
+			handle alloc(SQLSMALLINT type);
 			SQLRETURN close();
 
 			SQLRETURN get_attrb(SQLINTEGER, SQLSMALLINT&);
@@ -49,8 +49,8 @@ namespace odbcxx {
 			SQLRETURN set_attrb(SQLINTEGER, std::wstring const&);
 
 			SQLRETURN diag(SQLSMALLINT, diaginfo&);
-
 			SQLRETURN check_error(SQLRETURN retcode);
+			SQLRETURN ignore_error(SQLRETURN retcode);
 
 			static handle null;
 		private:
