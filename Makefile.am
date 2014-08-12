@@ -16,7 +16,8 @@ src/environment.cpp \
 src/statement.cpp \
 src/connection.cpp \
 src/diaginfo.cpp \
-src/resultset.cpp
+src/resultset.cpp \
+src/odbc_error.cpp
 
 libodbcxx_la_LDFLAGS = -lodbc32 -no-undefined
 

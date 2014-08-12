@@ -120,7 +120,7 @@ namespace odbcxx {
 					SQL_NTS));
 	}
 
-	SQLRETURN handle::diag(SQLSMALLINT rec_index, diaginfo &di) {
+	SQLRETURN handle::diag(SQLSMALLINT rec_index, diaginfo &di) const {
 		SQLRETURN retcode;
 		char *buf = 0;
 		SQLSMALLINT chars = 0;
@@ -167,10 +167,27 @@ namespace odbcxx {
 		} while(true);
 		return retcode;
 	}
+	SQLRETURN handle::ignore_error(SQLRETURN retcode) {
+		if(retcode == SQL_SUCCESS)
+			return retcode;
+		if(retcode == SQL_INVALID_HANDLE) {
+			*this = handle::null;
+			return retcode;
+		}
+		SQLRETURN ret;
+		SQLSMALLINT index = 0;
+		diaginfo info;
+		do {
+			ret = diag(++index, info);
+			if (!SQL_SUCCEEDED(ret))
+				break;
+		} while(true);
+		return retcode;
+	}
 
-	ostream& operator << (ostream& os, handle::handle_type t) {
+	ostream& operator << (ostream& os, handle::handle_type type) {
 		os << "handle_type::";
-		switch(t) {
+		switch(type) {
 			case handle::ENV: return os << "ENV";
 			case handle::DBC: return os << "DBC";
 			case handle::STMT: return os << "STMT";

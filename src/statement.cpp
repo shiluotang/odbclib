@@ -87,7 +87,7 @@ namespace odbcxx {
 			_M_handle.check_error(retcode);
 			return std::move(name);
 		}
-		buf_len = out_len + (out_len % 2 ? 1 : 2);
+		buf_len = out_len + 1;
 		buf = new char[buf_len];
 		retcode = _M_handle.check_error(::SQLGetCursorName(_M_handle.raw(),
 				reinterpret_cast<SQLCHAR*>(buf),

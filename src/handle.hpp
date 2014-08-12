@@ -48,13 +48,13 @@ namespace odbcxx {
 			SQLRETURN set_attrb(SQLINTEGER, std::string const&);
 			SQLRETURN set_attrb(SQLINTEGER, std::wstring const&);
 
-			SQLRETURN diag(SQLSMALLINT, diaginfo&);
+			SQLRETURN diag(SQLSMALLINT, diaginfo&) const;
 			SQLRETURN check_error(SQLRETURN retcode);
 			SQLRETURN ignore_error(SQLRETURN retcode);
 
 			static handle null;
 		private:
-			SQLHANDLE _M_handle;
+			mutable SQLHANDLE _M_handle;
 			SQLSMALLINT _M_type;
 
 			SQLATTRB_GETTER _M_getter;
