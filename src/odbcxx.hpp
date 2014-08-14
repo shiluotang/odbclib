@@ -3,6 +3,8 @@
 
 #include "config.hpp"
 
+#include "buffer.hpp"
+
 #include "handle.hpp"
 #include "handle_object.hpp"
 #include "environment.hpp"

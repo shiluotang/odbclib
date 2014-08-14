@@ -21,7 +21,7 @@ namespace odbcxx {
 	rowset& rowset::position(size_t pos) {
 		if (*this) {
 			SQLRETURN retcode;
-			retcode = _M_stmt_ptr->_M_handle.check_error(SQL_POSITION_TO(_M_stmt_ptr->_M_handle.raw(), pos));
+			retcode = _M_stmt_ptr->_M_handle.log_error(SQL_POSITION_TO(_M_stmt_ptr->_M_handle.raw(), pos));
 			if (SQL_SUCCEEDED(retcode))
 				_M_position = pos;
 		}

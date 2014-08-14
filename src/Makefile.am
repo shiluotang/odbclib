@@ -14,4 +14,5 @@ nobase_pkginclude_HEADERS = \
 ./statement.hpp \
 ./transaction.hpp \
 ./utils.hpp \
-./odbc_error.hpp
+./odbc_error.hpp \
+./buffer.hpp

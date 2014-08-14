@@ -10,49 +10,49 @@ namespace odbcxx {
 
 	class handle {
 		public:
-			enum handle_type {
-				ENV = SQL_HANDLE_ENV,
-				DBC = SQL_HANDLE_DBC,
-				STMT = SQL_HANDLE_STMT,
-				DESC = SQL_HANDLE_DESC
-			};
-
-			typedef SQLRETURN (SQL_API *SQLATTRB_GETTER)(SQLHANDLE, SQLINTEGER, SQLPOINTER, SQLINTEGER, SQLINTEGER*);
-			typedef SQLRETURN (SQL_API *SQLATTRB_SETTER)(SQLHANDLE, SQLINTEGER, SQLPOINTER, SQLINTEGER);
+			typedef SQLRETURN (SQL_API *SQLATTRB_GETTER)(SQLHANDLE, SQLINTEGER,
+					SQLPOINTER, SQLINTEGER, SQLINTEGER*);
+			typedef SQLRETURN (SQL_API *SQLATTRB_SETTER)(SQLHANDLE, SQLINTEGER,
+					SQLPOINTER, SQLINTEGER);
 		public:
-			handle(SQLHANDLE const = SQL_NULL_HANDLE, SQLSMALLINT const = 0);
+			explicit handle(SQLHANDLE = SQL_NULL_HANDLE, SQLSMALLINT = 0);
 			operator bool() const { return _M_handle != SQL_NULL_HANDLE; }
 			bool operator == (handle const& other) const {
-				return _M_handle == other._M_handle && _M_type == other._M_type;
+				return _M_handle == other._M_handle
+					&& _M_type == other._M_type;
 			}
-			bool operator != (handle const& other) const { return !(*this == other); }
+			bool operator != (handle const& other) const {
+				return !(*this == other);
+			}
 
 			SQLHANDLE const raw() const { return _M_handle; }
 			SQLSMALLINT const type() const { return _M_type; }
 
-			handle alloc(SQLSMALLINT type);
-			SQLRETURN close();
+			handle alloc(SQLSMALLINT) const;
+			void close();
 
-			SQLRETURN get_attrb(SQLINTEGER, SQLSMALLINT&);
-			SQLRETURN get_attrb(SQLINTEGER, SQLUSMALLINT&);
-			SQLRETURN get_attrb(SQLINTEGER, SQLINTEGER&);
-			SQLRETURN get_attrb(SQLINTEGER, SQLUINTEGER&);
-			SQLRETURN get_attrb(SQLINTEGER, std::string&);
-			SQLRETURN get_attrb(SQLINTEGER, std::wstring&);
+			handle const& get_attrb(SQLINTEGER, SQLSMALLINT&)	const;
+			handle const& get_attrb(SQLINTEGER, SQLUSMALLINT&)	const;
+			handle const& get_attrb(SQLINTEGER, SQLINTEGER&)	const;
+			handle const& get_attrb(SQLINTEGER, SQLUINTEGER&)	const;
+			handle const& get_attrb(SQLINTEGER, std::string&)	const;
+			handle const& get_attrb(SQLINTEGER, std::wstring&)	const;
+			handle const& get_attrb(SQLINTEGER, SQLPOINTER&)	const;
 
-			SQLRETURN set_attrb(SQLINTEGER, SQLSMALLINT const&);
-			SQLRETURN set_attrb(SQLINTEGER, SQLUSMALLINT const&);
-			SQLRETURN set_attrb(SQLINTEGER, SQLINTEGER const&);
-			SQLRETURN set_attrb(SQLINTEGER, SQLUINTEGER const&);
-			SQLRETURN set_attrb(SQLINTEGER, SQLPOINTER);
-			SQLRETURN set_attrb(SQLINTEGER, std::string const&);
-			SQLRETURN set_attrb(SQLINTEGER, std::wstring const&);
+			handle& set_attrb(SQLINTEGER, SQLSMALLINT);	
+			handle& set_attrb(SQLINTEGER, SQLUSMALLINT);
+			handle& set_attrb(SQLINTEGER, SQLINTEGER);
+			handle& set_attrb(SQLINTEGER, SQLUINTEGER);
+			handle& set_attrb(SQLINTEGER, SQLPOINTER);
+			handle& set_attrb(SQLINTEGER, std::string const&);
+			handle& set_attrb(SQLINTEGER, std::wstring const&);
 
 			SQLRETURN diag(SQLSMALLINT, diaginfo&) const;
-			SQLRETURN check_error(SQLRETURN retcode);
-			SQLRETURN ignore_error(SQLRETURN retcode);
+			handle const& log_error(SQLRETURN) const;
+			handle const& ignore_error(SQLRETURN) const;
+			handle const& throw_error(SQLRETURN) const;
 
-			static handle null;
+			static const handle null;
 		private:
 			mutable SQLHANDLE _M_handle;
 			SQLSMALLINT _M_type;
@@ -63,7 +63,7 @@ namespace odbcxx {
 			friend std::ostream& operator << (std::ostream&, handle const&);
 	};
 
-	std::ostream& operator << (std::ostream&, handle::handle_type);
+	extern std::ostream& operator << (std::ostream&, handle const&);
 
 }
 

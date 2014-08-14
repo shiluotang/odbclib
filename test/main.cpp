@@ -5,15 +5,15 @@
 using namespace std;
 using namespace odbcxx;
 
-int main(int argc, char* argv[]) {
+int test1(int argc, char* argv[]) {
 	char const *connstr = "DRIVER={MySQL ODBC 5.1 Driver};"
 		"SERVER=localhost;"
-		"PORT=3306"
+		"PORT=3306;"
 		"DATABASE=test;"
 		"DBQ=test;"
 		"UID=root;";
-	char const *sql = "insert into students(sid, name) values(100, 'what');";
-	char const *sql2 = "insert into students(sid, name) values(1000, 'what');";
+	//char const *sql = "insert into students(sid, name) values(100, 'what');";
+	//char const *sql2 = "insert into students(sid, name) values(1000, 'what');";
 
 	cout << boolalpha;
 	clog << boolalpha;
@@ -54,6 +54,14 @@ int main(int argc, char* argv[]) {
 		}
 		clog << "There're " << rows << " rows." << endl;
 	}
+	return EXIT_SUCCESS;
+}
 
+int main(int argc, char* argv[]) {
+	try {
+		test1(argc, argv);
+	} catch(exception &e) {
+		cerr << e.what() << endl;
+	}
 	return EXIT_SUCCESS;
 }

@@ -7,17 +7,11 @@ namespace odbcxx {
 	handle_object::handle_object(handle const& h) :_M_handle(h) {}
 
 	handle_object::~handle_object() {
-		if(_M_handle != handle::null) {
-			_M_handle.close();
-			_M_handle = handle::null;
-		}
+		close_handle();
 	}
 
-	bool handle_object::close_handle() {
-		if(SQL_SUCCEEDED(_M_handle.close())) {
-			_M_handle = handle::null;
-			return true;
-		}
-		return false;
+	void handle_object::close_handle() {
+		if(_M_handle)
+			_M_handle.close();
 	}
 }

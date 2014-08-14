@@ -10,28 +10,12 @@ namespace odbcxx {
      */
 	class handle_object {
 		public:
-            /**
-             * Check whether the odbc handle of this object is valid.
-             * @return true if handle is valid, vice versa.
-             */
-			inline operator bool() const
-			{ return static_cast<bool>(_M_handle); }
-            /**
-             * Close the odbc handle of this object.
-             * @return true if handle before close is valid, vice versa.
-             */
-			bool close_handle();
+			operator bool() const { return _M_handle; }
+			void close_handle();
 		protected:
-            /**
-             * Construct handle_object based on the specified odbc handle.
-             * @param h the specified odbc handle.
-             */
-			explicit handle_object(handle const &h = handle::null);
+			explicit handle_object(handle const& = handle::null);
 			virtual ~handle_object();
-
-            /**
-             * The handle object inside this object.
-             */
+		protected:
 			handle _M_handle;
 	};
 }
