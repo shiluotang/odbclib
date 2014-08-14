@@ -1,6 +1,6 @@
 ACLOCAL_AMFLAGS = -I m4
 
-#AM_CPPFLAGS = 
+AM_CPPFLAGS = -Wall
 AM_CXXFLAGS = -std=c++11
 
 lib_LTLIBRARIES = libodbcxx.la
@@ -17,7 +17,8 @@ src/statement.cpp \
 src/connection.cpp \
 src/diaginfo.cpp \
 src/resultset.cpp \
-src/odbc_error.cpp
+src/odbc_error.cpp \
+src/buffer.cpp
 
 libodbcxx_la_LDFLAGS = -lodbc32 -no-undefined
 
