@@ -14,9 +14,8 @@ namespace odbcxx {
 			explicit environment(SQLINTEGER = SQL_OV_ODBC3);
 			environment& version(SQLINTEGER);
 			SQLINTEGER version();
-			virtual ~environment() {}
 
-			connection& alloc(connection &conn);
+			connection& alloc(connection&);
 
 		protected:
 			environment& commit();
