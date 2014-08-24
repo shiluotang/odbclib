@@ -20,12 +20,17 @@ src/resultset.cpp \
 src/odbc_error.cpp \
 src/buffer.cpp
 
-libodbcxx_la_LDFLAGS = -lodbc32 -no-undefined
+if USE_UNIXODBC
+ODBC_LDFLAGS = -lodbc -lpthread
+else
+ODBC_LDFLAGS = -lodbc32
+endif
+
+libodbcxx_la_LDFLAGS = -no-undefined $(ODBC_LDFLAGS)
 
 noinst_PROGRAMS = test1
 test1_SOURCES = test/main.cpp
 test1_LDADD = libodbcxx.la
-test1_LDFLAGS = -all-static
 
 SUBDIRS = src
 
