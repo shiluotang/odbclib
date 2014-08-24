@@ -8,6 +8,19 @@
 
 using namespace std;
 
+#define DEFINE_DATA_GETTER(TARGET_TYPE, TYPE, TYPE_SIZE) \
+	statement& statement::get_data(SQLUSMALLINT no, TYPE &value, bool &is_null) { \
+		SQLLEN indicator = 0; \
+		_M_handle.throw_error(SQLGetData(_M_handle.raw(), \
+				no, \
+				TARGET_TYPE, \
+				reinterpret_cast<SQLPOINTER>(&value), \
+				TYPE_SIZE, \
+				&indicator)); \
+		is_null = (indicator == SQL_NO_DATA); \
+		return *this; \
+	}
+
 namespace odbcxx {
 
 	statement& statement::prepare(string const &cmd) {
@@ -137,41 +150,18 @@ namespace odbcxx {
 					len_or_indicator));
 	}
 
-	SQLRETURN statement::get_data(SQLUSMALLINT no,
-			SQLSMALLINT target_type,
-			SQLPOINTER target_value_ptr,
-			SQLLEN buf_len,
-			SQLLEN *len_or_indicator) {
-		return _M_handle.throw_error(
-				::SQLGetData(
-					_M_handle.raw(),
-					no,
-					target_type,
-					target_value_ptr,
-					buf_len,
-					len_or_indicator));
-	}
+	DEFINE_DATA_GETTER(SQL_C_SSHORT,	SQLSMALLINT,	SQL_IS_SMALLINT)
+	DEFINE_DATA_GETTER(SQL_C_USHORT,	SQLUSMALLINT,	SQL_IS_SMALLINT)
+	DEFINE_DATA_GETTER(SQL_C_SLONG,		SQLINTEGER,		SQL_IS_INTEGER)
+	DEFINE_DATA_GETTER(SQL_C_ULONG,		SQLUINTEGER,	SQL_IS_UINTEGER)
+	DEFINE_DATA_GETTER(SQL_C_FLOAT,		SQLREAL,		SQL_IS_INTEGER)
+	DEFINE_DATA_GETTER(SQL_C_DOUBLE,	SQLDOUBLE,		SQL_IS_INTEGER)
+	DEFINE_DATA_GETTER(SQL_C_SBIGINT,	SQLBIGINT,		SQL_IS_INTEGER)
+	DEFINE_DATA_GETTER(SQL_C_UBIGINT,	SQLUBIGINT,		SQL_IS_INTEGER)
 
-	SQLRETURN statement::get_data(SQLUSMALLINT no,
-			SQLSMALLINT target_type,
-			SQLPOINTER target_value_ptr,
-			SQLLEN buf_len,
-			bool &is_null) {
-		SQLLEN indicator;
-		SQLRETURN retcode = get_data(no,
-				target_type,
-				target_value_ptr,
-				buf_len,
-				&indicator);
-		if (!SQL_SUCCEEDED(retcode))
-			return retcode;
-		is_null = (indicator == SQL_NULL_DATA);
-		return retcode;
-	}
-
-	SQLRETURN statement::get_data(SQLUSMALLINT no, string &v, bool &is_null) {
+	statement& statement::get_data(SQLUSMALLINT no, string &v, bool &is_null) {
 		SQLRETURN retcode;
-		char buf[4];
+		char buf[1024];
 		SQLLEN buf_len = countof(buf) * sizeof(char);
 		SQLLEN indicator = 0;
 
@@ -180,47 +170,36 @@ namespace odbcxx {
 		while (true) {
 			memset(buf, 0, sizeof(buf));
 			retcode = ::SQLGetData(_M_handle.raw(), no, SQL_C_CHAR, &buf[0], buf_len, &indicator);
-			// check null.
 			if ((is_null = (indicator == SQL_NULL_DATA)))
-				return retcode;
-			// check no more data.
+				return *this;
 			if (retcode == SQL_NO_DATA)
 				break;
-			// check error.
 			if (!SQL_SUCCEEDED(retcode))
-				return _M_handle.throw_error(retcode);
-			//concate data.
+				_M_handle.throw_error(retcode);
 			vv.append(buf);
 		}
 		v = std::move(vv);
-		return retcode;
+		return *this;
 	}
-	SQLRETURN statement::get_data(SQLUSMALLINT no, wstring &v, bool &is_null) {
+	statement& statement::get_data(SQLUSMALLINT no, wstring &v, bool &is_null) {
 		SQLRETURN retcode;
 		wchar_t buf[1024];
 		SQLLEN buf_len = countof(buf) * sizeof(wchar_t);
 		SQLLEN indicator = 0;
 
 		wstring vv;
-		//int bytes = 0;
 		while (true) {
 			memset(buf, 0, sizeof(buf));
 			retcode = ::SQLGetData(_M_handle.raw(), no, SQL_C_WCHAR, &buf[0], buf_len, &indicator);
-			// check null.
 			if ((is_null = (indicator == SQL_NULL_DATA)))
-				return retcode;
-			// check no more data.
+				return *this;
 			if (retcode == SQL_NO_DATA)
 				break;
-			// check error.
 			if (!SQL_SUCCEEDED(retcode))
-				return _M_handle.log_error(retcode);
-			//bytes = ((indicator > buf_len) || (indicator == SQL_NO_TOTAL)) ? buf_len : indicator;
-			
-			//concate data.
+				_M_handle.throw_error(retcode);
 			vv.append(buf);
 		}
 		v = std::move(vv);
-		return retcode;
+		return *this;
 	}
 }
