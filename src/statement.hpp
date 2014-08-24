@@ -28,45 +28,20 @@ namespace odbcxx {
 			SQLRETURN set_pos_in_rowset(SQLSETPOSIROW row, SQLUSMALLINT op,
 					SQLUSMALLINT lock_type);
 
-			SQLRETURN bind_col(SQLUSMALLINT column_no,
-					SQLSMALLINT target_type,
-					SQLPOINTER target_value_ptr,
-					SQLLEN buf_len,
-					SQLLEN *len_or_indicator);
+			SQLRETURN bind_col(SQLUSMALLINT, SQLSMALLINT, SQLPOINTER, SQLLEN, SQLLEN*);
 
-			SQLRETURN get_data(SQLUSMALLINT no,
-					SQLSMALLINT target_type,
-					SQLPOINTER target_value_ptr,
-					SQLLEN buf_len,
-					SQLLEN *len_or_indicator);
+			statement& get_data(SQLUSMALLINT, SQLSMALLINT&,		bool&); 
+			statement& get_data(SQLUSMALLINT, SQLUSMALLINT&,	bool&);
+			statement& get_data(SQLUSMALLINT, SQLINTEGER&,		bool&);
+			statement& get_data(SQLUSMALLINT, SQLUINTEGER&,		bool&);
+			statement& get_data(SQLUSMALLINT, SQLREAL&,			bool&);
+			statement& get_data(SQLUSMALLINT, SQLDOUBLE&,		bool&);
+			statement& get_data(SQLUSMALLINT, SQLBIGINT&,		bool&);
+			statement& get_data(SQLUSMALLINT, SQLUBIGINT&,		bool&);
 
-			SQLRETURN get_data(SQLUSMALLINT, SQLSMALLINT, SQLPOINTER, SQLLEN, bool&);
-			SQLRETURN get_data(SQLUSMALLINT no, SQLSMALLINT &v, bool &is_null) {
-				return get_data(no, SQL_C_SSHORT, reinterpret_cast<SQLPOINTER>(&v), SQL_IS_SMALLINT, is_null);
-			}
-			SQLRETURN get_data(SQLUSMALLINT no, SQLUSMALLINT &v, bool &is_null) {
-				return get_data(no, SQL_C_USHORT, reinterpret_cast<SQLPOINTER>(&v), SQL_IS_USMALLINT, is_null);
-			}
-			SQLRETURN get_data(SQLUSMALLINT no, SQLINTEGER &v, bool &is_null) {
-				return get_data(no, SQL_C_SLONG, reinterpret_cast<SQLPOINTER>(&v), SQL_IS_INTEGER, is_null);
-			}
-			SQLRETURN get_data(SQLUSMALLINT no, SQLUINTEGER &v, bool &is_null) {
-				return get_data(no, SQL_C_ULONG, reinterpret_cast<SQLPOINTER>(&v), SQL_IS_UINTEGER, is_null);
-			}
-			SQLRETURN get_data(SQLUSMALLINT no, SQLREAL &v, bool &is_null) {
-				return get_data(no, SQL_C_FLOAT, reinterpret_cast<SQLPOINTER>(&v), SQL_IS_INTEGER, is_null);
-			}
-			SQLRETURN get_data(SQLUSMALLINT no, SQLDOUBLE &v, bool &is_null) {
-				return get_data(no, SQL_C_DOUBLE, reinterpret_cast<SQLPOINTER>(&v), SQL_IS_INTEGER, is_null);
-			}
-			SQLRETURN get_data(SQLUSMALLINT no, bool &v, bool &is_null) {
-				SQLCHAR c;
-				SQLRETURN retcode = get_data(no, SQL_C_BIT, reinterpret_cast<SQLPOINTER>(&c), 0, is_null);
-				v = (c != 0);
-				return retcode;
-			}
-			SQLRETURN get_data(SQLUSMALLINT no, std::string &v, bool &is_null);
-			SQLRETURN get_data(SQLUSMALLINT no, std::wstring &v, bool &is_null);
+			statement& get_data(SQLUSMALLINT, bool&,			bool&);
+			statement& get_data(SQLUSMALLINT, std::string&,		bool&);
+			statement& get_data(SQLUSMALLINT, std::wstring&,	bool&);
 
 		private:
 			friend class session;
