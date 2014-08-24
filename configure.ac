@@ -18,7 +18,8 @@ LT_INIT
 
 # Checks for libraries.
 # FIXME: Replace `main' with a function in `-lodbc32':
-AC_CHECK_LIB([odbc32], [SQLFreeHandle])
+AC_CHECK_LIB([odbc], [main], [HAVE_UNIXODBC=true])
+AM_CONDITIONAL([USE_UNIXODBC], [test x$HAVE_UNIXODBC = xtrue])
 
 # Checks for header files.
 
