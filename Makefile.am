@@ -20,10 +20,10 @@ src/resultset.cpp \
 src/odbc_error.cpp \
 src/buffer.cpp
 
-if USE_UNIXODBC
-ODBC_LDFLAGS = -lodbc -lpthread
-else
+if USE_ODBC32
 ODBC_LDFLAGS = -lodbc32
+else
+ODBC_LDFLAGS = -lodbc -lpthread
 endif
 
 libodbcxx_la_LDFLAGS = -no-undefined $(ODBC_LDFLAGS)
