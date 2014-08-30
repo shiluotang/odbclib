@@ -179,7 +179,7 @@ namespace odbcxx {
 	 */
 	SQLRETURN handle::diag(SQLSMALLINT rec_index, diaginfo &di) const {
 		SQLRETURN retcode;
-		char *buf = 0;
+		buffer buf(0);
 		SQLSMALLINT chars = 0;
 
 		retcode = ::SQLGetDiagRec(_M_type,
@@ -194,17 +194,16 @@ namespace odbcxx {
 				_M_handle = SQL_NULL_HANDLE;
 			return retcode;
 		}
-		buf = new char[chars + 1];
+        buf.resize(chars + 1);
 		retcode = ::SQLGetDiagRec(_M_type,
 				_M_handle,
 				rec_index,
 				&di._M_state[0],
 				&di._M_native_error_code,
-				reinterpret_cast<SQLCHAR*>(buf), chars + 1,
+				reinterpret_cast<SQLCHAR*>(buf.addr()), buf.size(),
 				&chars);
 		if (SQL_SUCCEEDED(retcode))
-			di._M_message.assign(buf);
-		delete[] buf;
+			di._M_message.assign(buf.addr());
 		if (retcode == SQL_INVALID_HANDLE)
 			_M_handle = SQL_NULL_HANDLE;
 		return retcode;
