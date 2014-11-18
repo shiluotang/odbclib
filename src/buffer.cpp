@@ -5,12 +5,14 @@
 using namespace std;
 
 namespace odbcxx {
+
 	buffer::buffer(size_t n) :_M_addr(0), _M_size(0) {
 		if (n > 0) {
 			_M_addr = new char[n];
 			_M_size = n;
 		}
 	}
+
 	buffer::buffer(buffer const &other) :_M_addr(0), _M_size(0) {
 		if (other._M_size > 0) {
 			_M_addr = new char[other._M_size];
@@ -18,12 +20,14 @@ namespace odbcxx {
 			std::memcpy(_M_addr, other._M_addr, other._M_size);
 		}
 	}
+
 	buffer::buffer(buffer &&other) noexcept
 		:_M_addr(other._M_addr),
 		_M_size(other._M_size) {
 		other._M_addr = 0;
 		other._M_size = 0;
 	}
+
 	buffer::~buffer() {
 		if (_M_addr) {
 			delete[] _M_addr;
@@ -52,6 +56,7 @@ namespace odbcxx {
 			std::memcpy(_M_addr, other._M_addr, other._M_size);
 		return *this;
 	}
+
 	buffer& buffer::operator = (buffer &&other) noexcept {
 		std::swap(_M_addr, other._M_addr);
 		std::swap(_M_size, other._M_size);
