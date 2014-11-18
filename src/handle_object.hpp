@@ -6,7 +6,7 @@
 namespace odbcxx {
 
     /**
-     * This class contains a odbc handle in it.
+     * This class contains an odbc handle in it.
      */
 	class handle_object {
 		public:
