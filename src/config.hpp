@@ -3,14 +3,18 @@
 
 #include "macros.hpp"
 
-#if OS_TYPE == OS_WINDOWS
-#include <windows.h>
-#include <odbcinst.h>
-#elif OS_TYPE == OS_LINUX || OS_TYPE == OS_UNIX
-#include <odbcinst.h>
-#elif OS_TYPE == OS_MAC
-#error mac is not supported yet!
+#if defined(_WIN32)
+#   include <windows.h>
+#elif defined(__CYGWIN__) || defined(__CYGWIN32__)
+#   include <windows.h>
+#elif defined(__MINGW__) || defined(__MINGW32__) || defined(__MINGW64__)
+#   include <windows.h>
 #endif
+
+#include <odbcinst.h>
+#include <sql.h>
+#include <sqlucode.h>
+#include <sqlext.h>
 
 //disable cl.exe warning about throw
 #ifdef _MSC_VER

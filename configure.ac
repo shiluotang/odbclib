@@ -1,20 +1,26 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.63])
+AC_PREREQ([2.67])
 AC_INIT([odbclib],[1.0],[http://sourceforge.net/p/odbclib])
-AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
-LT_INIT
+
+AC_CONFIG_AUX_DIR([build-aux])
+AC_CONFIG_MACRO_DIR([m4])
 
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
 
+AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
+
 # Checks for programs.
 AC_PROG_CXX
+AM_PROG_AR
+LT_INIT
 
 # Checks for libraries.
 # FIXME: Replace `main' with a function in `-lodbc32':
-AC_CHECK_LIB([odbc32], [main])
+AC_CHECK_LIB([odbc32], [main], [HAVE_ODBC32=true])
+AM_CONDITIONAL([USE_ODBC32], [test x$HAVE_ODBC32 = xtrue])
 
 # Checks for header files.
 
@@ -26,5 +32,22 @@ AC_TYPE_SIZE_T
 # Checks for library functions.
 AC_CHECK_FUNCS([memset])
 
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile
+                 src/Makefile])
+
+#######################################################
+# Doxygen support
+#######################################################
+DX_DOXYGEN_FEATURE(ON)
+#DX_HTML_FEATURE(ON)
+#DX_CHM_FEATURE(OFF)
+#DX_CHI_FEATURE(OFF)
+#DX_MAN_FEATURE(OFF)
+#DX_RTF_FEATURE(OFF)
+#DX_XML_FEATURE(OFF)
+#DX_PDF_FEATURE(OFF)
+#DX_PS_FEATURE(OFF)
+DX_INIT_DOXYGEN([$PACKAGE_NAME],[Doxyfile],[doc])
+#######################################################
+
 AC_OUTPUT
