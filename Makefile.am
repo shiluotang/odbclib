@@ -27,7 +27,7 @@ ODBC_LDFLAGS = -lodbc -lpthread
 endif
 
 libodbcxx_la_LDFLAGS = -no-undefined $(ODBC_LDFLAGS)
-
+ 
 noinst_PROGRAMS = test1
 test1_SOURCES = test/main.cpp
 test1_LDADD = libodbcxx.la
