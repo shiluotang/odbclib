@@ -1,128 +1,156 @@
-#include "environment.hpp"
 #include "connection.hpp"
+#include "environment.hpp"
+#include "session.hpp"
+#include "buffer.hpp"
 
-#include <iostream>
+#include <utility>
+
 using namespace std;
 
-NS_BEGIN_1(odbclib)
+#define DEFINE_SIMPLE_GETTER(TYPE) \
+	connection& connection::get_info(SQLUSMALLINT info_type, SQL##TYPE &value) { \
+		_M_handle.throw_error( \
+				SQLGetInfo( \
+					_M_handle.raw(), \
+					info_type, \
+					reinterpret_cast<SQLPOINTER>(&value), \
+					SQL_IS_##TYPE, \
+					0)); \
+		return *this; \
+	}
 
-Connection::Connection(Environment &env)
-try	:m_env_ref(env),
-	m_handle(new Handle(env.m_handle,
-			odbclib::handle::Connection)),
-	m_session_ptr(0)
-{
-	DEBUG_INIT("Connection");
-	env.addDisposingListener(*this);
-}
-catch(...)
-{
-	doDispose();
-	throw;
-}
+namespace odbcxx {
 
-Connection::~Connection()
-{
-	DEBUG_RELEASE("Connection");
-	dispose();
-}
+	connection::connection() {}
 
-void
-Connection::doDispose()
-{
-	delete m_handle;
-	m_handle = 0;
-}
+	session& connection::connect(session& s,
+			string const& server_name,
+			string const &user_name,
+			string const &authentication) {
+		_M_handle.throw_error(SQLConnect(_M_handle.raw(),
+			reinterpret_cast<SQLCHAR*>(const_cast<char*>(server_name.c_str())),
+			SQL_NTS,
+			reinterpret_cast<SQLCHAR*>(const_cast<char*>(user_name.c_str())),
+			SQL_NTS,
+			reinterpret_cast<SQLCHAR*>(const_cast<char*>(authentication.c_str())),
+			SQL_NTS));
+		s._M_conn_ptr = this;
+		return s;
+	}
 
-void 
-Connection::setAutocommit(bool autocommit)
-{
-	SQLRETURN ret = m_handle->setAttribute(
-		SQL_ATTR_AUTOCOMMIT,
-		static_cast<SQLSMALLINT>(autocommit ? 
-			SQL_AUTOCOMMIT_ON : SQL_AUTOCOMMIT_OFF));
-	m_handle->checkError(ret);
-}
+	session& connection::driver_connect(session &s,
+			string const &in_connstr,
+			SQLUSMALLINT driver_completion,
+			SQLHWND hwnd) {
+		SQLSMALLINT len = 0;
+		_M_handle.throw_error(SQLDriverConnect(
+			_M_handle.raw(),
+			hwnd,
+			reinterpret_cast<SQLCHAR*>(const_cast<char*>(in_connstr.c_str())),
+			SQL_NTS,
+			&s.m_buf[0],
+			countof(s.m_buf),
+			&len,
+			driver_completion));
+		s.m_buf[countof(s.m_buf) - 1] = 0;
+		s._M_conn_ptr = this;
+		return s;
+	}
 
-bool
-Connection::getAutocommit()
-{
-	SQLUINTEGER ac = 0;
-	SQLRETURN ret = m_handle->getAttribute(
-		SQL_ATTR_AUTOCOMMIT,
-		ac);
-	m_handle->checkError(ret);
-	return ac == SQL_AUTOCOMMIT_ON;
-}
+	session& connection::browse_connect(session &s,
+			string const& in_connstr) {
+		SQLSMALLINT len = 0;
+		_M_handle.throw_error(SQLBrowseConnect(
+			_M_handle.raw(),
+			reinterpret_cast<SQLCHAR*>(const_cast<char*>(in_connstr.c_str())),
+			SQL_NTS,
+			&s.m_buf[0],
+			countof(s.m_buf),
+			&len));
+		s.m_buf[countof(s.m_buf) - 1] = 0;
+		s._M_conn_ptr = this;
+		return s;
+	}
 
-size_t 
-Connection::getLoginTimeout()
-{
-	SQLUINTEGER timeout = 0u;
-	SQLRETURN ret = m_handle->getAttribute(
-			SQL_ATTR_LOGIN_TIMEOUT,
-			timeout);
-	m_handle->checkError(ret);
-	return timeout;
-}
-void 
-Connection::setLoginTimeout(size_t timeout)
-{
-	SQLRETURN ret = m_handle->setAttribute(
-			SQL_ATTR_LOGIN_TIMEOUT,
-			static_cast<SQLUINTEGER>(timeout));
-	m_handle->checkError(ret);
-}
+	connection& connection::current_catalog(string const &catalog) {
+		if(*this)
+			_M_handle.set_attrb(SQL_ATTR_CURRENT_CATALOG, catalog);
+		return *this;
+	}
+	string const connection::current_catalog() {
+		string catalog;
+		_M_handle.get_attrb(SQL_ATTR_CURRENT_CATALOG, catalog);
+		return catalog;
+	}
 
-void 
-Connection::setConnectTimeout(size_t timeout)
-{
-	SQLRETURN ret = m_handle->setAttribute(
-			SQL_ATTR_CONNECTION_TIMEOUT,
-			static_cast<SQLUINTEGER>(timeout));
-	m_handle->checkError(ret);
+	bool connection::auto_commit() {
+		SQLUINTEGER status;
+		_M_handle.get_attrb(SQL_ATTR_AUTOCOMMIT, status);
+		return status == SQL_AUTOCOMMIT_ON;
+	}
+	connection& connection::auto_commit(bool flag) {
+		SQLUINTEGER status = flag ? SQL_AUTOCOMMIT_ON : SQL_AUTOCOMMIT_OFF;
+		_M_handle.set_attrb(SQL_ATTR_AUTOCOMMIT, status);
+		return *this;
+	}
+
+	string const connection::native_sql(string const &sql) {
+		buffer buf(0);
+		SQLINTEGER out_len = 0;
+		_M_handle.throw_error(SQLNativeSql(_M_handle.raw(),
+				reinterpret_cast<SQLCHAR*>(const_cast<char*>(sql.c_str())), SQL_NTS,
+				reinterpret_cast<SQLCHAR*>(buf.addr()), buf.size(),
+				&out_len));
+		string native;
+		buf.resize(out_len + 1);
+		_M_handle.throw_error(SQLNativeSql(_M_handle.raw(),
+				reinterpret_cast<SQLCHAR*>(const_cast<char*>(sql.c_str())), SQL_NTS,
+				reinterpret_cast<SQLCHAR*>(buf.addr()), buf.size(),
+				&out_len));
+		native.assign(buf.addr());
+		return native;
+	}
+
+	connection& connection::disconnect() {
+		if(*this)
+			_M_handle.throw_error(SQLDisconnect(_M_handle.raw()));
+		return *this;
+	}
+
+	connection& connection::commit() {
+		if(*this)
+			_M_handle.throw_error(::SQLEndTran(
+						_M_handle.type(),
+						_M_handle.raw(),
+						SQL_COMMIT));
+		return *this;
+	}
+
+	connection& connection::rollback() {
+		if(*this)
+			_M_handle.throw_error(::SQLEndTran(
+						_M_handle.type(),
+						_M_handle.raw(),
+						SQL_ROLLBACK));
+		return *this;
+	}
+
+	DEFINE_SIMPLE_GETTER(SMALLINT)
+	DEFINE_SIMPLE_GETTER(USMALLINT)
+	DEFINE_SIMPLE_GETTER(INTEGER)
+	DEFINE_SIMPLE_GETTER(UINTEGER)
+
+	connection& connection::get_info(SQLUSMALLINT info_type, string &v) {
+		buffer buf(0);
+		SQLSMALLINT required_len = 0;
+		_M_handle.throw_error(::SQLGetInfo(_M_handle.raw(), info_type,
+				reinterpret_cast<SQLPOINTER>(buf.addr()), buf.size(),
+				&required_len));
+		buf.resize(required_len + 1);
+		_M_handle.throw_error(::SQLGetInfo(_M_handle.raw(), info_type,
+					reinterpret_cast<SQLPOINTER>(buf.addr()), buf.size(),
+					&required_len));
+		v.assign(buf.addr());
+		return *this;
+	}
 }
-		
-SQLRETURN
-Connection::getInfo(SQLUSMALLINT infoType,
-		SQLPOINTER infoValuePtr,
-		SQLSMALLINT bufferLen,
-		SQLSMALLINT* strLenPtr)
-{
-	SQLRETURN ret = SQLGetInfo(m_handle->getHandle(),
-			infoType,
-			infoValuePtr,bufferLen,
-			strLenPtr);
-	return ret;
-}
-
-SQLRETURN
-Connection::getInfo(SQLUSMALLINT infoType,SQLUSMALLINT& value)
-{return getInfo(infoType,(SQLPOINTER)&value,sizeof(SQLUSMALLINT),0);}
-
-SQLRETURN 
-Connection::getInfo(SQLUSMALLINT infoType,SQLUINTEGER& value)
-{return getInfo(infoType,(SQLPOINTER)&value,sizeof(SQLUINTEGER),0);}
-
-string
-Connection::nativeSQL(string const& sql)
-{
-	SQLCHAR outSQL[0x1 << 10] = {0};
-	SQLINTEGER len = 0;
-	SQLRETURN ret = SQLNativeSql(m_handle->getHandle(),
-		reinterpret_cast<SQLCHAR*>(const_cast<char*>(sql.c_str())),SQL_NTS,
-		outSQL,sizeof(outSQL),&len);
-	m_handle->checkError(ret);
-	return string(reinterpret_cast<char*>(outSQL));
-}
-
-void
-Connection::setCurrentCatalog(string const& catalogName)
-{
-	SQLRETURN ret = m_handle->setAttribute(
-			SQL_ATTR_CURRENT_CATALOG,
-			reinterpret_cast<SQLCHAR*>(const_cast<char*>(catalogName.c_str())));
-	m_handle->checkError(ret);
-}
-
-NS_END_1

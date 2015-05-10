@@ -1,238 +1,205 @@
-#include "connection.hpp"
-#include "session.hpp"
 #include "statement.hpp"
+#include "session.hpp"
 #include "cursor.hpp"
+#include "buffer.hpp"
+
+#include <string>
+#include <cstring>
 
 using namespace std;
 
-NS_BEGIN_1(odbclib)
+#define DEFINE_DATA_GETTER(TARGET_TYPE, TYPE, TYPE_SIZE) \
+	statement& statement::get_data(SQLUSMALLINT no, TYPE &value, bool &is_null) { \
+		SQLLEN indicator = 0; \
+		_M_handle.throw_error(SQLGetData(_M_handle.raw(), \
+				no, \
+				TARGET_TYPE, \
+				reinterpret_cast<SQLPOINTER>(&value), \
+				TYPE_SIZE, \
+				&indicator)); \
+		is_null = (indicator == SQL_NO_DATA); \
+		return *this; \
+	}
 
-Statement::Statement(Session &session)
-try
-	:m_session_ref(session),
-	m_handle(new Handle(session.m_conn_ref.m_handle,handle::Statement)),
-	m_prepared(false),
-	m_cursor_ptr(0)
-{
-	DEBUG_INIT("Statement");
-}
-catch(...)
-{
-	doDispose();
-	throw;
-}
+namespace odbcxx {
 
-Statement::~Statement()
-{
-	DEBUG_RELEASE("Statement");
-	dispose();
-}
+	statement& statement::prepare(string const &cmd) {
+		if (*this)
+			_M_handle.throw_error(
+					SQLPrepare(
+						_M_handle.raw(),
+						reinterpret_cast<SQLCHAR*>(const_cast<char*>(cmd.c_str())),
+						SQL_NTS));
+		return *this;
+	}
 
-void
-Statement::doDispose()
-{
-	DEBUG_MSG("Statement doDispose");
-	delete m_cursor_ptr;
-	m_cursor_ptr = 0;
-	delete m_handle;
-	m_handle = 0;
-	m_prepared = false;
-}
+	cursor& statement::execute(cursor &c, std::string const &cmd) {
+		if (!(*this))
+			return c;
+		_M_handle.throw_error(
+				::SQLExecDirect(
+					_M_handle.raw(),
+					reinterpret_cast<SQLCHAR*>(const_cast<char*>(cmd.c_str())),
+					SQL_NTS));
+		//check whether statement has opened cursor.
+		int resultset_columns;
+		//int resultset_rows;
+		if ((resultset_columns = num_of_rs_cols()) > 0) {
+			_M_handle.set_attrb(SQL_ATTR_ROWS_FETCHED_PTR, reinterpret_cast<SQLPOINTER>(&c._M_rowset._M_size));
 
-void
-Statement::setCursorName(string const& cursorName)
-{
-	SQLRETURN ret = 
-		SQLSetCursorName(m_handle->getHandle(),
-			reinterpret_cast<SQLCHAR*>(const_cast<char*>(cursorName.c_str())),
-			SQL_NTS);
-	m_handle->checkError(ret);
-}
+			c._M_stmt_ptr = this;
+			c._M_rowset.capacity(std::max(rowset_size(), 0));
+			c._M_rowset.columns_count(resultset_columns);
+		}
+		return c;
+	}
 
-string
-Statement::getCursorName()
-{
-	SQLCHAR buf[0xff] = {0};
-	SQLSMALLINT outLen = 0;
-	SQLRETURN ret = 
-		SQLGetCursorName(m_handle->getHandle(),
-			buf,sizeof(buf),&outLen);
-	m_handle->checkError(ret);
-	return string(reinterpret_cast<char*>(buf));
-}
+	cursor& statement::execute(cursor &c) {
+		if (!(*this))
+			return c;
+		_M_handle.throw_error(::SQLExecute(_M_handle.raw()));
+		//check whether statement has opened cursor.
+		int resultset_columns;
+		//int resultset_rows;
+		if ((resultset_columns = num_of_rs_cols()) > 0) {
+			_M_handle.set_attrb(SQL_ATTR_ROWS_FETCHED_PTR, &c._M_rowset._M_size);
 
-void
-Statement::setCursorType(cursor::CursorType ct)
-{	
-	SQLRETURN ret = m_handle->setAttribute(
-		SQL_ATTR_CURSOR_TYPE,
-		static_cast<SQLUINTEGER>(ct));
-	m_handle->checkError(ret);
-}
+			c._M_stmt_ptr = this;
+			c._M_rowset.capacity(std::max(rowset_size(), 0));
+			c._M_rowset.columns_count(resultset_columns);
+		}
+		return c;
+	}
 
-void
-Statement::setCursorScrollable(cursor::CursorScrollable cs)
-{
-	SQLRETURN ret = m_handle->setAttribute(
-		SQL_ATTR_CURSOR_SCROLLABLE,
-		static_cast<SQLUINTEGER>(cs));
-	m_handle->checkError(ret);
-}
+	statement& statement::close_cursor() {
+		//WARN: DO NOT throw any exception!!!
+		_M_handle.log_error(::SQLCloseCursor(_M_handle.raw()));
+		return *this;
+	}
 
-void
-Statement::setCursorSensitivity(cursor::CursorSensitivity cs)
-{
-	SQLRETURN ret = m_handle->setAttribute(
-		SQL_ATTR_CURSOR_SENSITIVITY,
-		static_cast<SQLUINTEGER>(cs));
-	m_handle->checkError(ret);
-}
+	int const statement::num_of_rs_cols() {
+		SQLSMALLINT cols = -1;
+		_M_handle.throw_error(::SQLNumResultCols(_M_handle.raw(), &cols));
+		return cols;
+	}
 
-void
-Statement::setCursorConcurrency(cursor::CursorConcurrency cc)
-{
-	SQLRETURN ret = m_handle->setAttribute(
-		SQL_ATTR_CONCURRENCY,
-		static_cast<SQLUINTEGER>(cc));
-	m_handle->checkError(ret);
-}
+	string const statement::cursor_name() {
+		buffer buf(0);
+		SQLSMALLINT out_len = 0;
+		_M_handle.throw_error(::SQLGetCursorName(_M_handle.raw(),
+				reinterpret_cast<SQLCHAR*>(buf.addr()), buf.size(),
+				&out_len));
+		buf.resize(out_len + 1);
+		_M_handle.throw_error(::SQLGetCursorName(_M_handle.raw(),
+				reinterpret_cast<SQLCHAR*>(buf.addr()), buf.size(),
+				&out_len));
+		return buf.addr();
+	}
 
-void
-Statement::setCursorRowArraySize(size_t sz)
-{
-	SQLRETURN ret = m_handle->setAttribute(
-		SQL_ATTR_ROW_ARRAY_SIZE,
-		static_cast<SQLUINTEGER>(sz));
-	m_handle->checkError(ret);
-}
+	statement& statement::cursor_name(string const &name) {
+		if (*this)
+			_M_handle.throw_error(::SQLSetCursorName(_M_handle.raw(),
+						reinterpret_cast<SQLCHAR*>(const_cast<char*>(name.c_str())),
+						SQL_NTS));
+		return *this;
+	}
 
-cursor::CursorType
-Statement::getCursorType()
-{
-	SQLUINTEGER ct = 0;
-	SQLRETURN ret = m_handle->getAttribute(
-			SQL_ATTR_CURSOR_TYPE,
-			ct);
-	m_handle->checkError(ret);
-	return static_cast<cursor::CursorType>(ct);
-}
+	int const statement::rowset_size() {
+		SQLUINTEGER sz = -1;
+		_M_handle.get_attrb(SQL_ATTR_ROW_ARRAY_SIZE, sz);
+		return sz == static_cast<SQLUINTEGER>(-1) ? -1 : sz;
+	}
 
-cursor::CursorScrollable
-Statement::getCursorScrollable()
-{
-	SQLUINTEGER cs = 0;
-	SQLRETURN ret = m_handle->getAttribute(
-			SQL_ATTR_CURSOR_SCROLLABLE,
-			cs);
-	m_handle->checkError(ret);
-	return static_cast<cursor::CursorScrollable>(cs);
-}
+	statement& statement::rowset_size(int size) {
+		SQLUINTEGER sz = size;
+		_M_handle.set_attrb(SQL_ATTR_ROW_ARRAY_SIZE, sz);
+		return *this;
+	}
 
-cursor::CursorSensitivity
-Statement::getCursorSensitivity()
-{
-	SQLUINTEGER cs = 0;
-	SQLRETURN ret = m_handle->getAttribute(
-			SQL_ATTR_CURSOR_SENSITIVITY,
-			cs);
-	m_handle->checkError(ret);
-	return static_cast<cursor::CursorSensitivity>(cs);
-}
+	SQLRETURN statement::scroll(SQLSMALLINT orientation, SQLLEN offset) {
+		SQLRETURN retcode = ::SQLFetchScroll(_M_handle.raw(),
+					orientation, offset);
+		if (retcode != SQL_NO_DATA) 
+			_M_handle.throw_error(retcode);
+		return retcode;
+	}
 
-cursor::CursorConcurrency
-Statement::getCursorConcurrency()
-{
-	SQLUINTEGER cc = 0;
-	SQLRETURN ret = m_handle->getAttribute(
-			SQL_ATTR_CONCURRENCY,
-			cc);
-	m_handle->checkError(ret);
-	return static_cast<cursor::CursorConcurrency>(cc);
-}
+	SQLRETURN statement::set_pos_in_rowset(SQLSETPOSIROW row,
+			SQLUSMALLINT op,
+			SQLUSMALLINT lock_type) {
+		return _M_handle.throw_error(
+				::SQLSetPos(
+					_M_handle.raw(),
+					row,
+					op,
+					lock_type));
+	}
 
-size_t
-Statement::getCursorRowArraySize()
-{
-	SQLUINTEGER sz = 0;
-	SQLRETURN ret = m_handle->getAttribute(
-			SQL_ATTR_ROW_ARRAY_SIZE,
-			sz);
-	m_handle->checkError(ret);
-	return static_cast<size_t>(sz);
-}
+	SQLRETURN statement::bind_col(SQLUSMALLINT column_no,
+			SQLSMALLINT target_type,
+			SQLPOINTER target_value_ptr,
+			SQLLEN buf_len,
+			SQLLEN *len_or_indicator) {
+		return _M_handle.throw_error(
+				::SQLBindCol(
+					_M_handle.raw(),
+					column_no,
+					target_type,
+					target_value_ptr,
+					buf_len,
+					len_or_indicator));
+	}
 
-void
-Statement::prepare(string const& sql)
-{
-	SQLRETURN ret = SQLPrepare(
-		m_handle->getHandle(),
-		reinterpret_cast<SQLCHAR*>(const_cast<char*>(sql.c_str())),
-		SQL_NTS);
-	m_handle->checkError(ret);
-	m_preparedsql = sql;
-	m_prepared = true;
-}
+	DEFINE_DATA_GETTER(SQL_C_SSHORT,	SQLSMALLINT,	SQL_IS_SMALLINT)
+	DEFINE_DATA_GETTER(SQL_C_USHORT,	SQLUSMALLINT,	SQL_IS_SMALLINT)
+	DEFINE_DATA_GETTER(SQL_C_SLONG,		SQLINTEGER,		SQL_IS_INTEGER)
+	DEFINE_DATA_GETTER(SQL_C_ULONG,		SQLUINTEGER,	SQL_IS_UINTEGER)
+	DEFINE_DATA_GETTER(SQL_C_FLOAT,		SQLREAL,		SQL_IS_INTEGER)
+	DEFINE_DATA_GETTER(SQL_C_DOUBLE,	SQLDOUBLE,		SQL_IS_INTEGER)
+	DEFINE_DATA_GETTER(SQL_C_SBIGINT,	SQLBIGINT,		SQL_IS_INTEGER)
+	DEFINE_DATA_GETTER(SQL_C_UBIGINT,	SQLUBIGINT,		SQL_IS_INTEGER)
 
-void
-Statement::execute()
-{
-	if(!m_prepared)
-		throw runtime_error("need prepare() first!");
-	closeCursor();
-	DEBUG_MSG((string("executing prepared statement:") + m_preparedsql).c_str());
-	SQLRETURN ret = SQLExecute(m_handle->getHandle());
-	m_handle->checkError(ret);
-	if(hasResultSet())
-		m_cursor_ptr = new Cursor(*this);
-}
+	statement& statement::get_data(SQLUSMALLINT no, string &v, bool &is_null) {
+		SQLRETURN retcode;
+		char buf[1024];
+		SQLLEN buf_len = countof(buf) * sizeof(char);
+		SQLLEN indicator = 0;
 
-void
-Statement::execute(string const& sql)
-{
-	closeCursor();
-	DEBUG_MSG((string("directly executing statement:") + sql).c_str());
-	SQLRETURN ret = SQLExecDirect(m_handle->getHandle(),
-		reinterpret_cast<SQLCHAR*>(const_cast<char*>(sql.c_str())),
-		SQL_NTS);
-	m_handle->checkError(ret);
-	if(hasResultSet())
-		m_cursor_ptr = new Cursor(*this);
-}
+		string vv;
 
-void
-Statement::closeCursor()
-{
-	delete m_cursor_ptr;
-	m_cursor_ptr = 0;
-}
+		while (true) {
+			memset(buf, 0, sizeof(buf));
+			retcode = ::SQLGetData(_M_handle.raw(), no, SQL_C_CHAR, &buf[0], buf_len, &indicator);
+			if ((is_null = (indicator == SQL_NULL_DATA)))
+				return *this;
+			if (retcode == SQL_NO_DATA)
+				break;
+			if (!SQL_SUCCEEDED(retcode))
+				_M_handle.throw_error(retcode);
+			vv.append(buf);
+		}
+		v = std::move(vv);
+		return *this;
+	}
+	statement& statement::get_data(SQLUSMALLINT no, wstring &v, bool &is_null) {
+		SQLRETURN retcode;
+		wchar_t buf[1024];
+		SQLLEN buf_len = countof(buf) * sizeof(wchar_t);
+		SQLLEN indicator = 0;
 
-void
-Statement::cancel()
-{
-	SQLRETURN ret = SQLCancel(m_handle->getHandle());
-	m_handle->checkError(ret);
+		wstring vv;
+		while (true) {
+			memset(buf, 0, sizeof(buf));
+			retcode = ::SQLGetData(_M_handle.raw(), no, SQL_C_WCHAR, &buf[0], buf_len, &indicator);
+			if ((is_null = (indicator == SQL_NULL_DATA)))
+				return *this;
+			if (retcode == SQL_NO_DATA)
+				break;
+			if (!SQL_SUCCEEDED(retcode))
+				_M_handle.throw_error(retcode);
+			vv.append(buf);
+		}
+		v = std::move(vv);
+		return *this;
+	}
 }
-
-bool
-Statement::hasResultSet()
-{
-	SQLSMALLINT colcnt = 0;
-	SQLRETURN ret = SQLNumResultCols(
-		m_handle->getHandle(),
-		&colcnt);
-	m_handle->checkError(ret);
-	return colcnt > 0;
-}
-
-SQLLEN
-Statement::getAffectedRowCount()
-{
-	SQLLEN rowcnt = 0;
-	SQLRETURN ret = SQLRowCount(
-		m_handle->getHandle(),
-		&rowcnt);
-	m_handle->checkError(ret);
-	return rowcnt;
-}
-
-NS_END_1

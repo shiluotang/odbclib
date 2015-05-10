@@ -1,26 +1,18 @@
-#include "cursor.hpp"
 #include "resultset.hpp"
+#include "statement.hpp"
+#include "cursor.hpp"
+#include "rowset.hpp"
 
 using namespace std;
 
-NS_BEGIN_1(odbclib)
+namespace odbcxx {
 
-ResultSet::ResultSet(Cursor &cursor)
-	:m_cursor_ref(cursor)
-{
+	resultset& resultset::next() {
+		if (_M_cursor.next()) {
+			if (_M_cursor._M_rowset.position() < _M_cursor._M_rowset.size())
+				_M_cursor._M_rowset.position(_M_cursor._M_rowset.position() + 1);
+		}
+		return *this;
+	}
 
 }
-
-bool
-ResultSet::next(){return true;}
-
-bool
-ResultSet::previous(){return true;}
-
-bool
-ResultSet::first(){return true;}
-
-bool
-ResultSet::last(){return true;}
-
-NS_END_1

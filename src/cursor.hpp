@@ -1,61 +1,53 @@
-#ifndef ODBCLIB_CURSOR_HPP_INCLUDED
-#define ODBCLIB_CURSOR_HPP_INCLUDED
+#ifndef ODBCXX_CURSOR_HPP_INCLUDED
+#define ODBCXX_CURSOR_HPP_INCLUDED
 
 #include "config.hpp"
-#include "macros.hpp"
-#include "types.hpp"
+#include "rowset.hpp"
 
-#include "component.hpp"
-#include "transaction.hpp"
+namespace odbcxx {
 
-NS_BEGIN_1(odbclib)
+	class statement;
+	class resultset;
+    /**
+     * The Cursor object associated with an opened result set.
+     */
+	class cursor {
+		public:
+			cursor();
+			cursor(cursor const&) = delete;
+			cursor(cursor &&);
+			cursor& operator = (cursor const&) = delete;
+			cursor& operator = (cursor &&);
+			~cursor();
 
-class Statement;
-class Cursor:
-	protected Component,
-	protected Transaction::TransactionEventListener
-{
-	public:
-		explicit Cursor(Statement&);
-		virtual ~Cursor();
+            /**
+             * Check whether this cursor is valid.
+             * @return true if it's valid, vice versa.
+             */
+			operator bool() const;
+			cursor& close();
 
-		std::string getName();
-		cursor::CursorType
-		getType();
-		cursor::CursorScrollable
-		getScrollable();
-		cursor::CursorSensitivity
-		getSensitivity();
-		cursor::CursorConcurrency
-		getConcurrency();
-		size_t getRowArraySize();
-		void setRowArraySize(size_t);
+			//movements
+			cursor& next();
+			cursor& prior();
+			cursor& first();
+			cursor& last();
+			cursor& absolute(int offset);
+			cursor& relative(int offset);
+			cursor& bookmark(int offset);
 
-		bool fetch(fetchtypes::FetchOrientation,
-				fetchtypes::fetchoffset_t);
-		bool fetchNext();
-		bool fetchPrevious();
-		bool fetchFirst();
-		bool fetchLast();
-		bool fetchRelative(fetchtypes::fetchoffset_t);
-		bool fetchAbsolute(fetchtypes::fetchoffset_t);
-		bool fetchBookmark();	
+			bool const bof() const { return _M_bof; }
+			bool const eof() const { return _M_eof; }
+		private:
+			statement *_M_stmt_ptr;
+			rowset _M_rowset;
+			bool _M_bof;
+			bool _M_eof;
 
-		SQLLEN getRowNumber();
-		SQLULEN getFetchedRowCount();
-	protected:
-		virtual void doDispose();
+			friend class statement;
+			friend class resultset;
+	};
 
-		void setExternallyClosed();
-		void onEvent(Transaction::TransactionEvent&,
-				Transaction::TransactionEventArgs const&);
-		
-	private:
-		Statement &m_stmt_ref;	
-		SQLULEN m_fetchedRowsCnt;
-		bool m_isExternallyClosed;
-};
+}
 
-NS_END_1
-
-#endif //ODBCLIB_CURSOR_HPP_INCLUDED
+#endif //ODBCXX_CURSOR_HPP_INCLUDED

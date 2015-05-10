@@ -2,12 +2,12 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.67])
-AC_INIT([odbclib],[1.0],[http://sourceforge.net/p/odbclib])
+AC_INIT([odbcxx], [1.0], [Samuel Winchester])
 
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 
-AC_CONFIG_SRCDIR([config.h.in])
+AC_CONFIG_SRCDIR([src/descriptor.cpp])
 AC_CONFIG_HEADERS([config.h])
 
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])

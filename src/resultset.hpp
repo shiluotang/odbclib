@@ -1,28 +1,22 @@
-#ifndef ODBCLIB_RESULTSET_HPP_INCLUDED
-#define ODBCLIB_RESULTSET_HPP_INCLUDED
+#ifndef ODBCXX_RESULTSET_HPP_INCLUDED
+#define ODBCXX_RESULTSET_HPP_INCLUDED
 
 #include "config.hpp"
-#include "macros.hpp"
-#include "types.hpp"
+#include "cursor.hpp"
 
-NS_BEGIN_1(odbclib)
+namespace odbcxx {
 
-class Cursor;
-class ResultSet
-{
-	public:
-		explicit ResultSet(Cursor &);
+	class cursor;
+	class resultset {
+		public:
+			resultset& next();
+		private:
+			cursor _M_cursor;
 
-		bool next();
-		bool previous();
-		bool first();
-		bool last();
-	protected:
-	private:
-		Cursor &m_cursor_ref;
-};
+			friend class cursor;
+			friend class rowset;
+	};
 
-NS_END_1
+}
 
-#endif
-
+#endif //ODBCXX_RESULTSET_HPP_INCLUDED

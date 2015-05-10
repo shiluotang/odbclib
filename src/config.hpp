@@ -1,7 +1,5 @@
-#ifndef ODBCLIB_CONFIG_HPP_INCLUDED
-#define ODBCLIB_CONFIG_HPP_INCLUDED
-
-#include "macros.hpp"
+#ifndef ODBCXX_MACROS_HPP_INCLUDED
+#define ODBCXX_MACROS_HPP_INCLUDED
 
 #if defined(_WIN32)
 #   include <windows.h>
@@ -16,14 +14,6 @@
 #include <sqlucode.h>
 #include <sqlext.h>
 
-//disable cl.exe warning about throw
-#ifdef _MSC_VER
-#pragma warning( disable : 4290 )
-#endif
-#include <stdexcept>
+#include "utils.hpp"
 
-#define DEBUG
-#undef DEBUG
-#include "debug.hpp"
-
-#endif
+#endif //ODBCXX_MACROS_HPP_INCLUDED

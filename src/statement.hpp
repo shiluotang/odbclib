@@ -1,55 +1,53 @@
-#ifndef ODBCLIB_STATEMENT_HPP_INCLUDED
-#define ODBCLIB_STATEMENT_HPP_INCLUDED
+#ifndef ODBCXX_STATEMENT_HPP_INCLUDED
+#define ODBCXX_STATEMENT_HPP_INCLUDED
 
-#include "config.hpp"
-#include "macros.hpp"
-#include "types.hpp"
-#include "component.hpp"
+#include "handle_object.hpp"
 
-NS_BEGIN_1(odbclib)
+namespace odbcxx {
 
-class Session;
-class Cursor;
-class Statement:
-	protected Component
-{
-public:
-	explicit Statement(Session &);
-	virtual ~Statement();
-	inline Session& getSession(){return m_session_ref;}
+	class cursor;
+	class rowset;
 
-	void prepare(std::string const&);
-	void execute();
-	void execute(std::string const&);
-	void cancel();
-	bool hasResultSet();
-	SQLLEN getAffectedRowCount();
-protected:
-	virtual void doDispose();
-	void closeCursor();
-public:
-	std::string getCursorName();
-	void setCursorName(std::string const&);
-	void setCursorType(cursor::CursorType);
-	cursor::CursorType getCursorType();
-	void setCursorScrollable(cursor::CursorScrollable);
-	cursor::CursorScrollable getCursorScrollable();
-	void setCursorSensitivity(cursor::CursorSensitivity);
-	cursor::CursorSensitivity getCursorSensitivity();
-	void setCursorConcurrency(cursor::CursorConcurrency);
-	cursor::CursorConcurrency getCursorConcurrency();
-	void setCursorRowArraySize(std::size_t);
-	size_t getCursorRowArraySize();
-private:
-	Session &m_session_ref;
-	Handle  *m_handle;
-	std::string m_preparedsql;
-	bool m_prepared;
-	Cursor *m_cursor_ptr;
+	class statement : public handle_object {
+		public:
+			statement& prepare(std::string const &cmd);
+			cursor& execute(cursor &c, std::string const &cmd);
+			cursor& execute(cursor &c);
+			std::string const cursor_name();
+			statement& cursor_name(std::string const& name);
 
-	friend class Cursor;
-};
+		//protected:
+		public:
+			statement& close_cursor();
+			int const num_of_rs_cols();
 
-NS_END_1
+			int const rowset_size();
+			statement& rowset_size(int);
 
-#endif //ODBCLIB_STATEMENT_HPP_INCLUDED
+			SQLRETURN scroll(SQLSMALLINT orientation, SQLLEN offset);
+			SQLRETURN set_pos_in_rowset(SQLSETPOSIROW row, SQLUSMALLINT op,
+					SQLUSMALLINT lock_type);
+
+			SQLRETURN bind_col(SQLUSMALLINT, SQLSMALLINT, SQLPOINTER, SQLLEN, SQLLEN*);
+
+			statement& get_data(SQLUSMALLINT, SQLSMALLINT&,		bool&); 
+			statement& get_data(SQLUSMALLINT, SQLUSMALLINT&,	bool&);
+			statement& get_data(SQLUSMALLINT, SQLINTEGER&,		bool&);
+			statement& get_data(SQLUSMALLINT, SQLUINTEGER&,		bool&);
+			statement& get_data(SQLUSMALLINT, SQLREAL&,			bool&);
+			statement& get_data(SQLUSMALLINT, SQLDOUBLE&,		bool&);
+			statement& get_data(SQLUSMALLINT, SQLBIGINT&,		bool&);
+			statement& get_data(SQLUSMALLINT, SQLUBIGINT&,		bool&);
+
+			statement& get_data(SQLUSMALLINT, bool&,			bool&);
+			statement& get_data(SQLUSMALLINT, std::string&,		bool&);
+			statement& get_data(SQLUSMALLINT, std::wstring&,	bool&);
+
+		private:
+			friend class session;
+			friend class cursor;
+			friend class rowset;
+	};
+}
+
+#endif //ODBCXX_STATEMENT_HPP_INCLUDED
