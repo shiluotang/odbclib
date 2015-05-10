@@ -14,6 +14,7 @@ AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 
 # Checks for programs.
 AC_PROG_CXX
+AM_PROG_AR
 LT_INIT
 
 # Checks for libraries.
