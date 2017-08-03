@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.67])
+AC_PREREQ([2.63])
 AC_INIT([odbcxx], [1.0], [Samuel Winchester])
 
 AC_CONFIG_AUX_DIR([build-aux])
@@ -14,12 +14,13 @@ AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 
 # Checks for programs.
 AC_PROG_CXX
+m4_pattern_allow([AM_PROG_AR])
 AM_PROG_AR
 LT_INIT
 
 # Checks for libraries.
 # FIXME: Replace `main' with a function in `-lodbc32':
-AC_CHECK_LIB([odbc32], [main], [HAVE_ODBC32=true])
+AC_CHECK_LIB([odbc32], [SQLDisconnect], [HAVE_ODBC32=true])
 AM_CONDITIONAL([USE_ODBC32], [test x$HAVE_ODBC32 = xtrue])
 
 # Checks for header files.

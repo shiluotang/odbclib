@@ -36,7 +36,7 @@ int test1(int argc, char* argv[]) {
 	string name;
 	long age;
 	bool is_null;
-	
+
 	if (stmt.execute(c, "SELECT * FROM STUDENTS")) {
 		size_t rows = 0U;
 		while (c.next() && !c.eof()) {
