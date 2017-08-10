@@ -20,8 +20,8 @@ LT_INIT
 
 # Checks for libraries.
 # FIXME: Replace `main' with a function in `-lodbc32':
-AC_CHECK_LIB([odbc32], [SQLDisconnect], [HAVE_ODBC32=true])
-AM_CONDITIONAL([USE_ODBC32], [test x$HAVE_ODBC32 = xtrue])
+AC_CHECK_LIB([odbc32], [SQLDisconnect], [HAVE_ODBC32=yes], [AX_CHECK_WINDOWS_ODBC32])
+AM_CONDITIONAL([USE_ODBC32], [test "x$HAVE_ODBC32" = "xyes"])
 
 # Checks for header files.
 

@@ -27,7 +27,7 @@ namespace odbcxx {
 			string const& server_name,
 			string const &user_name,
 			string const &authentication) {
-		_M_handle.throw_error(SQLConnect(_M_handle.raw(),
+		_M_handle.throw_error(::SQLConnect(_M_handle.raw(),
 			reinterpret_cast<SQLCHAR*>(const_cast<char*>(server_name.c_str())),
 			SQL_NTS,
 			reinterpret_cast<SQLCHAR*>(const_cast<char*>(user_name.c_str())),
@@ -43,16 +43,16 @@ namespace odbcxx {
 			SQLUSMALLINT driver_completion,
 			SQLHWND hwnd) {
 		SQLSMALLINT len = 0;
-		_M_handle.throw_error(SQLDriverConnect(
+		_M_handle.throw_error(::SQLDriverConnect(
 			_M_handle.raw(),
 			hwnd,
 			reinterpret_cast<SQLCHAR*>(const_cast<char*>(in_connstr.c_str())),
 			SQL_NTS,
-			&s.m_buf[0],
-			countof(s.m_buf),
+			&s._M_buf[0],
+			countof(s._M_buf),
 			&len,
 			driver_completion));
-		s.m_buf[countof(s.m_buf) - 1] = 0;
+		s._M_buf[countof(s._M_buf) - 1] = 0;
 		s._M_conn_ptr = this;
 		return s;
 	}
@@ -60,14 +60,14 @@ namespace odbcxx {
 	session& connection::browse_connect(session &s,
 			string const& in_connstr) {
 		SQLSMALLINT len = 0;
-		_M_handle.throw_error(SQLBrowseConnect(
+		_M_handle.throw_error(::SQLBrowseConnect(
 			_M_handle.raw(),
 			reinterpret_cast<SQLCHAR*>(const_cast<char*>(in_connstr.c_str())),
 			SQL_NTS,
-			&s.m_buf[0],
-			countof(s.m_buf),
+			&s._M_buf[0],
+			countof(s._M_buf),
 			&len));
-		s.m_buf[countof(s.m_buf) - 1] = 0;
+		s._M_buf[countof(s._M_buf) - 1] = 0;
 		s._M_conn_ptr = this;
 		return s;
 	}
@@ -97,13 +97,13 @@ namespace odbcxx {
 	string const connection::native_sql(string const &sql) {
 		buffer buf(0);
 		SQLINTEGER out_len = 0;
-		_M_handle.throw_error(SQLNativeSql(_M_handle.raw(),
+		_M_handle.throw_error(::SQLNativeSql(_M_handle.raw(),
 				reinterpret_cast<SQLCHAR*>(const_cast<char*>(sql.c_str())), SQL_NTS,
 				reinterpret_cast<SQLCHAR*>(buf.addr()), buf.size(),
 				&out_len));
 		string native;
 		buf.resize(out_len + 1);
-		_M_handle.throw_error(SQLNativeSql(_M_handle.raw(),
+		_M_handle.throw_error(::SQLNativeSql(_M_handle.raw(),
 				reinterpret_cast<SQLCHAR*>(const_cast<char*>(sql.c_str())), SQL_NTS,
 				reinterpret_cast<SQLCHAR*>(buf.addr()), buf.size(),
 				&out_len));

@@ -15,11 +15,11 @@ namespace odbcxx {
 			operator bool() const;
 			session& close();
 
-			SQLCHAR const* connstr() const { return &m_buf[0]; }
+			SQLCHAR const* connstr() const { return &_M_buf[0]; }
 			statement& alloc(statement &stmt);
 		private:
 			connection *_M_conn_ptr;
-			SQLCHAR m_buf[0x1 << 10];
+			SQLCHAR _M_buf[0x1 << 10];
 
 			friend class connection;
 			friend class statement;

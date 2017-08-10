@@ -10,7 +10,7 @@ using namespace std;
 
 namespace odbcxx {
 
-	session::session() :_M_conn_ptr(0) { memset(m_buf, 0, sizeof(m_buf)); }
+	session::session() :_M_conn_ptr(0) { std::memset(&_M_buf[0], 0, sizeof(_M_buf)); }
 
 	session::~session() {
 		try {
